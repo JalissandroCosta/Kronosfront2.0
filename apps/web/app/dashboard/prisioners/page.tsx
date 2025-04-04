@@ -1,4 +1,4 @@
-import { getAllPrisioners } from "@/actions";
+import { getAllPrisioners } from "@/actions/prisioner";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@workspace/ui/components/button";
 
