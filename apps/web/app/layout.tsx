@@ -1,7 +1,8 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist, Geist_Mono } from "next/font/google";
 
-import { Providers } from "@/components/providers"
-import "@workspace/ui/globals.css"
+import { Providers } from "@/components/providers";
+import { Toaster } from "@workspace/ui/components/sonner";
+import "@workspace/ui/globals.css";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -27,7 +28,7 @@ export default function RootLayout({
         
           {children}
 
-       
+          <Toaster />
           </Providers>
       </body>
     </html>

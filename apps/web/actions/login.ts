@@ -8,7 +8,6 @@ import { redirect } from 'next/navigation'
 interface LoginResponse {
   auth: boolean
   message: string
-  tipo?: string
 }
 
 // Função para tratar erros de autenticação
@@ -27,14 +26,14 @@ const handleAuthError = (error: AxiosError): LoginResponse => {
   }
 }
 
-export async function handleLogin(username: string, password: string) {
+export async function handleLogin(cpf: string, senha: string) {
   const defaultErrorMessage = {
     auth: false,
     message: 'Usuário ou senha incorretos'
   }
 
   try {
-    const { data } = await api.post('auth', { username, password })
+    const { data } = await api.post('/login/', { cpf, senha })
 
     // Verificando se o token foi retornado
     if (!data.token) {
@@ -53,12 +52,11 @@ export async function handleLogin(username: string, password: string) {
 
     // Extraindo o "role" do token (se existir) para definir o tipo de usuário
     const payload = JSON.parse(atob(data.token.split('.')[1]))
-    const userRole = payload?.tipo
+    // const userRole = payload?.tipo
 
     return {
       auth: true,
       message: 'Login realizado com sucesso',
-      tipo: userRole
     }
   } catch (error) {
     return handleAuthError(error as AxiosError)
