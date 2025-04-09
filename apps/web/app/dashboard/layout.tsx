@@ -2,8 +2,18 @@ import { AppSidebar } from "@workspace/ui/components/app-sidebar";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@workspace/ui/components/breadcrumb";
 import { Separator } from "@workspace/ui/components/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Layout({children}: {children: React.ReactNode}) {
+export default async function ProtectedRoutesLayout({children}: {children: React.ReactNode}) {
+
+  const userStore = await cookies()
+  const hasUser = userStore.has('app-auth-token')
+
+  if (!hasUser) {
+    redirect('/login')
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
