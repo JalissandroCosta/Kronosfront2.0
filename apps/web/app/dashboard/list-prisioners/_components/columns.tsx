@@ -2,6 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@workspace/ui/components/button";
+import Image from "next/image";
+import { EditPrisionerDialog } from "./edite-prisioner";
 
 
 export type Prisioner = {
@@ -18,6 +20,22 @@ export type Prisioner = {
 }
 
 export const columns: ColumnDef<Prisioner>[] = [
+  {
+    accessorKey: "foto",
+    header: "Foto",
+    cell: ({ row }) => {
+      const foto = row.original.foto
+      return (
+        <div className="w-10 h-10 rounded-full overflow-hidden">
+          <Image src={foto == "string" ? "/default.png" : foto}
+          width={100}
+          height={100}
+           alt="Foto do prisioneiro" 
+           className="w-full h-full object-cover" />
+        </div>
+      )
+    }
+  },
   {
     accessorKey: "nome",
     header: "Nome",
@@ -53,9 +71,13 @@ export const columns: ColumnDef<Prisioner>[] = [
   {
     accessorKey: "Ações",
     cell: ({ row }) => {
+
+
       return (
         <div className="flex gap-2">
-          <Button  variant={"secondary"}>Editar</Button>
+          <EditPrisionerDialog data={row.original} >
+          <Button onClick={()=> console.log(row.original)}  variant={"secondary"}>Editar</Button>
+          </EditPrisionerDialog>
           <Button variant={"destructive"}>Excluir</Button>
         </div>
       )
