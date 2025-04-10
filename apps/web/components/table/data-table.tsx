@@ -76,8 +76,8 @@ export function DataTable<TData, TValue>({
         </div>
       )}
       {/* Tabela */}
-      <div className="rounded-md border">
-        <Table>
+      <div className="w-full rounded-md border">
+        <Table >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -127,7 +127,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {/* Botões de Paginações */}
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="w-full flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
