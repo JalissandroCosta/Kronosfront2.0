@@ -38,7 +38,6 @@ const handleRequest = async (
 export async function getAllPrisioners() {
   const { token } = await getUser()
 
-  console.log('token', token)
   return await handleRequest(
     "prisoner/",
     token,
