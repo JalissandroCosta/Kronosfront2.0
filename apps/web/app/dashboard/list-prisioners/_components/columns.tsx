@@ -1,6 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@workspace/ui/components/button";
 
 
 export type Prisioner = {
@@ -49,4 +50,16 @@ export const columns: ColumnDef<Prisioner>[] = [
       })
     }
   },
+  {
+    accessorKey: "Ações",
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2">
+          <Button  variant={"secondary"}>Editar</Button>
+          <Button variant={"destructive"}>Excluir</Button>
+        </div>
+      )
+    }
+  },
+
 ]
