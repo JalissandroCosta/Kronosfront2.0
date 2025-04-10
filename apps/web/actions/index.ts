@@ -35,10 +35,12 @@ const handleRequest = async (
 }
 
 // GET DE TODOS OS ALUNOS DO RESPONSÁVEL
-export async function getAlunos() {
-  const { email, token } = getUser()
+export async function getAllPrisioners() {
+  const { token } = await getUser()
+
+  console.log('token', token)
   return await handleRequest(
-    "prisioner",
+    "prisoner/",
     token,
     'GET PRISIONERS'
   )

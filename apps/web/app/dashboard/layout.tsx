@@ -11,7 +11,7 @@ export default async function ProtectedRoutesLayout({children}: {children: React
   const hasUser = userStore.has('app-auth-token')
 
   if (!hasUser) {
-    redirect('/login')
+    redirect('/')
   }
 
   return (

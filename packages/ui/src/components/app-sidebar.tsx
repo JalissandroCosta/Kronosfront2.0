@@ -61,7 +61,7 @@ const data = {
         },
         {
           title: "Listar",
-          url: "#",
+          url: "/dashboard/list-prisioners",
         }
       ],
     },
