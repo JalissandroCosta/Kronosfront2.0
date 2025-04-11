@@ -1,9 +1,14 @@
+"use client"
+
+import { PUTPrisioner } from "@/actions";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
 import { Button } from "@workspace/ui/components/button";
 import { BaseDialogProps, Dialog } from "@workspace/ui/components/dialog";
 import { Input } from "@workspace/ui/components/input";
 import { Label } from "@workspace/ui/components/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
+import { useToast } from "@workspace/ui/hooks/use-toast";
+import { useState } from "react";
 
 
 type EditPrisionerProps = BaseDialogProps & {
@@ -23,6 +28,41 @@ type EditPrisionerProps = BaseDialogProps & {
 
 
 export const EditPrisionerDialog = (props:EditPrisionerProps) => {
+
+   const { success, warning } = useToast()
+
+  const [prisioner, setPrisioner] = useState(props.data)
+  
+
+  const editePrisioner = async () => {
+   try {
+    await PUTPrisioner(prisioner)
+    props.setOpen?.(false)
+    success({
+      title: 'Usuário editado com sucesso',
+      description: `O prisioneiro ${prisioner.nome} foi editado com sucesso.`,
+    })
+    
+   } catch (error) {
+    console.log(error)
+    warning({
+      title: 'Erro ao editar prisioneiro',
+      description: 'Ocorreu um erro ao editar o prisioneiro.',
+    })
+   }
+    
+  }
+
+  const handleChange = (key: keyof typeof prisioner, value: any) => {
+    setPrisioner((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
+
+ 
+
+
   return(
     <Dialog 
     title="Editar Prisioneiro"
@@ -30,29 +70,29 @@ export const EditPrisionerDialog = (props:EditPrisionerProps) => {
     {...props}
     content={
       <>
-     <div className="grid gap-6">
+        <div className="grid gap-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={props.data.foto} alt={props.data.nome} />
-              <AvatarFallback>{props.data.nome.substring(0, 2)}</AvatarFallback>
+              <AvatarImage src={prisioner.foto} alt={prisioner.nome} />
+              <AvatarFallback>{prisioner.nome.substring(0, 2)}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="id">ID</Label>
                   <Input id="id" 
-                  value={props.data.id} 
+                  value={prisioner.id} 
                   disabled
-                  // onChange={(e) => handleChange("id", e.target.value)} 
+                  onChange={(e) => handleChange("id", e.target.value)} 
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="age">Idade</Label>
+                  <Label htmlFor="idade">Idade</Label>
                   <Input
-                    id="age"
+                    id="idade"
                     type="number"
-                    value={props.data.idade}
-                    // onChange={(e) => handleChange("age", Number.parseInt(e.target.value))}
+                    value={prisioner.idade}
+                     onChange={(e) => handleChange("idade", Number.parseInt(e.target.value))}
                   />
                 </div>
               </div>
@@ -60,30 +100,30 @@ export const EditPrisionerDialog = (props:EditPrisionerProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="name">Nome</Label>
-            <Input id="name" 
-            value={props.data.nome} 
-            // onChange={(e) => handleChange("name", e.target.value)} 
+            <Label htmlFor="nome">Nome</Label>
+            <Input id="nome" 
+            value={prisioner.nome} 
+            onChange={(e) => handleChange("nome", e.target.value)} 
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">URL da Imagem</Label>
+            <Label htmlFor="foto">URL da Imagem</Label>
             <Input
-              id="imageUrl"
-              value={props.data.foto}
-              // onChange={(e) => handleChange("imageUrl", e.target.value)}
+              id="foto"
+              value={prisioner.foto}
+              onChange={(e) => handleChange("foto", e.target.value)}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="maritalStatus">Estado Civil</Label>
+              <Label htmlFor="estadoCivil">Estado Civil</Label>
               <Select
-                value={props.data.estadoCivil}
-                // onValueChange={(value) => handleChange("maritalStatus", value)}
+                value={prisioner.estadoCivil}
+                onValueChange={(value) => handleChange("estadoCivil", value)}
               >
-                <SelectTrigger id="maritalStatus">
+                <SelectTrigger id="estadoCivil">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
                 <SelectContent>
@@ -96,11 +136,11 @@ export const EditPrisionerDialog = (props:EditPrisionerProps) => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="supervisor">Filiação</Label>
+              <Label htmlFor="filiacao">Filiação</Label>
               <Input
-                id="supervisor"
-                value={props.data.filiacao}
-                // onChange={(e) => handleChange("supervisor", e.target.value)}
+                id="filiacao"
+                value={prisioner.filiacao}
+                 onChange={(e) => handleChange("filiacao", e.target.value)}
               />
             </div>
           </div>
@@ -109,7 +149,7 @@ export const EditPrisionerDialog = (props:EditPrisionerProps) => {
             {/* <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button> */}
-            <Button onClick={()=>console.log("Salvar")}>Salvar</Button>
+            <Button onClick={()=>editePrisioner()}>Salvar</Button>
           </div>
         </div>
       </>

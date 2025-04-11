@@ -1,5 +1,6 @@
 "use server"
 
+import { Prisioner } from "@/@types"
 import { api } from "@/services/api"
 import { getUser } from "@/utils/get-users"
 import { AxiosError } from "axios"
@@ -45,34 +46,38 @@ export async function getAllPrisioners() {
   )
 }
 
-// export async function atualizarDadosProfessor(props: DataProfessor) {
-//   const { token }: IUser = getUser()
-//   try {
-//     const { data } = await api.put(
-//       'professor/cadastro',
-//       { ...props },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Cache-Control': 'no-cache'
-//         }
-//       }
-//     )
-//     return data
-//   } catch (error: unknown) {
-//     if (error instanceof AxiosError) {
-//       throw new Error(
-//         `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.response?.data || error.message}`
-//       )
-//     }
-//     if (error instanceof Error) {
-//       throw new Error(
-//         `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.message}`
-//       )
-//     }
-//     throw new Error('An unknown error occurred.')
-//   }
-// }
+export async function PUTPrisioner(props: Prisioner) {
+  const { token } =  await getUser()
+  const { id, createdAt, updatedAt, ...payload } = props; 
+
+
+  try {
+    const { data } = await api.put(
+      `prisoner/${id}`,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache'
+        }
+      }
+    )
+    console.log(data)
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.message}`
+      )
+    }
+    throw new Error('An unknown error occurred.')
+  }
+}
 // // POST ANEXOS CADASTRO PROFESSOR
 // export async function postAnexosDadosProfessor(descricao: string, url: string) {
 //   const { token }: IUser = getUser()
