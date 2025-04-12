@@ -1,16 +1,10 @@
 "use client"
 
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
   Settings2,
-  SquareTerminal,
+  SquareTerminal
 } from "lucide-react"
 import * as React from "react"
 
@@ -23,71 +17,96 @@ import {
 } from "./sidebar.js"
 
 // This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Prisioners",
-      url: "/dashboard/list-prisioners",
-      icon: SquareTerminal,
-      isActive: true,
+// const data = {
+//   user: {
+//     name: "shadcn",
+//     email: "m@example.com",
+//     avatar: "/avatars/shadcn.jpg",
+//   },
+//   teams: [
+//     {
+//       name: "Acme Inc",
+//       logo: GalleryVerticalEnd,
+//       plan: "Enterprise",
+//     },
+//     {
+//       name: "Acme Corp.",
+//       logo: AudioWaveform,
+//       plan: "Startup",
+//     },
+//     {
+//       name: "Evil Corp.",
+//       logo: Command,
+//       plan: "Free",
+//     },
+//   ],
+//   navMain: [
+//     {
+//       title: "Prisioners",
+//       url: "/dashboard/prisioners",
+//       icon: SquareTerminal,
+//       isActive: true,
     
-    },
-    {
-      title: "Usuários",
-      url: "#",
-      icon: Bot,
-    },
-    {
-      title: "Celas",
-      url: "#",
-      icon: BookOpen,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-}
+//     },
+//     {
+//       title: "Usuários",
+//       url: "#",
+//       icon: Bot,
+//     },
+//     {
+//       title: "Celas",
+//       url: "#",
+//       icon: BookOpen,
+//     },
+//     {
+//       title: "Settings",
+//       url: "#",
+//       icon: Settings2,
+//     },
+//   ],
+//   projects: [
+//     {
+//       name: "Design Engineering",
+//       url: "#",
+//       icon: Frame,
+//     },
+//     {
+//       name: "Sales & Marketing",
+//       url: "#",
+//       icon: PieChart,
+//     },
+//     {
+//       name: "Travel",
+//       url: "#",
+//       icon: Map,
+//     },
+//   ],
+// }
+
+const Menu = [
+  {
+    title: "Prisioners",
+    url: "/dashboard/prisioners",
+    icon: SquareTerminal,
+    isActive: true,
+  
+  },
+  {
+    title: "Usuários",
+    url: "#",
+    icon: Bot,
+  },
+  {
+    title: "Celas",
+    url: "#",
+    icon: BookOpen,
+  },
+  {
+    title: "Settings",
+    url: "#",
+    icon: Settings2,
+  },
+]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -104,7 +123,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
          </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={Menu} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       {/* <SidebarFooter>
