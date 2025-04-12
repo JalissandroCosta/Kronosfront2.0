@@ -23,19 +23,21 @@ import {
   TableRow
 } from '@workspace/ui/components/table'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   search?: string
   placeholderSearch?: string
   data: TData[]
+  button?: ReactNode
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   search,
+  button,
   placeholderSearch
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
@@ -63,8 +65,9 @@ export function DataTable<TData, TValue>({
   return (
     <>
       {/* Ações ( adicicionar, excluir, filtro, voltar.....) */}
-      {search && (
-        <div className="flex items-center py-4">
+     <div className='flex w-full items-center justify-between py-4'>
+     {search && (
+        <div className=" w-full flex items-start py-4">
           <Input
             placeholder={placeholderSearch}
             value={(table.getColumn(search)?.getFilterValue() as string) ?? ''}
@@ -75,6 +78,11 @@ export function DataTable<TData, TValue>({
           />
         </div>
       )}
+      {button && (
+        button
+      )}
+     </div>
+
       {/* Tabela */}
       <div className="w-full rounded-md border">
         <Table >

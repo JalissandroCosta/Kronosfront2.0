@@ -67,47 +67,49 @@ export async function PUTPrisioner(props: Prisioner) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.response?.data || error.message}`
+        `Failed to fetch PUT CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
       )
     }
     if (error instanceof Error) {
       throw new Error(
-        `Failed to fetch PUT CADASTRO PROFESSOR from API: ${error.message}`
+        `Failed to fetch PUT CADASTRO PRISIONEIRO from API: ${error.message}`
       )
     }
-    throw new Error('An unknown error occurred.')
+    throw new Error('PUT CADASTRO PRISIONEIRO.')
   }
 }
-// // POST ANEXOS CADASTRO PROFESSOR
-// export async function postAnexosDadosProfessor(descricao: string, url: string) {
-//   const { token }: IUser = getUser()
-//   try {
-//     const { data } = await api.post(
-//       'professor/anexo/cadastro',
-//       {
-//         descricao: descricao,
-//         url: url
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Cache-Control': 'no-cache',
-//           'Content-Type': 'application/json'
-//         }
-//       }
-//     )
-//     return data
-//   } catch (error: unknown) {
-//     if (error instanceof AxiosError) {
-//       throw new Error(
-//         `Failed to fetch POST ANEXOS CADASTRO PROFESSOR from API: ${error.response?.data || error.message}`
-//       )
-//     }
-//     if (error instanceof Error) {
-//       throw new Error(
-//         `Failed to fetch POST ANEXOS CADASTRO PROFESSOR from API: ${error.message}`
-//       )
-//     }
-//     throw new Error('POST ANEXOS CADASTRO PROFESSOR.')
-//   }
-// }
+
+export async function POSTPrisioner(props: Prisioner) {
+  const { token } = await getUser()
+
+  const { id, createdAt, updatedAt, ...payload } = props; 
+  try {
+    const { data } = await api.post(
+      'prisoner/',
+      {
+        ...payload
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    console.log(data)
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.message}`
+      )
+    }
+    throw new Error('POST CADASTRO PRISIONEIRO.')
+  }
+}
