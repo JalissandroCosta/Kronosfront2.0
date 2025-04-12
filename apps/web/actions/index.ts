@@ -97,7 +97,7 @@ export async function POSTPrisioner(props: Prisioner) {
         }
       }
     )
-    console.log(data)
+   
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -113,3 +113,42 @@ export async function POSTPrisioner(props: Prisioner) {
     throw new Error('POST CADASTRO PRISIONEIRO.')
   }
 }
+
+export async function DELETEPrisioner(id: string) {
+  const { token } = await getUser()
+  console.log(id)
+
+  
+  try {
+    const { data } = await api.delete(
+      `prisoner/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+console.log(data)
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${
+          typeof error.response?.data === "object"
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${error.message}`
+      )
+    }
+    throw new Error('DELETE CADASTRO PRISIONEIRO.')
+  }
+}
+
+

@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@workspace/ui/components/button";
 import Image from "next/image";
 import { useState } from "react";
+import { DeletePrisionerDialog } from "./delete-prisioner";
 import { EditPrisionerDialog } from "./edite-prisioner";
 
 
@@ -74,6 +75,7 @@ export const columns: ColumnDef<Prisioner>[] = [
     cell: ({ row }) => {
 
       const [openEditDialog, setOpenEditDialog] = useState(false)
+      const {id,nome} = row.original
 
       return (
         <div className="flex gap-2">
@@ -84,7 +86,9 @@ export const columns: ColumnDef<Prisioner>[] = [
           >
             <Button  variant={"secondary"}>Editar</Button>
           </EditPrisionerDialog>
-          <Button variant={"destructive"}>Excluir</Button>
+          <DeletePrisionerDialog data={{id,nome}} >
+            <Button variant={"destructive"}>Excluir</Button>
+          </DeletePrisionerDialog>
         </div>
       )
     }
