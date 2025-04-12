@@ -15,13 +15,11 @@ import {
 import * as React from "react"
 
 import { NavMain } from "./nav-main.js"
-import { NavUser } from "./nav-user.js"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
-  SidebarRail,
+  SidebarRail
 } from "./sidebar.js"
 
 // This is sample data.
@@ -51,80 +49,25 @@ const data = {
   navMain: [
     {
       title: "Prisioners",
-      url: "#",
+      url: "/dashboard/list-prisioners",
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: "Adicionar",
-          url: "#",
-        },
-        {
-          title: "Listar",
-          url: "/dashboard/list-prisioners",
-        }
-      ],
+    
     },
     {
       title: "Usuários",
       url: "#",
       icon: Bot,
-      items: [
-        {
-          title: "Adicionar",
-          url: "#",
-        },
-        {
-          title: "Listar",
-          url: "#",
-        },   
-      ],
     },
     {
       title: "Celas",
       url: "#",
       icon: BookOpen,
-      items: [
-        {
-          title: "Adicionar",
-          url: "#",
-        },
-        {
-          title: "Listar",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
     },
     {
       title: "Settings",
       url: "#",
       icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
     },
   ],
   projects: [
@@ -151,14 +94,22 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         {/* <TeamSwitcher teams={data.teams} /> */}
+         <div className="aspect-video rounded-xl bg-muted/50 overflow-hidden relative">
+          <img
+            src="/logo.webp"
+            alt="Descrição da imagem"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <h3 className="absolute bottom-0 font-bold text-2xl left-4 text-black">Kronos</h3>
+         </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
-      <SidebarFooter>
+      {/* <SidebarFooter>
         <NavUser user={data.user} />
-      </SidebarFooter>
+      </SidebarFooter> */}
       <SidebarRail />
     </Sidebar>
   )
