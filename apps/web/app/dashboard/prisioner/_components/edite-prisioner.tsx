@@ -1,7 +1,6 @@
 "use client"
 
-import { Prisioner } from "@/@types";
-import { POSTPrisioner } from "@/actions";
+import { PUTPrisioner } from "@/actions/prisioner";
 import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
 import { Button } from "@workspace/ui/components/button";
 import { BaseDialogProps, Dialog } from "@workspace/ui/components/dialog";
@@ -12,61 +11,53 @@ import { useToast } from "@workspace/ui/hooks/use-toast";
 import { useState } from "react";
 
 
-// type EditPrisionerProps = BaseDialogProps & {
-//  data : {
-//   id: string
-//   nome: string
-//   idade: number
-//   cpf: string
-//   filiacao: string
-//   estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado' | 'Viúvo' | string
-//   foto: string
-//   reincidencia: boolean
-//   createdAt: string // ou Date, se você for converter depois
-//   updatedAt: string // idem
-//  }
-// }
+type EditPrisionerProps = BaseDialogProps & {
+ data : {
+  id: string
+  nome: string
+  idade: number
+  cpf: string
+  filiacao: string
+  estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado' | 'Viúvo' | string
+  foto: string
+  reincidencia: boolean
+  createdAt: string // ou Date, se você for converter depois
+  updatedAt: string // idem
+ }
+}
 
 
-export const AddPrisionerDialog = (props:BaseDialogProps) => {
+export const EditPrisionerDialog = (props:EditPrisionerProps) => {
 
    const { success, warning } = useToast()
 
-  const [prisioner, setPrisioner] = useState<Prisioner>({
-    id: "",
-    nome: "",
-    idade: 0,
-    cpf: "",
-    filiacao: "",
-    estadoCivil: "Solteiro",
-    foto: "",
-    reincidencia: false,
-    createdAt: "",
-    updatedAt: "",
-  });
+  const [prisioner, setPrisioner] = useState(props.data)
   
 
-  const addPrisioner = async () => {
+  const editePrisioner = async () => {
    try {
-    await POSTPrisioner(prisioner)
+    await PUTPrisioner(prisioner)
     props.setOpen?.(false)
     success({
-      title: 'Usuário adicionado com sucesso',
-      description: `O prisioneiro ${prisioner?.nome} foi adicionado com sucesso.`,
+      title: 'Usuário editado com sucesso',
+      description: `O prisioneiro ${prisioner.nome} foi editado com sucesso.`,
     })
     
    } catch (error) {
     console.log(error)
     warning({
-      title: 'Erro ao adicionar prisioneiro',
-      description: 'Ocorreu um erro ao adicionar o prisioneiro.',
+      title: 'Erro ao editar prisioneiro',
+      description: 'Ocorreu um erro ao editar o prisioneiro.',
     })
    }
     
   }
 
   const handleChange = (key: keyof typeof prisioner, value: any) => {
-    setPrisioner((prev) => ({ ...prev, [key]: value }));
+    setPrisioner((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
  
@@ -74,25 +65,25 @@ export const AddPrisionerDialog = (props:BaseDialogProps) => {
 
   return(
     <Dialog 
-    title="Adicionar Prisioneiro"
-    description="Adicione os dados do novo prisioneiro"
+    title="Editar Prisioneiro"
+    description="Edite os dados do prisioneiro"
     {...props}
     content={
       <>
         <div className="grid gap-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={"/default.png"} alt={"Foto do Prisioneiro"} />
-              <AvatarFallback>{"PS"}</AvatarFallback>
+              <AvatarImage src={prisioner.foto} alt={prisioner.nome} />
+              <AvatarFallback>{prisioner.nome.substring(0, 2)}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label htmlFor="id">CPF</Label>
-                  <Input id="cpf" 
-                  value={prisioner?.cpf} 
-                  
-                  onChange={(e) => handleChange("cpf", e.target.value)} 
+                  <Label htmlFor="id">ID</Label>
+                  <Input id="id" 
+                  value={prisioner.id} 
+                  disabled
+                  onChange={(e) => handleChange("id", e.target.value)} 
                   />
                 </div>
                 <div className="space-y-2">
@@ -100,7 +91,7 @@ export const AddPrisionerDialog = (props:BaseDialogProps) => {
                   <Input
                     id="idade"
                     type="number"
-                    value={prisioner?.idade}
+                    value={prisioner.idade}
                      onChange={(e) => handleChange("idade", Number.parseInt(e.target.value))}
                   />
                 </div>
@@ -158,7 +149,7 @@ export const AddPrisionerDialog = (props:BaseDialogProps) => {
             {/* <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button> */}
-            <Button onClick={()=>addPrisioner()}>Salvar</Button>
+            <Button onClick={()=>editePrisioner()}>Salvar</Button>
           </div>
         </div>
       </>

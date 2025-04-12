@@ -1,6 +1,6 @@
 "use client"
 
-import { DELETEPrisioner } from "@/actions";
+import { DELETEPrisioner } from "@/actions/prisioner";
 import { Button } from "@workspace/ui/components/button";
 import { BaseDialogProps, Dialog } from "@workspace/ui/components/dialog";
 import { useToast } from "@workspace/ui/hooks/use-toast";
