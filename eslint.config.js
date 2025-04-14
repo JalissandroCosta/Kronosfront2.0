@@ -2,6 +2,7 @@
 import tseslint from "@typescript-eslint/eslint-plugin"
 import parser from "@typescript-eslint/parser"
 import prettier from "eslint-config-prettier"
+
 import reactHooks from "eslint-plugin-react-hooks"
 
 const tsConfigs = tseslint.configs
