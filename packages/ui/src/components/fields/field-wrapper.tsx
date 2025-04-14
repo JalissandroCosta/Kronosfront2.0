@@ -13,8 +13,8 @@ export const FieldWrapper = ({
   className
 }: FieldWrapperProps) => {
   return (
-    <div className={`${className} flex flex-col gap-2 text-left`}>
-      <Label className="flex flex-col gap-2 text-left">{label}</Label>
+    <div className={`${className} flex flex-col gap-2 flex-start`}>
+      <Label className="flex gap-2 text-right">{label}</Label>
       {children}
     </div>
   )
