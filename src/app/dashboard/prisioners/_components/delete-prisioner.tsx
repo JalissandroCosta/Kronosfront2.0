@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
 import { useToast } from '@/hooks/use-toast'
 
-
 type DeletePrisionerProps = BaseDialogProps & {
   data: {
     id: string

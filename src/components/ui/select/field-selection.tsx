@@ -48,10 +48,7 @@ export const SelectionField = ({
                   Selecione uma opção
                 </SelectItem>
                 {list.map((item) => (
-                  <SelectItem
-                    key={item}
-                    value={item}
-                  >
+                  <SelectItem key={item} value={item}>
                     {item}
                   </SelectItem>
                 ))}

@@ -3,7 +3,6 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Input } from '../input'
 import { FieldWrapper } from './field-wrapper'
 
-
 type InputField = ComponentProps<typeof Input> & {
   label: string
   name: string

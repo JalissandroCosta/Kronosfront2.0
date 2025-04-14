@@ -1,7 +1,6 @@
 import { getAllPrisioners } from '@/actions/prisioner'
 import { DataTable } from '@/components/table/data-table'
 
-
 import { Button } from '@/components/ui/button'
 import { AddPrisionerDialog } from './_components/add-prisioner'
 import { columns } from './_components/columns'

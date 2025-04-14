@@ -1,16 +1,15 @@
-"use client"
+'use client'
+
+import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
+import * as React from 'react'
 
 import {
-  BookOpen,
-  Bot,
-  Settings2,
-  SquareTerminal
-} from "lucide-react"
-import * as React from "react"
-
-import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "../ui/sidebar"
-import { NavMain } from "./nav-main"
-
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarRail
+} from '../ui/sidebar'
+import { NavMain } from './nav-main'
 
 // This is sample data.
 // const data = {
@@ -42,7 +41,7 @@ import { NavMain } from "./nav-main"
 //       url: "/dashboard/prisioners",
 //       icon: SquareTerminal,
 //       isActive: true,
-    
+
 //     },
 //     {
 //       title: "Usuários",
@@ -81,27 +80,26 @@ import { NavMain } from "./nav-main"
 
 const Menu = [
   {
-    title: "Prisioners",
-    url: "/dashboard/prisioners",
+    title: 'Prisioners',
+    url: '/dashboard/prisioners',
     icon: SquareTerminal,
-    isActive: true,
-  
+    isActive: true
   },
   {
-    title: "Usuários",
-    url: "#",
-    icon: Bot,
+    title: 'Usuários',
+    url: '#',
+    icon: Bot
   },
   {
-    title: "Celas",
-    url: "#",
-    icon: BookOpen,
+    title: 'Celas',
+    url: '#',
+    icon: BookOpen
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings2,
-  },
+    title: 'Settings',
+    url: '#',
+    icon: Settings2
+  }
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -109,14 +107,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         {/* <TeamSwitcher teams={data.teams} /> */}
-         <div className="aspect-video rounded-xl bg-muted/50 overflow-hidden relative">
+        <div className="bg-muted/50 relative aspect-video overflow-hidden rounded-xl">
           <img
             src="/logo.webp"
             alt="Descrição da imagem"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <h3 className="absolute bottom-0 font-bold text-2xl left-4 text-black">Kronos</h3>
-         </div>
+          <h3 className="absolute bottom-0 left-4 text-2xl font-bold text-black">
+            Kronos
+          </h3>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={Menu} />
