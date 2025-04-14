@@ -44,12 +44,15 @@ export async function getAllPrisioners() {
 
 export async function PUTPrisioner(props: Prisioner) {
   const { token } = await getUser()
-  const { id, createdAt, updatedAt, ...payload } = props
+  const { id, idade, createdAt, updatedAt, ...payload } = props
 
   try {
     const { data } = await api.put(
       `prisoner/${id}`,
-      { ...payload },
+      {
+        idade: Number(idade),
+        ...payload
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
