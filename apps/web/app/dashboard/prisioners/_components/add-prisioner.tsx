@@ -1,17 +1,28 @@
-"use client"
+'use client'
 
-import { Prisioner } from "@/@types";
-import { POSTPrisioner } from "@/actions/prisioner";
-import { Avatar, AvatarFallback, AvatarImage } from "@workspace/ui/components/avatar";
-import { Button } from "@workspace/ui/components/button";
-import { BaseDialogProps, Dialog } from "@workspace/ui/components/dialog";
-import { Input } from "@workspace/ui/components/input";
-import { Label } from "@workspace/ui/components/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
-import { useToast } from "@workspace/ui/hooks/use-toast";
-import { useState } from "react";
+import { Prisioner } from '@/@types'
+import { POSTPrisioner } from '@/actions/prisioner'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage
+} from '@workspace/ui/components/avatar'
+import { Button } from '@workspace/ui/components/button'
+import { BaseDialogProps, Dialog } from '@workspace/ui/components/dialog'
+import { InputField } from '@workspace/ui/components/fields/field'
+import { Label } from '@workspace/ui/components/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@workspace/ui/components/select'
+import { useToast } from '@workspace/ui/hooks/use-toast'
+import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 
-
+type FormData = Prisioner & {}
 // type EditPrisionerProps = BaseDialogProps & {
 //  data : {
 //   id: string
@@ -27,144 +38,132 @@ import { useState } from "react";
 //  }
 // }
 
-
-export const AddPrisionerDialog = (props:BaseDialogProps) => {
-
-   const { success, warning } = useToast()
+export const AddPrisionerDialog = (props: BaseDialogProps) => {
+  const methods = useForm<FormData>()
+  const { success, warning } = useToast()
 
   const [prisioner, setPrisioner] = useState<Prisioner>({
-    id: "",
-    nome: "",
+    id: '',
+    nome: '',
     idade: 0,
-    cpf: "",
-    filiacao: "",
-    estadoCivil: "Solteiro",
-    foto: "",
+    cpf: '',
+    filiacao: '',
+    estadoCivil: 'Solteiro',
+    foto: '',
     reincidencia: false,
-    createdAt: "",
-    updatedAt: "",
-  });
-  
+    createdAt: '',
+    updatedAt: ''
+  })
+
+  async function onSubmit(data: FormData) {
+    console.log(data)
+  }
 
   const addPrisioner = async () => {
-   try {
-    await POSTPrisioner(prisioner)
-    props.setOpen?.(false)
-    success({
-      title: 'Usuário adicionado com sucesso',
-      description: `O prisioneiro ${prisioner?.nome} foi adicionado com sucesso.`,
-    })
-    
-   } catch (error) {
-    console.log(error)
-    warning({
-      title: 'Erro ao adicionar prisioneiro',
-      description: 'Ocorreu um erro ao adicionar o prisioneiro.',
-    })
-   }
-    
+    try {
+      await POSTPrisioner(prisioner)
+      props.setOpen?.(false)
+      success({
+        title: 'Usuário adicionado com sucesso',
+        description: `O prisioneiro ${prisioner?.nome} foi adicionado com sucesso.`
+      })
+    } catch (error) {
+      console.log(error)
+      warning({
+        title: 'Erro ao adicionar prisioneiro',
+        description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+      })
+    }
   }
 
   const handleChange = (key: keyof typeof prisioner, value: any) => {
-    setPrisioner((prev) => ({ ...prev, [key]: value }));
-  };
+    setPrisioner((prev) => ({ ...prev, [key]: value }))
+  }
 
- 
-
-
-  return(
-    <Dialog 
-    title="Adicionar Prisioneiro"
-    description="Adicione os dados do novo prisioneiro"
-    {...props}
-    content={
-      <>
-        <div className="grid gap-6">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-20 w-20">
-              <AvatarImage src={"/default.png"} alt={"Foto do Prisioneiro"} />
-              <AvatarFallback>{"PS"}</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-2">
-                  <Label htmlFor="id">CPF</Label>
-                  <Input id="cpf" 
-                  value={prisioner?.cpf} 
-                  
-                  onChange={(e) => handleChange("cpf", e.target.value)} 
+  return (
+    <Dialog
+      title="Adicionar Prisioneiro"
+      description="Adicione os dados do novo prisioneiro"
+      {...props}
+      content={
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="grid gap-6"
+          >
+            <div className="flex items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={'/default.png'} alt={'Foto do Prisioneiro'} />
+                <AvatarFallback>{'PS'}</AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <div className="grid grid-cols-2 gap-3">
+                  <InputField
+                    name="cpf"
+                    label="CPF"
+                    placeholder="Insira o CPF"
+                    className=""
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="idade">Idade</Label>
-                  <Input
-                    id="idade"
+                  <InputField
+                    name="idade"
+                    label="Idade"
+                    placeholder="Insira a Idade"
                     type="number"
-                    value={prisioner?.idade}
-                     onChange={(e) => handleChange("idade", Number.parseInt(e.target.value))}
+                    className=""
                   />
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="nome">Nome</Label>
-            <Input id="nome" 
-            value={prisioner.nome} 
-            onChange={(e) => handleChange("nome", e.target.value)} 
+            <InputField
+              name="nome"
+              label="Nome"
+              placeholder="Insira a Nome"
+              className=""
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="foto">URL da Imagem</Label>
-            <Input
-              id="foto"
-              value={prisioner.foto}
-              onChange={(e) => handleChange("foto", e.target.value)}
+            <InputField
+              name="foto"
+              label="URL da Imagem"
+              placeholder="Insira a URL da Imagem"
+              className=""
             />
-          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label htmlFor="estadoCivil">Estado Civil</Label>
-              <Select
-                value={prisioner.estadoCivil}
-                onValueChange={(value) => handleChange("estadoCivil", value)}
-              >
-                <SelectTrigger id="estadoCivil">
-                  <SelectValue placeholder="Selecione" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Solteiro">Solteiro</SelectItem>
-                  <SelectItem value="Casado">Casado</SelectItem>
-                  <SelectItem value="Divorciado">Divorciado</SelectItem>
-                  <SelectItem value="Viúvo">Viúvo</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="filiacao">Filiação</Label>
-              <Input
-                id="filiacao"
-                value={prisioner.filiacao}
-                 onChange={(e) => handleChange("filiacao", e.target.value)}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="estadoCivil">Estado Civil</Label>
+                <Select
+                  value={prisioner.estadoCivil}
+                  onValueChange={(value) => handleChange('estadoCivil', value)}
+                >
+                  <SelectTrigger id="estadoCivil">
+                    <SelectValue placeholder="Selecione" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Solteiro">Solteiro</SelectItem>
+                    <SelectItem value="Casado">Casado</SelectItem>
+                    <SelectItem value="Divorciado">Divorciado</SelectItem>
+                    <SelectItem value="Viúvo">Viúvo</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <InputField
+                name="filiacao"
+                label="Filiação"
+                placeholder="Insira a Filiação"
+                className=""
               />
             </div>
-          </div>
 
-          <div className="flex justify-end gap-2 mt-4">
-            {/* <Button variant="outline" onClick={() => onOpenChange(false)}>
+            <div className="mt-4 flex justify-end gap-2">
+              {/* <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancelar
             </Button> */}
-            <Button onClick={()=>addPrisioner()}>Salvar</Button>
-          </div>
-        </div>
-      </>
-    }
-    
+              <Button onClick={() => addPrisioner()}>Salvar</Button>
+            </div>
+          </form>
+        </FormProvider>
+      }
     />
-
   )
 }
