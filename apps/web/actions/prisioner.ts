@@ -77,11 +77,12 @@ export async function PUTPrisioner(props: Prisioner) {
 export async function POSTPrisioner(props: Prisioner) {
   const { token } = await getUser()
 
-  const { id, createdAt, updatedAt, ...payload } = props
+  const { id, idade, createdAt, updatedAt, ...payload } = props
   try {
     const { data } = await api.post(
       'prisoner/',
       {
+        idade: Number(idade),
         ...payload
       },
       {
@@ -126,10 +127,9 @@ export async function DELETEPrisioner(id: string) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${
-          typeof error.response?.data === 'object'
-            ? JSON.stringify(error.response.data)
-            : error.response?.data || error.message
+        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${typeof error.response?.data === 'object'
+          ? JSON.stringify(error.response.data)
+          : error.response?.data || error.message
         }`
       )
     }

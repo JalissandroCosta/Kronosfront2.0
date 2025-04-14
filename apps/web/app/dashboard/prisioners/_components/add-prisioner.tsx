@@ -35,6 +35,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const { success, warning } = useToast()
 
   async function onSubmit(data: FormData) {
+    console.log(data)
     try {
       await POSTPrisioner(data)
       props.setOpen?.(false)
