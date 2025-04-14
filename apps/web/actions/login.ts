@@ -41,7 +41,7 @@ export async function handleLogin(cpf: string, senha: string) {
     }
 
     // Salvando o token no cookie
-    const cookieStore = await cookies();
+    const cookieStore = await cookies()
     cookieStore.set({
       name: 'app-auth-token',
       value: data.token,
@@ -56,7 +56,7 @@ export async function handleLogin(cpf: string, senha: string) {
 
     return {
       auth: true,
-      message: 'Login realizado com sucesso',
+      message: 'Login realizado com sucesso'
     }
   } catch (error) {
     return handleAuthError(error as AxiosError)
@@ -64,7 +64,7 @@ export async function handleLogin(cpf: string, senha: string) {
 }
 
 export async function logout() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies()
   cookieStore.delete('app-auth-token')
   redirect('/login')
 }

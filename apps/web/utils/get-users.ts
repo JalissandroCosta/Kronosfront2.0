@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers'
 
 type DataProps = {
   codigo: number
@@ -14,18 +14,18 @@ type DataProps = {
 export type IUser = DataProps
 
 export async function getUser() {
-  const cookieStore = await cookies();
-  const data = cookieStore.get('app-auth-token');
+  const cookieStore = await cookies()
+  const data = cookieStore.get('app-auth-token')
   // console.log('DATA', data)
 
   if (!data) {
-    return {} as IUser;
+    return {} as IUser
   }
 
-  const decode = jwt.decode(data.value) as IUser;
+  const decode = jwt.decode(data.value) as IUser
 
   return {
     ...decode,
     token: data.value
-  };
+  }
 }

@@ -6,6 +6,8 @@ import pluginReactHooks from "eslint-plugin-react-hooks"
 import globals from "globals"
 import tseslint from "typescript-eslint"
 
+import eslintPluginPrettier from "eslint-plugin-prettier"; // Importando o plugin do Prettier
+
 import { config as baseConfig } from "./base.js"
 
 /**
@@ -16,7 +18,8 @@ import { config as baseConfig } from "./base.js"
 export const nextJsConfig = [
   ...baseConfig,
   js.configs.recommended,
-  eslintConfigPrettier,
+  eslintConfigPrettier,  // Desativa as regras do ESLint que conflitam com o Prettier
+  eslintPluginPrettier,   // Adiciona o plugin do Prettier
   ...tseslint.configs.recommended,
   {
     ...pluginReact.configs.flat.recommended,
@@ -46,6 +49,12 @@ export const nextJsConfig = [
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
+    },
+  },
+  {
+    plugins: ["prettier"],  // Incluindo o plugin Prettier
+    rules: {
+      "prettier/prettier": ["error", { "endOfLine": "auto" }],  // Regra do Prettier para aplicar a formatação
     },
   },
 ]

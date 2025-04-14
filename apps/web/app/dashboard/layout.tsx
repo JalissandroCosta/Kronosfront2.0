@@ -1,12 +1,26 @@
-import { AppSidebar } from "@workspace/ui/components/app-sidebar";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@workspace/ui/components/breadcrumb";
-import { Separator } from "@workspace/ui/components/separator";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@workspace/ui/components/sidebar";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { AppSidebar } from '@workspace/ui/components/app-sidebar'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from '@workspace/ui/components/breadcrumb'
+import { Separator } from '@workspace/ui/components/separator'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger
+} from '@workspace/ui/components/sidebar'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export default async function ProtectedRoutesLayout({children}: {children: React.ReactNode}) {
-
+export default async function ProtectedRoutesLayout({
+  children
+}: {
+  children: React.ReactNode
+}) {
   const userStore = await cookies()
   const hasUser = userStore.has('app-auth-token')
 
@@ -22,7 +36,7 @@ export default async function ProtectedRoutesLayout({children}: {children: React
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb >
+            <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="#">
@@ -48,5 +62,5 @@ export default async function ProtectedRoutesLayout({children}: {children: React
         </div>
       </SidebarInset>
     </SidebarProvider>
-  );
+  )
 }

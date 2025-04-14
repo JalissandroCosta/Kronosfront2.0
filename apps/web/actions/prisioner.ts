@@ -1,9 +1,9 @@
-"use server"
+'use server'
 
-import { Prisioner } from "@/@types"
-import { api } from "@/services/api"
-import { getUser } from "@/utils/get-users"
-import { AxiosError } from "axios"
+import { Prisioner } from '@/@types'
+import { api } from '@/services/api'
+import { getUser } from '@/utils/get-users'
+import { AxiosError } from 'axios'
 
 const handleRequest = async (
   url: string,
@@ -39,17 +39,12 @@ const handleRequest = async (
 export async function getAllPrisioners() {
   const { token } = await getUser()
 
-  return await handleRequest(
-    "prisoner/",
-    token,
-    'GET PRISIONERS'
-  )
+  return await handleRequest('prisoner/', token, 'GET PRISIONERS')
 }
 
 export async function PUTPrisioner(props: Prisioner) {
-  const { token } =  await getUser()
-  const { id, createdAt, updatedAt, ...payload } = props; 
-
+  const { token } = await getUser()
+  const { id, createdAt, updatedAt, ...payload } = props
 
   try {
     const { data } = await api.put(
@@ -82,7 +77,7 @@ export async function PUTPrisioner(props: Prisioner) {
 export async function POSTPrisioner(props: Prisioner) {
   const { token } = await getUser()
 
-  const { id, createdAt, updatedAt, ...payload } = props; 
+  const { id, createdAt, updatedAt, ...payload } = props
   try {
     const { data } = await api.post(
       'prisoner/',
@@ -97,7 +92,7 @@ export async function POSTPrisioner(props: Prisioner) {
         }
       }
     )
-   
+
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -118,25 +113,21 @@ export async function DELETEPrisioner(id: string) {
   const { token } = await getUser()
   console.log(id)
 
-  
   try {
-    const { data } = await api.delete(
-      `prisoner/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Cache-Control': 'no-cache',
-          'Content-Type': 'application/json'
-        }
+    const { data } = await api.delete(`prisoner/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/json'
       }
-    )
-console.log(data)
+    })
+    console.log(data)
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
         `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${
-          typeof error.response?.data === "object"
+          typeof error.response?.data === 'object'
             ? JSON.stringify(error.response.data)
             : error.response?.data || error.message
         }`
@@ -150,5 +141,3 @@ console.log(data)
     throw new Error('DELETE CADASTRO PRISIONEIRO.')
   }
 }
-
-

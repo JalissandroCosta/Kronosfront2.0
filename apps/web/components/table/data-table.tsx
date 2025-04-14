@@ -65,27 +65,27 @@ export function DataTable<TData, TValue>({
   return (
     <>
       {/* Ações ( adicicionar, excluir, filtro, voltar.....) */}
-     <div className='flex w-full items-center justify-between py-4'>
-     {search && (
-        <div className=" w-full flex items-start py-4">
-          <Input
-            placeholder={placeholderSearch}
-            value={(table.getColumn(search)?.getFilterValue() as string) ?? ''}
-            onChange={(event) =>
-              table.getColumn(search)?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-        </div>
-      )}
-      {button && (
-        button
-      )}
-     </div>
+      <div className="flex w-full items-center justify-between py-4">
+        {search && (
+          <div className="flex w-full items-start py-4">
+            <Input
+              placeholder={placeholderSearch}
+              value={
+                (table.getColumn(search)?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn(search)?.setFilterValue(event.target.value)
+              }
+              className="max-w-sm"
+            />
+          </div>
+        )}
+        {button && button}
+      </div>
 
       {/* Tabela */}
       <div className="w-full rounded-md border">
-        <Table >
+        <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -135,7 +135,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {/* Botões de Paginações */}
-      <div className="w-full flex items-center justify-end space-x-2 py-4">
+      <div className="flex w-full items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
