@@ -10,16 +10,8 @@ import {
 import { Button } from '@workspace/ui/components/button'
 import { BaseDialogProps, Dialog } from '@workspace/ui/components/dialog'
 import { InputField } from '@workspace/ui/components/fields/field'
-import { Label } from '@workspace/ui/components/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@workspace/ui/components/select'
+import { SelectionField } from '@workspace/ui/components/select/field-selection'
 import { useToast } from '@workspace/ui/hooks/use-toast'
-import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 type FormData = Prisioner & {}
@@ -42,30 +34,13 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const methods = useForm<FormData>()
   const { success, warning } = useToast()
 
-  const [prisioner, setPrisioner] = useState<Prisioner>({
-    id: '',
-    nome: '',
-    idade: 0,
-    cpf: '',
-    filiacao: '',
-    estadoCivil: 'Solteiro',
-    foto: '',
-    reincidencia: false,
-    createdAt: '',
-    updatedAt: ''
-  })
-
   async function onSubmit(data: FormData) {
-    console.log(data)
-  }
-
-  const addPrisioner = async () => {
     try {
-      await POSTPrisioner(prisioner)
+      await POSTPrisioner(data)
       props.setOpen?.(false)
       success({
         title: 'Usuário adicionado com sucesso',
-        description: `O prisioneiro ${prisioner?.nome} foi adicionado com sucesso.`
+        description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
       })
     } catch (error) {
       console.log(error)
@@ -74,10 +49,6 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
         description: 'Ocorreu um erro ao adicionar o prisioneiro.'
       })
     }
-  }
-
-  const handleChange = (key: keyof typeof prisioner, value: any) => {
-    setPrisioner((prev) => ({ ...prev, [key]: value }))
   }
 
   return (
@@ -126,27 +97,14 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               name="foto"
               label="URL da Imagem"
               placeholder="Insira a URL da Imagem"
-              className=""
             />
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
-                <Label htmlFor="estadoCivil">Estado Civil</Label>
-                <Select
-                  value={prisioner.estadoCivil}
-                  onValueChange={(value) => handleChange('estadoCivil', value)}
-                >
-                  <SelectTrigger id="estadoCivil">
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Solteiro">Solteiro</SelectItem>
-                    <SelectItem value="Casado">Casado</SelectItem>
-                    <SelectItem value="Divorciado">Divorciado</SelectItem>
-                    <SelectItem value="Viúvo">Viúvo</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="grid grid-cols-2">
+              <SelectionField
+                label="Estado Civil"
+                name="estadoCivil"
+                list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
+              />
               <InputField
                 name="filiacao"
                 label="Filiação"
@@ -156,10 +114,9 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
-              {/* <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Cancelar
-            </Button> */}
-              <Button onClick={() => addPrisioner()}>Salvar</Button>
+              <Button type="submit" className="cursor-pointer">
+                Salvar
+              </Button>
             </div>
           </form>
         </FormProvider>
