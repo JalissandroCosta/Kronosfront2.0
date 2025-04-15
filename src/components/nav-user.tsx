@@ -8,6 +8,7 @@ import {
   IconUserCircle
 } from '@tabler/icons-react'
 
+import { logout } from '@/actions/login'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -94,7 +95,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={ async ()=> await logout()}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
@@ -104,3 +105,4 @@ export function NavUser({
     </SidebarMenu>
   )
 }
+

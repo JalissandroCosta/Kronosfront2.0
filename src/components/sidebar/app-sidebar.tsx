@@ -1,23 +1,18 @@
 'use client'
 
 import {
-  BookOpen,
-  Bot,
   Grid2X2,
   Settings2,
-  SquareTerminal,
-  User,
   User2,
-  User2Icon,
-  UserCheck,
-  UserRound,
   Users2
 } from 'lucide-react'
 import * as React from 'react'
 
+import { NavUser } from '../nav-user'
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarRail
 } from '../ui/sidebar'
@@ -113,6 +108,11 @@ const Menu = [
     icon: Grid2X2
   }
 ]
+const  User = {
+      name: "shadcn",
+      email: "m@example.com",
+      avatar: "/avatars/shadcn.jpg",
+    }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -131,9 +131,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={Menu} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
-      {/* <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter> */}
+      <SidebarFooter>
+        <NavUser user={User} />
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

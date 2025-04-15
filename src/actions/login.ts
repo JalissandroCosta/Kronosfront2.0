@@ -66,5 +66,5 @@ export async function handleLogin(cpf: string, senha: string) {
 export async function logout() {
   const cookieStore = await cookies()
   cookieStore.delete('app-auth-token')
-  redirect('/login')
+  redirect('/')
 }
