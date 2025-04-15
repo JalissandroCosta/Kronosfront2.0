@@ -24,7 +24,6 @@ export const DeletePrisionerDialog = (props: DeletePrisionerProps) => {
         description: `O prisioneiro ${props.data.nome} foi deletado com sucesso.`
       })
     } catch (error) {
-   
       warning({
         title: 'Erro ao deletar prisioneiro',
         description: 'Ocorreu um erro ao deletar o prisioneiro.'

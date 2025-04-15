@@ -1,13 +1,12 @@
-"use client"
-
+'use client'
 
 import { usePrisionerData } from '@/hooks/usePrisionerData'
 import { useState } from 'react'
 import { TableClient } from './_components/table-client'
 
 export default function PagePrisioner() {
-const {data} = usePrisionerData()
-const [open, setOpen] = useState(false)
+  const { data } = usePrisionerData()
+  const [open, setOpen] = useState(false)
 
   // const allPrisioners = await getAllPrisioners()
   return (
@@ -15,7 +14,7 @@ const [open, setOpen] = useState(false)
       <div className="flex w-full">
         <h2 className="text-2xl font-bold uppercase">Lista de Prisioneiros</h2>
       </div>
-      <TableClient  data={data} open={open} setOpen={setOpen}/>
+      <TableClient data={data} open={open} setOpen={setOpen} />
     </section>
   )
 }

@@ -17,7 +17,6 @@ export async function getUser() {
   const cookieStore = await cookies()
   const data = cookieStore.get('app-auth-token')
 
-
   if (!data) {
     return {} as IUser
   }

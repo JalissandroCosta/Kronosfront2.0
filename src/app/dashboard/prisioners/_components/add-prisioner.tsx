@@ -14,13 +14,12 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 type FormData = Prisioner & {}
 
-
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const methods = useForm<FormData>()
   const { success, warning } = useToast()
-  const {mutate, isSuccess } = usePrisionerMutate()
+  const { mutate, isSuccess } = usePrisionerMutate()
 
-   function onSubmit(data: FormData) {
+  function onSubmit(data: FormData) {
     mutate(data)
 
     if (isSuccess) {
@@ -35,15 +34,14 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
       return
     }
 
-    
-   warning({
+    warning({
       title: 'Erro ao adicionar prisioneiro',
       description: 'Ocorreu um erro ao adicionar o prisioneiro.'
     })
     if (props.setOpen) {
       props.setOpen(false)
     }
-    return  
+    return
   }
 
   return (

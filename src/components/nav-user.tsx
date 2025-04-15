@@ -95,7 +95,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={ async ()=> await logout()}>
+            <DropdownMenuItem onClick={async () => await logout()}>
               <IconLogout />
               Log out
             </DropdownMenuItem>
@@ -105,4 +105,3 @@ export function NavUser({
     </SidebarMenu>
   )
 }
-

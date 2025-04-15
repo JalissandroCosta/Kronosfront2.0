@@ -1,6 +1,5 @@
-import { getAllPrisioners } from "@/actions/prisioner";
-import { useQuery } from "@tanstack/react-query";
-
+import { getAllPrisioners } from '@/actions/prisioner'
+import { useQuery } from '@tanstack/react-query'
 
 const fetchPrisionerData = async () => {
   try {
@@ -9,16 +8,14 @@ const fetchPrisionerData = async () => {
   } catch (error) {
     console.log(error)
   }
-
 }
 
 export function usePrisionerData() {
   const query = useQuery({
-    queryKey: ["prisioners"],
+    queryKey: ['prisioners'],
     queryFn: fetchPrisionerData!,
-    refetchInterval: 1000 * 60 * 5, // 5 minutes
-
-  });
+    refetchInterval: 1000 * 60 * 5 // 5 minutes
+  })
 
   return query
 }

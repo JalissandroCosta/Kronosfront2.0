@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  Grid2X2,
-  Settings2,
-  User2,
-  Users2
-} from 'lucide-react'
+import { Grid2X2, Settings2, User2, Users2 } from 'lucide-react'
 import * as React from 'react'
 
 import { NavUser } from '../nav-user'
@@ -108,11 +103,11 @@ const Menu = [
     icon: Grid2X2
   }
 ]
-const  User = {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    }
+const User = {
+  name: 'shadcn',
+  email: 'm@example.com',
+  avatar: '/avatars/shadcn.jpg'
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
