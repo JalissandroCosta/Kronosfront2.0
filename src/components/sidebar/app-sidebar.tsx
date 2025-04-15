@@ -1,6 +1,8 @@
 'use client'
 
+
 import { Grid2X2, Settings2, User2, Users2 } from 'lucide-react'
+
 import * as React from 'react'
 
 import { NavUser } from '../nav-user'
@@ -99,7 +101,7 @@ const Menu = [
   },
   {
     title: 'Celas',
-    url: '#',
+    url: '/dashboard/celas',
     icon: Grid2X2
   }
 ]
