@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Bot, Grid2X2, Settings2, SquareTerminal, User, User2, User2Icon, UserCheck, UserRound, Users2 } from 'lucide-react'
+import { Grid2X2, Settings2, User2,Users2 } from 'lucide-react'
 import * as React from 'react'
 
 import {
@@ -97,7 +97,7 @@ const Menu = [
   },
   {
     title: 'Celas',
-    url: '#',
+    url: '/dashboard/celas',
     icon: Grid2X2
   },
 
