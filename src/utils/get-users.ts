@@ -16,7 +16,7 @@ export type IUser = DataProps
 export async function getUser() {
   const cookieStore = await cookies()
   const data = cookieStore.get('app-auth-token')
-  // console.log('DATA', data)
+
 
   if (!data) {
     return {} as IUser

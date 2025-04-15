@@ -1,7 +1,6 @@
 'use client'
 
 import { Prisioner } from '@/@types'
-import { POSTPrisioner } from '@/actions/prisioner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
@@ -9,45 +8,42 @@ import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
 import { InputField } from '@/components/ui/fields/field'
 import { SelectionField } from '@/components/ui/select/field-selection'
 import { useToast } from '@/hooks/use-toast'
+import { usePrisionerMutate } from '@/hooks/usePrisionerMutate'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
 type FormData = Prisioner & {}
-// type EditPrisionerProps = BaseDialogProps & {
-//  data : {
-//   id: string
-//   nome: string
-//   idade: number
-//   cpf: string
-//   filiacao: string
-//   estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado' | 'Viúvo' | string
-//   foto: string
-//   reincidencia: boolean
-//   createdAt: string // ou Date, se você for converter depois
-//   updatedAt: string // idem
-//  }
-// }
+
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const methods = useForm<FormData>()
   const { success, warning } = useToast()
+  const {mutate, isSuccess } = usePrisionerMutate()
 
-  async function onSubmit(data: FormData) {
-    console.log(data)
-    try {
-      await POSTPrisioner(data)
-      props.setOpen?.(false)
+   function onSubmit(data: FormData) {
+    mutate(data)
+
+    if (isSuccess) {
       success({
-        title: 'Usuário adicionado com sucesso',
-        description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+        title: 'Prisioneiro adicionado com sucesso',
+        description: 'O prisioneiro foi adicionado com sucesso.'
       })
-    } catch (error) {
-      console.log(error)
-      warning({
-        title: 'Erro ao adicionar prisioneiro',
-        description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-      })
+
+      if (props.setOpen) {
+        props.setOpen(false)
+      }
+      return
     }
+
+    
+   warning({
+      title: 'Erro ao adicionar prisioneiro',
+      description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+    })
+    if (props.setOpen) {
+      props.setOpen(false)
+    }
+    return  
   }
 
   return (
