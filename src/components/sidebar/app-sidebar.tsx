@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
+import { BookOpen, Bot, Grid2X2, Settings2, SquareTerminal, User, User2, User2Icon, UserCheck, UserRound, Users2 } from 'lucide-react'
 import * as React from 'react'
 
 import {
@@ -80,26 +80,27 @@ import { NavMain } from './nav-main'
 
 const Menu = [
   {
-    title: 'Prisioners',
+    title: 'Painel',
+    url: '/dashboard',
+    icon: Settings2
+  },
+  {
+    title: 'Prisioneiros',
     url: '/dashboard/prisioners',
-    icon: SquareTerminal,
+    icon: Users2,
     isActive: true
   },
   {
     title: 'Usuários',
     url: '#',
-    icon: Bot
+    icon: User2
   },
   {
     title: 'Celas',
     url: '#',
-    icon: BookOpen
+    icon: Grid2X2
   },
-  {
-    title: 'Settings',
-    url: '#',
-    icon: Settings2
-  }
+
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -109,13 +110,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <TeamSwitcher teams={data.teams} /> */}
         <div className="bg-muted/50 relative aspect-video overflow-hidden rounded-xl">
           <img
-            src="/logo.webp"
+            src="/web-app-manifest-192x192.png"
             alt="Descrição da imagem"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <h3 className="absolute bottom-0 left-4 text-2xl font-bold text-black">
-            Kronos
-          </h3>
+          
         </div>
       </SidebarHeader>
       <SidebarContent>
