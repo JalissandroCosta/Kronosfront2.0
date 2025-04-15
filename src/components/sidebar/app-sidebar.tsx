@@ -1,6 +1,18 @@
 'use client'
 
-import { BookOpen, Bot, Grid2X2, Settings2, SquareTerminal, User, User2, User2Icon, UserCheck, UserRound, Users2 } from 'lucide-react'
+import {
+  BookOpen,
+  Bot,
+  Grid2X2,
+  Settings2,
+  SquareTerminal,
+  User,
+  User2,
+  User2Icon,
+  UserCheck,
+  UserRound,
+  Users2
+} from 'lucide-react'
 import * as React from 'react'
 
 import {
@@ -99,8 +111,7 @@ const Menu = [
     title: 'Celas',
     url: '#',
     icon: Grid2X2
-  },
-
+  }
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -114,7 +125,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             alt="Descrição da imagem"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          
         </div>
       </SidebarHeader>
       <SidebarContent>
