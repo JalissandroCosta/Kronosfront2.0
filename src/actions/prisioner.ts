@@ -36,7 +36,7 @@ const handleRequest = async (
 }
 
 // GET DE TODOS OS ALUNOS DO RESPONSÁVEL
-export async function getAllPrisioners() {
+export async function getAllPrisioners(): Promise<Prisioner[]> {
   const { token } = await getUser()
 
   return await handleRequest('prisoner/', token, 'GET PRISIONERS')
@@ -60,7 +60,7 @@ export async function PUTPrisioner(props: Prisioner) {
         }
       }
     )
-    console.log(data)
+
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -96,7 +96,6 @@ export async function POSTPrisioner(props: Prisioner) {
         }
       }
     )
-    console.log (data)
 
     return data
   } catch (error: unknown) {
@@ -116,7 +115,6 @@ export async function POSTPrisioner(props: Prisioner) {
 
 export async function DELETEPrisioner(id: string) {
   const { token } = await getUser()
-  console.log(id)
 
   try {
     const { data } = await api.delete(`prisoner/${id}`, {
@@ -126,7 +124,7 @@ export async function DELETEPrisioner(id: string) {
         'Content-Type': 'application/json'
       }
     })
-    console.log(data)
+
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

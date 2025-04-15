@@ -78,8 +78,6 @@ export const columns: ColumnDef<Prisioner>[] = [
   }
 ]
 
-
-
 // Novo componente extraído
 function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
