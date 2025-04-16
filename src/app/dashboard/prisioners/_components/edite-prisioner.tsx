@@ -1,6 +1,5 @@
 'use client'
 
-import { Prisioner } from '@/@types'
 import { PUTPrisioner } from '@/actions/prisioner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -11,7 +10,30 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
-type FormData = Prisioner & {}
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+const formDataSchema = z.object({
+  id: z.string(),
+  nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
+  idade: z
+      .number()
+      .min(1, { message: 'Idade deve ser maior que 0' })
+      .max(120, { message: 'Idade deve ser menor que 120' }),
+  cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
+  filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
+  estadoCivil: z.union([
+    z.literal("Solteiro"),
+    z.literal("Casado"),
+    z.literal("Divorciado"),
+    z.literal("Viúvo"),
+    z.string(), // permite outros valores que não estão explicitamente listados
+  ]),
+  foto: z.string().url().min(3, { message: 'Adicione uma URL de foto valida' }), // assume que é uma URL
+  reincidencia: z.boolean(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+})
 
 type EditPrisionerProps = BaseDialogProps & {
   data: {
@@ -30,9 +52,21 @@ type EditPrisionerProps = BaseDialogProps & {
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
-  const methods = useForm<FormData>({
-    defaultValues: props.data
-  })
+  const methods = useForm<z.infer<typeof formDataSchema>>({
+      resolver: zodResolver(formDataSchema),
+      defaultValues: {
+        id: props.data.id || '',
+        nome: props.data.nome || '',
+        idade: Number(props.data.idade) || 0,
+        cpf: props.data.cpf || '',
+        filiacao:   props.data.filiacao || '',
+        estadoCivil: props.data.estadoCivil || 'Solteiro',
+        foto: props.data.foto || '',
+        reincidencia: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+    })
 
   methods.setValue('nome', props.data.nome || '')
   methods.setValue('id', props.data.id || '')
@@ -42,7 +76,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   methods.setValue('estadoCivil', props.data.estadoCivil || '')
   methods.setValue('filiacao', props.data.filiacao || '')
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
     try {
       await PUTPrisioner(data)
       props.setOpen?.(false)
