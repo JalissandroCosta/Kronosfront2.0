@@ -1,6 +1,5 @@
 'use client'
 
-import { POSTPrisioner } from '@/actions/prisioner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
@@ -11,6 +10,9 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
+
+
+import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -20,9 +22,9 @@ const formDataSchema = z.object({
   id: z.string(),
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   idade: z
-      .number()
-      .min(1, { message: 'Idade deve ser maior que 0' })
-      .max(120, { message: 'Idade deve ser menor que 120' }),
+  .string()
+  .min(1, { message: 'Idade deve ser maior que 0' })
+  .max(2, { message: 'Idade deve ser menor que 100' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
   filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
   estadoCivil: z.union([
@@ -41,14 +43,16 @@ const formDataSchema = z.object({
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const { success, warning } = useToast()
+  const { AddPrisionerMutate } = usePrisionerMutate()
 
+  
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       id: '',
       nome: '',
-      idade: 0,
+      idade: '0',
       cpf: '',
       filiacao: '',
       estadoCivil: 'Solteiro',
@@ -61,22 +65,23 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
 
  
 
-  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+ function onSubmit(data: z.infer<typeof formDataSchema>) {
    
-    try {
-      await POSTPrisioner(data)
-      props.setOpen?.(false)
-      success({
-        title: 'Usuário adicionado com sucesso',
-        description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
-      })
-    } catch (error) {
-      console.log(error)
-      warning({
-        title: 'Erro ao adicionar prisioneiro',
-        description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-      })
-    }
+    AddPrisionerMutate.mutate({ ...data, idade: Number(data.idade) }, {
+      onSuccess: () => {
+        props.setOpen?.(false)
+        success({
+          title: 'Usuário adicionado com sucesso',
+          description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+        })
+      },
+      onError: () => {
+        warning({
+          title: 'Erro ao adicionar prisioneiro',
+          description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+        })
+      }
+    })
   }
 
   return (
@@ -87,7 +92,6 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
       content={
         <FormProvider {...methods}>
           <form
-        
             onSubmit={methods.handleSubmit(onSubmit)}
             className="grid gap-6"
           >

@@ -1,6 +1,7 @@
 'use client'
 
-import { usePrisionerData } from '@/hooks/usePrisionerData'
+
+import { usePrisionerData } from '@/hooks/prisioner/usePrisionerData'
 import { useState } from 'react'
 import { TableClient } from './_components/table-client'
 

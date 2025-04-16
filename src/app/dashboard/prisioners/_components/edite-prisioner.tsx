@@ -1,6 +1,5 @@
 'use client'
 
-import { PUTPrisioner } from '@/actions/prisioner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
@@ -10,6 +9,7 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -52,6 +52,7 @@ type EditPrisionerProps = BaseDialogProps & {
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
+  const {PutPrisionerMutate}=usePrisionerMutate()
   const methods = useForm<z.infer<typeof formDataSchema>>({
       resolver: zodResolver(formDataSchema),
       defaultValues: {
@@ -76,21 +77,24 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   methods.setValue('estadoCivil', props.data.estadoCivil || '')
   methods.setValue('filiacao', props.data.filiacao || '')
 
-  async function onSubmit(data: z.infer<typeof formDataSchema>) {
-    try {
-      await PUTPrisioner(data)
-      props.setOpen?.(false)
-      success({
-        title: 'Usuário editado com sucesso',
-        description: `O prisioneiro ${data?.nome} foi editado com sucesso.`
-      })
-    } catch (error) {
-      console.log(error)
-      warning({
-        title: 'Erro ao editar prisioneiro',
-        description: 'Ocorreu um erro ao editar o prisioneiro.'
-      })
-    }
+  function onSubmit(data: z.infer<typeof formDataSchema>) {
+
+    
+    PutPrisionerMutate.mutate({ ...data, idade: Number(data.idade) }, {
+      onSuccess: () => {
+        props.setOpen?.(false)
+        success({
+          title: 'Usuário adicionado com sucesso',
+          description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+        })
+      },
+      onError: () => {
+        warning({
+          title: 'Erro ao adicionar prisioneiro',
+          description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+        })
+      }
+    })
   }
 
   return (
