@@ -84,14 +84,14 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
       onSuccess: () => {
         props.setOpen?.(false)
         success({
-          title: 'Usuário adicionado com sucesso',
-          description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+          title: 'Usuário Editado com sucesso',
+          description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
         })
       },
       onError: () => {
         warning({
-          title: 'Erro ao adicionar prisioneiro',
-          description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+          title: 'Erro ao editar prisioneiro',
+          description: 'Ocorreu um erro ao aditar o prisioneiro.'
         })
       }
     })
