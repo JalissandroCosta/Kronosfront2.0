@@ -1,5 +1,5 @@
 import { Prisioner } from '@/@types'
-import { POSTPrisioner, PUTPrisioner } from '@/actions/prisioner'
+import { DELETEPrisioner, POSTPrisioner, PUTPrisioner } from '@/actions/prisioner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const addPrisioner = async (data: Prisioner) => {
@@ -9,6 +9,11 @@ const addPrisioner = async (data: Prisioner) => {
 
 const putPrisioner = async (data: Prisioner) => {
   const prisioners = await PUTPrisioner(data)
+  return prisioners
+}
+
+const delPrisioner = async (id: string) => {
+  const prisioners = await DELETEPrisioner(id)
   return prisioners
 }
 
@@ -26,5 +31,11 @@ export function usePrisionerMutate() {
       queryClient.invalidateQueries({ queryKey: ['prisioners'] })
     }
   })
-  return { AddPrisionerMutate, PutPrisionerMutate }
+  const DelPrisionerMutate = useMutation({
+    mutationFn: delPrisioner,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['prisioners'] })
+    }
+  })
+  return { AddPrisionerMutate, PutPrisionerMutate, DelPrisionerMutate }
 }

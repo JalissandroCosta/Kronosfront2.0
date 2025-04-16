@@ -1,8 +1,8 @@
 'use client'
 
-import { DELETEPrisioner } from '@/actions/prisioner'
 import { Button } from '@/components/ui/button'
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
+import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { useToast } from '@/hooks/use-toast'
 
 type DeletePrisionerProps = BaseDialogProps & {
@@ -14,21 +14,24 @@ type DeletePrisionerProps = BaseDialogProps & {
 
 export const DeletePrisionerDialog = (props: DeletePrisionerProps) => {
   const { success, warning } = useToast()
+  const {DelPrisionerMutate}=usePrisionerMutate()
 
   const DeletePrisioner = async () => {
-    try {
-      await DELETEPrisioner(props.data.id)
-      props.setOpen?.(false)
-      success({
-        title: 'Usuário deletado com sucesso',
-        description: `O prisioneiro ${props.data.nome} foi deletado com sucesso.`
-      })
-    } catch (error) {
-      warning({
-        title: 'Erro ao deletar prisioneiro',
-        description: 'Ocorreu um erro ao deletar o prisioneiro.'
-      })
-    }
+    DelPrisionerMutate.mutate(props.data?.id, {
+      onSuccess: () => {
+        props.setOpen?.(false)
+        success({
+          title: 'Usuário deletar com sucesso',
+          description: `O prisioneiro ${props.data?.nome} foi deletar com sucesso.`
+        })
+      },
+      onError: () => {
+        warning({
+          title: 'Erro ao deletar prisioneiro',
+          description: 'Ocorreu um erro ao deletar o prisioneiro.'
+        })
+      }
+    })
   }
 
   return (
