@@ -1,6 +1,6 @@
 'use client'
 
-import { Prisioner } from '@/@types'
+import { POSTPrisioner } from '@/actions/prisioner'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
@@ -8,40 +8,75 @@ import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
 import { InputField } from '@/components/ui/fields/field'
 import { SelectionField } from '@/components/ui/select/field-selection'
 import { useToast } from '@/hooks/use-toast'
-import { usePrisionerMutate } from '@/hooks/usePrisionerMutate'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
-type FormData = Prisioner & {}
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
+
+// type FormData = Prisioner & {}
+
+const formDataSchema = z.object({
+  id: z.string(),
+  nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
+  idade: z
+      .number()
+      .min(1, { message: 'Idade deve ser maior que 0' })
+      .max(120, { message: 'Idade deve ser menor que 120' }),
+  cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
+  filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
+  estadoCivil: z.union([
+    z.literal("Solteiro"),
+    z.literal("Casado"),
+    z.literal("Divorciado"),
+    z.literal("Viúvo"),
+    z.string(), // permite outros valores que não estão explicitamente listados
+  ]),
+  foto: z.string().url().min(3, { message: 'Adicione uma URL de foto valida' }), // assume que é uma URL
+  reincidencia: z.boolean(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
-  const methods = useForm<FormData>()
   const { success, warning } = useToast()
-  const { mutate, isSuccess } = usePrisionerMutate()
 
-  function onSubmit(data: FormData) {
-    mutate(data)
 
-    if (isSuccess) {
+  const methods = useForm<z.infer<typeof formDataSchema>>({
+    resolver: zodResolver(formDataSchema),
+    defaultValues: {
+      id: '',
+      nome: '',
+      idade: 0,
+      cpf: '',
+      filiacao: '',
+      estadoCivil: 'Solteiro',
+      foto: '',
+      reincidencia: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  })
+
+ 
+
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+   
+    try {
+      await POSTPrisioner(data)
+      props.setOpen?.(false)
       success({
-        title: 'Prisioneiro adicionado com sucesso',
-        description: 'O prisioneiro foi adicionado com sucesso.'
+        title: 'Usuário adicionado com sucesso',
+        description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
       })
-
-      if (props.setOpen) {
-        props.setOpen(false)
-      }
-      return
+    } catch (error) {
+      console.log(error)
+      warning({
+        title: 'Erro ao adicionar prisioneiro',
+        description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+      })
     }
-
-    warning({
-      title: 'Erro ao adicionar prisioneiro',
-      description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-    })
-    if (props.setOpen) {
-      props.setOpen(false)
-    }
-    return
   }
 
   return (
@@ -52,6 +87,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
       content={
         <FormProvider {...methods}>
           <form
+        
             onSubmit={methods.handleSubmit(onSubmit)}
             className="grid gap-6"
           >
