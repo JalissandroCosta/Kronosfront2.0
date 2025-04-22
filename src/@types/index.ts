@@ -10,3 +10,12 @@ export type Prisioner = {
   createdAt: string // ou Date, se for convertido
   updatedAt: string // ou Date
 }
+
+
+export type User = {
+  id: string,
+  nome: string,
+  cpf: string,
+  cargo: "ADM" | "INSP",
+  nivelPermissao: number
+}

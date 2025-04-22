@@ -96,7 +96,7 @@ const Menu = [
   },
   {
     title: 'Usuários',
-    url: '#',
+    url: '/dashboard/users',
     icon: User2
   },
   {
