@@ -2,14 +2,24 @@ import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 
 type DataProps = {
-  codigo: number
-  tipo: 'P' | 'R'
+  id: string
+  cargo: string
   nome: string
   hash: string
   email: string
   msg: string
   token: string
 }
+
+// export type IUser = {
+//   id: string
+//   cargo: string
+//   nome: string
+//   email: string
+//   iat: number // emitido em (issued at)
+//   exp: number // expiração (expiration time)
+// }
+
 
 export type IUser = DataProps
 
@@ -22,6 +32,7 @@ export async function getUser() {
   }
 
   const decode = jwt.decode(data.value) as IUser
+  // console.log("TOKEN DECODE = ", decode)
 
   return {
     ...decode,
