@@ -37,6 +37,11 @@ const Menu = [
     title: 'Celas',
     url: '/dashboard/celas',
     icon: Grid2X2
+  },
+  {
+    title: 'visitantes',
+    url: '/dashboard/visitantes',
+    icon: Users2
   }
 ]
 const User = {
