@@ -11,11 +11,33 @@ export type Prisioner = {
   updatedAt: string // ou Date
 }
 
-
 export type User = {
-  id: string,
-  nome: string,
-  cpf: string,
-  cargo: "ADM" | "INSP",
+  id: string
+  nome: string
+  cpf: string
+  cargo: 'ADM' | 'INSP'
   nivelPermissao: number
+}
+
+export type Alocacao = {
+  id: string
+  detentoId: string
+  celaId: string
+  dataAlocacao: string
+}
+
+export type Cela = {
+  id: string
+  numero: number
+  capacidade: number
+  pavilhao: string
+  alocacoes: Alocacao[]
+}
+
+
+export type PrisionerCela = Prisioner & {
+alocacoes: Alocacao[]
+infracoes: any[];
+transferencias: any[];
+visitas: any[];
 }

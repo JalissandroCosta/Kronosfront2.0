@@ -3,8 +3,6 @@
 import { User } from '@/@types'
 import { ColumnDef } from '@tanstack/react-table'
 
-
-
 // export type Prisioner = {
 //   id: string
 //   nome: string
@@ -19,7 +17,6 @@ import { ColumnDef } from '@tanstack/react-table'
 // }
 
 export const columns: ColumnDef<User>[] = [
- 
   {
     accessorKey: 'nome',
     header: 'Nome'
@@ -31,8 +28,8 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'cargo',
     header: 'CARGO'
-  },
- 
+  }
+
   // {
   //   accessorKey: 'Ações',
   //   cell: ({ row }) => <ActionCell row={row} />

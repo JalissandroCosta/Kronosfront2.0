@@ -1,6 +1,5 @@
 'use client'
 
-
 import { Grid2X2, Settings2, User2, Users2 } from 'lucide-react'
 
 import * as React from 'react'
@@ -14,7 +13,6 @@ import {
   SidebarRail
 } from '../ui/sidebar'
 import { NavMain } from './nav-main'
-
 
 const Menu = [
   {
@@ -58,7 +56,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   }
 }
 
-export function AppSidebar({user, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

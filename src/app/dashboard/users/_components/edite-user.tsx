@@ -17,22 +17,22 @@ const formDataSchema = z.object({
   id: z.string(),
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   idade: z
-      .number()
-      .min(1, { message: 'Idade deve ser maior que 0' })
-      .max(120, { message: 'Idade deve ser menor que 120' }),
+    .number()
+    .min(1, { message: 'Idade deve ser maior que 0' })
+    .max(120, { message: 'Idade deve ser menor que 120' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
   filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
   estadoCivil: z.union([
-    z.literal("Solteiro"),
-    z.literal("Casado"),
-    z.literal("Divorciado"),
-    z.literal("Viúvo"),
-    z.string(), // permite outros valores que não estão explicitamente listados
+    z.literal('Solteiro'),
+    z.literal('Casado'),
+    z.literal('Divorciado'),
+    z.literal('Viúvo'),
+    z.string() // permite outros valores que não estão explicitamente listados
   ]),
   foto: z.string().url().min(3, { message: 'Adicione uma URL de foto valida' }), // assume que é uma URL
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  updatedAt: z.string().datetime()
 })
 
 type EditPrisionerProps = BaseDialogProps & {
@@ -52,22 +52,22 @@ type EditPrisionerProps = BaseDialogProps & {
 
 export const EditUserDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
-  const {PutPrisionerMutate}=usePrisionerMutate()
+  const { PutPrisionerMutate } = usePrisionerMutate()
   const methods = useForm<z.infer<typeof formDataSchema>>({
-      resolver: zodResolver(formDataSchema),
-      defaultValues: {
-        id: props.data.id || '',
-        nome: props.data.nome || '',
-        idade: Number(props.data.idade) || 0,
-        cpf: props.data.cpf || '',
-        filiacao:   props.data.filiacao || '',
-        estadoCivil: props.data.estadoCivil || 'Solteiro',
-        foto: props.data.foto || '',
-        reincidencia: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    })
+    resolver: zodResolver(formDataSchema),
+    defaultValues: {
+      id: props.data.id || '',
+      nome: props.data.nome || '',
+      idade: Number(props.data.idade) || 0,
+      cpf: props.data.cpf || '',
+      filiacao: props.data.filiacao || '',
+      estadoCivil: props.data.estadoCivil || 'Solteiro',
+      foto: props.data.foto || '',
+      reincidencia: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+  })
 
   methods.setValue('nome', props.data.nome || '')
   methods.setValue('id', props.data.id || '')
@@ -78,23 +78,24 @@ export const EditUserDialog = (props: EditPrisionerProps) => {
   methods.setValue('filiacao', props.data.filiacao || '')
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-
-    
-    PutPrisionerMutate.mutate({ ...data, idade: Number(data.idade) }, {
-      onSuccess: () => {
-        props.setOpen?.(false)
-        success({
-          title: 'Usuário Editado com sucesso',
-          description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
-        })
-      },
-      onError: () => {
-        warning({
-          title: 'Erro ao editar prisioneiro',
-          description: 'Ocorreu um erro ao aditar o prisioneiro.'
-        })
+    PutPrisionerMutate.mutate(
+      { ...data, idade: Number(data.idade) },
+      {
+        onSuccess: () => {
+          props.setOpen?.(false)
+          success({
+            title: 'Usuário Editado com sucesso',
+            description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
+          })
+        },
+        onError: () => {
+          warning({
+            title: 'Erro ao editar prisioneiro',
+            description: 'Ocorreu um erro ao aditar o prisioneiro.'
+          })
+        }
       }
-    })
+    )
   }
 
   return (

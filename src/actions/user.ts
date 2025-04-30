@@ -35,7 +35,7 @@ const handleRequest = async (
   }
 }
 
-// GET DE TODOS OS USUSARIOS 
+// GET DE TODOS OS USUSARIOS
 export async function getAllUser(): Promise<User[]> {
   const { token } = await getUser()
 

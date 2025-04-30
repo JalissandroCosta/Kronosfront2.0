@@ -14,7 +14,7 @@ type DeletePrisionerProps = BaseDialogProps & {
 
 export const DeletePrisionerDialog = (props: DeletePrisionerProps) => {
   const { success, warning } = useToast()
-  const {DelPrisionerMutate}=usePrisionerMutate()
+  const { DelPrisionerMutate } = usePrisionerMutate()
 
   const DeletePrisioner = async () => {
     DelPrisionerMutate.mutate(props.data?.id, {

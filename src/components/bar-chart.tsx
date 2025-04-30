@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import { TrendingUp } from 'lucide-react'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
   Card,
@@ -9,32 +9,32 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+  CardTitle
+} from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
+  ChartTooltipContent
+} from '@/components/ui/chart'
 const chartData = [
-  { Mes: "Janeiro", Visitante: 186, Detentos: 80 },
-  { Mes: "Fevereiro", Visitante: 305, Detentos: 200 },
-  { Mes: "Março", Visitante: 237, Detentos: 120 },
-  { Mes: "Abril", Visitante: 73, Detentos: 190 },
-  { Mes: "Maio", Visitante: 209, Detentos: 130 },
-  { Mes: "Junho", Visitante: 214, Detentos: 140 },
+  { Mes: 'Janeiro', Visitante: 186, Detentos: 80 },
+  { Mes: 'Fevereiro', Visitante: 305, Detentos: 200 },
+  { Mes: 'Março', Visitante: 237, Detentos: 120 },
+  { Mes: 'Abril', Visitante: 73, Detentos: 190 },
+  { Mes: 'Maio', Visitante: 209, Detentos: 130 },
+  { Mes: 'Junho', Visitante: 214, Detentos: 140 }
 ]
 
 const chartConfig = {
   visitante: {
-    label: "visitante",
-    color: "hsl(var(--chart-1))",
+    label: 'visitante',
+    color: 'hsl(var(--chart-1))'
   },
   detentos: {
-    label: "detentos",
-    color: "hsl(var(--chart-2))",
-  },
+    label: 'detentos',
+    color: 'hsl(var(--chart-2))'
+  }
 } satisfies ChartConfig
 
 export function BarChartComponet() {
@@ -65,10 +65,10 @@ export function BarChartComponet() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 leading-none font-medium">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

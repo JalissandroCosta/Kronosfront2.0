@@ -35,7 +35,6 @@ const handleRequest = async (
   }
 }
 
-// GET DE TODOS OS ALUNOS DO RESPONSÁVEL
 export async function getAllPrisioners(): Promise<Prisioner[]> {
   const { token } = await getUser()
 
@@ -120,7 +119,7 @@ export async function DELETEPrisioner(id: string) {
   try {
     const { data } = await api.delete(`prisoner/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       }
     })
     console.log('data', data)
@@ -128,9 +127,10 @@ export async function DELETEPrisioner(id: string) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${typeof error.response?.data === 'object'
-          ? JSON.stringify(error.response.data)
-          : error.response?.data || error.message
+        `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
         }`
       )
     }

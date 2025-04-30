@@ -1,5 +1,9 @@
 import { Prisioner } from '@/@types'
-import { DELETEPrisioner, POSTPrisioner, PUTPrisioner } from '@/actions/prisioner'
+import {
+  DELETEPrisioner,
+  POSTPrisioner,
+  PUTPrisioner
+} from '@/actions/prisioner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const addPrisioner = async (data: Prisioner) => {

@@ -20,7 +20,6 @@ type DataProps = {
 //   exp: number // expiração (expiration time)
 // }
 
-
 export type IUser = DataProps
 
 export async function getUser() {
