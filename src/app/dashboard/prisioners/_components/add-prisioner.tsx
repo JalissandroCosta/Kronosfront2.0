@@ -148,130 +148,36 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               />
             </div>
 
-  <div className="space-y-6">
-  {/* Crimes contra a Pessoa */}
-  <div>
-    <label className="font-semibold">Crimes contra a Pessoa</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Homicídio" /> Homicídio</label><br />
-      <label><input type="checkbox" name="crimes" value="Feminicídio" /> Feminicídio</label><br />
-      <label><input type="checkbox" name="crimes" value="Infanticídio" /> Infanticídio</label><br />
-      <label><input type="checkbox" name="crimes" value="Aborto" /> Aborto</label><br />
-      <label><input type="checkbox" name="crimes" value="Lesão corporal" /> Lesão corporal</label><br />
-      <label><input type="checkbox" name="crimes" value="Ameaça" /> Ameaça</label><br />
-      <label><input type="checkbox" name="crimes" value="Calúnia" /> Calúnia</label><br />
-      <label><input type="checkbox" name="crimes" value="Sequestro e cárcere privado" /> Sequestro e cárcere privado</label><br />
-      <label><input type="checkbox" name="crimes" value="Maus-tratos" /> Maus-tratos</label><br />
-      <label><input type="checkbox" name="crimes" value="Violência doméstica" /> Violência doméstica</label>
-    </div>
-  </div>
-
-  {/* Crimes contra o Patrimônio */}
-  <div>
-    <label className="font-semibold">Crimes contra o Patrimônio</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Furto" /> Furto</label><br />
-      <label><input type="checkbox" name="crimes" value="Roubo" /> Roubo</label><br />
-      <label><input type="checkbox" name="crimes" value="Extorsão" /> Extorsão</label><br />
-      <label><input type="checkbox" name="crimes" value="Estelionato" /> Estelionato</label><br />
-      <label><input type="checkbox" name="crimes" value="Apropriação indébita" /> Apropriação indébita</label><br />
-      <label><input type="checkbox" name="crimes" value="Dano" /> Dano</label><br />
-      <label><input type="checkbox" name="crimes" value="Receptação" /> Receptação</label><br />
-      <label><input type="checkbox" name="crimes" value="Latrocínio" /> Latrocínio</label>
-    </div>
-  </div>
-
-  {/* Crimes contra a Administração Pública */}
-  <div>
-    <label className="font-semibold">Crimes contra a Administração Pública</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Corrupção" /> Corrupção</label><br />
-      <label><input type="checkbox" name="crimes" value="Peculato" /> Peculato</label><br />
-      <label><input type="checkbox" name="crimes" value="Concussão" /> Concussão</label><br />
-      <label><input type="checkbox" name="crimes" value="Prevaricação" /> Prevaricação</label><br />
-      <label><input type="checkbox" name="crimes" value="Desobediência" /> Desobediência</label><br />
-      <label><input type="checkbox" name="crimes" value="Resistência à prisão" /> Resistência à prisão</label><br />
-      <label><input type="checkbox" name="crimes" value="Falsidade ideológica" /> Falsidade ideológica</label>
-    </div>
-  </div>
-
-  {/* Crimes de Trânsito */}
-  <div>
-    <label className="font-semibold">Crimes de Trânsito</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Dirigir alcoolizado" /> Dirigir alcoolizado</label><br />
-      <label><input type="checkbox" name="crimes" value="Racha" /> Racha</label><br />
-      <label><input type="checkbox" name="crimes" value="Homicídio culposo no trânsito" /> Homicídio culposo no trânsito</label><br />
-      <label><input type="checkbox" name="crimes" value="Omissão de socorro" /> Omissão de socorro</label>
-    </div>
-  </div>
-
-  {/* Lei de Drogas */}
-  <div>
-    <label className="font-semibold">Crimes da Lei de Drogas</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Tráfico de drogas" /> Tráfico de drogas</label><br />
-      <label><input type="checkbox" name="crimes" value="Associação para o tráfico" /> Associação para o tráfico</label><br />
-      <label><input type="checkbox" name="crimes" value="Posse de droga para uso pessoal" /> Posse de droga para uso pessoal</label><br />
-      <label><input type="checkbox" name="crimes" value="Financiamento ao tráfico" /> Financiamento ao tráfico</label>
-    </div>
-  </div>
-
-  {/* Crimes da Lei de Armas */}
-  <div>
-    <label className="font-semibold">Crimes da Lei de Armas</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Porte ilegal de arma de fogo" /> Porte ilegal de arma de fogo</label><br />
-      <label><input type="checkbox" name="crimes" value="Posse irregular" /> Posse irregular</label><br />
-      <label><input type="checkbox" name="crimes" value="Tráfico internacional de armas" /> Tráfico internacional de armas</label>
-    </div>
-  </div>
-
-  {/* Crimes contra a Dignidade Sexual */}
-  <div>
-    <label className="font-semibold">Crimes contra a Dignidade Sexual</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Estupro" /> Estupro</label><br />
-      <label><input type="checkbox" name="crimes" value="Assédio sexual" /> Assédio sexual</label><br />
-      <label><input type="checkbox" name="crimes" value="Importunação sexual" /> Importunação sexual</label><br />
-      <label><input type="checkbox" name="crimes" value="Exploração sexual de menores" /> Exploração sexual de menores</label><br />
-      <label><input type="checkbox" name="crimes" value="Pornografia infantil" /> Pornografia infantil</label>
-    </div>
-  </div>
-
-  {/* Crimes contra a Fé Pública */}
-  <div>
-    <label className="font-semibold">Crimes contra a Fé Pública</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Falsificação de documentos" /> Falsificação de documentos</label><br />
-      <label><input type="checkbox" name="crimes" value="Moeda falsa" /> Moeda falsa</label><br />
-      <label><input type="checkbox" name="crimes" value="Uso de documento falso" /> Uso de documento falso</label>
-    </div>
-  </div>
-
-  {/* Crimes Ambientais */}
-  <div>
-    <label className="font-semibold">Crimes Ambientais</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Desmatamento ilegal" /> Desmatamento ilegal</label><br />
-      <label><input type="checkbox" name="crimes" value="Poluição" /> Poluição</label><br />
-      <label><input type="checkbox" name="crimes" value="Maus-tratos a animais" /> Maus-tratos a animais</label><br />
-      <label><input type="checkbox" name="crimes" value="Pesca ilegal" /> Pesca ilegal</label>
-    </div>
-  </div>
-
-  {/* Crimes Cibernéticos */}
-  <div>
-    <label className="font-semibold">Crimes Cibernéticos</label>
-    <div className="space-y-1 pl-4">
-      <label><input type="checkbox" name="crimes" value="Invasão de dispositivo informático" /> Invasão de dispositivo informático</label><br />
-      <label><input type="checkbox" name="crimes" value="Estelionato eletrônico" /> Estelionato eletrônico</label><br />
-      <label><input type="checkbox" name="crimes" value="Divulgação de imagens íntimas" /> Divulgação de imagens íntimas</label><br />
-      <label><input type="checkbox" name="crimes" value="Crimes de ódio e fake news" /> Crimes de ódio e fake news</label>
-    </div>
-  </div>
-</div>
-
+                  <div>
+                    <label className="block text-sm font-medium">Infrações Cometidas</label>
+                    <p className="text-sm text-gray-500 mb-2">Selecione as infrações cometidas pelo prisioneiro:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Furto', 'Roubo', 'Homicídio', 'Tráfico de Drogas'].map((infraction) => (
+                        <div key={infraction} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id={infraction}
+                            value={infraction}
+                            onChange={(e) => {
+                              const selectedInfractions = methods.getValues('infractions') || [];
+                              if (e.target.checked) {
+                                methods.setValue('infractions', [...selectedInfractions, infraction]);
+                              } else {
+                                methods.setValue(
+                                  'infractions',
+                                  selectedInfractions.filter((item) => item !== infraction)
+                                );
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <label htmlFor={infraction} className="text-sm">
+                            {infraction}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
             <div>
               <label className="block text-sm font-medium">
