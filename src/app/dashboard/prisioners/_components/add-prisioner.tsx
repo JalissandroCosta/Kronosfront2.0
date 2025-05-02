@@ -21,7 +21,7 @@ const formDataSchema = z.object({
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   idade: z
     .string()
-    .min(1, { message: 'Idade deve ser maior que 0' })
+    .min(1, { message: 'Idade deve ser maior que 18' })
     .max(2, { message: 'Idade deve ser menor que 100' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
   filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
@@ -47,7 +47,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
     defaultValues: {
       id: '',
       nome: '',
-      idade: '0',
+      idade: '18',
       cpf: '',
       filiacao: '',
       estadoCivil: 'Solteiro',
@@ -81,7 +81,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
 
   return (
     <Dialog
-      title="Adicionar Prisioneiro"
+      title="Novo Prisioneiro"
       description="Adicione os dados do novo prisioneiro"
       {...props}
       content={
@@ -96,21 +96,33 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                 <AvatarFallback>{'PS'}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <div className="grid grid-cols-2 gap-3">
+                 <div className="grid grid-cols-2 gap-3">
                   <InputField
-                    name="cpf"
-                    label="CPF"
-                    placeholder="Insira o CPF"
-                    className=""
+                  name="cpf"
+                  label="CPF"
+                  placeholder="Insira o CPF"
+                  className=""
+                  maxLength={14}
+                  required
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                    if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                    if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                    e.target.value = value.slice(0, 14); // Limit to 14 characters
+                    methods.setValue('cpf', e.target.value);
+                  }}
                   />
-                  <InputField
+
+                    <InputField
                     name="idade"
                     label="Idade"
                     placeholder="Insira a Idade"
                     type="number"
                     className=""
                   />
-                </div>
+              </div>
+
               </div>
             </div>
 
@@ -121,11 +133,6 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               className=""
             />
 
-            <InputField
-              name="foto"
-              label="URL da Imagem"
-              placeholder="Insira a URL da Imagem"
-            />
 
             <div className="grid grid-cols-2">
               <SelectionField
@@ -138,6 +145,58 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                 label="Filiação"
                 placeholder="Insira a Filiação"
                 className=""
+              />
+            </div>
+
+                  {/* <div>
+                    <label className="block text-sm font-medium">Infrações Cometidas</label>
+                    <p className="text-sm text-gray-500 mb-2">Selecione as infrações cometidas pelo prisioneiro:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Furto', 'Roubo', 'Homicídio', 'Tráfico de Drogas'].map((infraction) => (
+                        <div key={infraction} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            id={infraction}
+                            value={infraction}
+                            onChange={(e) => {
+                              const selectedInfractions = methods.getValues('infractions') || [];
+                              if (e.target.checked) {
+                                methods.setValue('infractions', [...selectedInfractions, infraction]);
+                              } else {
+                                methods.setValue(
+                                  'infractions',
+                                  selectedInfractions.filter((item) => item !== infraction)
+                                );
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          <label htmlFor={infraction} className="text-sm">
+                            {infraction}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </div> */}
+
+            <div>
+              <label className="block text-sm font-medium">
+              Foto
+              </label>
+              <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                const reader = new FileReader()
+                reader.onload = () => {
+                  methods.setValue('foto', reader.result as string)
+                }
+                reader.readAsDataURL(file)
+                }
+              }}
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
             </div>
 
