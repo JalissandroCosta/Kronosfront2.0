@@ -1,24 +1,24 @@
 'use client'
-import React, { useState, useMemo } from 'react';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import type { FormProps } from 'antd';
 import {
-  Form,
-  Input,
   Button,
-  Select,
-  Checkbox,
   Card,
-  Table,
-  Modal,
-  Tag,
-  Space,
-  Row,
+  Checkbox,
   Col,
   DatePicker,
+  Form,
+  Input,
+  Modal,
   notification,
+  Row,
+  Select,
+  Space,
+  Table,
+  Tag,
 } from 'antd';
-import type { FormProps } from 'antd';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import React, { useMemo, useState } from 'react';
 
 type Visitor = {
   id: string;
@@ -51,9 +51,9 @@ const VisitorManagement: React.FC = () => {
 
   const onFinish: FormProps<Visitor>['onFinish'] = (values) => {
     const newVisitor: Visitor = {
-      id: Date.now().toString(),
       ...values,
-      visitDate: values.visitDate.toISOString(),
+      id: Date.now().toString(),
+      visitDate: moment(values.visitDate).toISOString(),
       status: 'pending',
     };
     setVisitors((prev) => [...prev, newVisitor]);
@@ -115,7 +115,7 @@ const VisitorManagement: React.FC = () => {
         { text: 'Advogado', value: 'lawyer' },
         { text: 'Familiar', value: 'relative' },
       ],
-      onFilter: (value: string, record: Visitor) =>
+      onFilter: (value: string | boolean | React.Key, record: Visitor) =>
         (value === 'lawyer' && record.isLawyer) ||
         (value === 'relative' && record.isRelative),
       render: (_: any, record: Visitor) => (
@@ -136,7 +136,7 @@ const VisitorManagement: React.FC = () => {
         { text: 'Aprovado', value: 'approved' },
         { text: 'Rejeitado', value: 'rejected' },
       ],
-      onFilter: (value: string, record: Visitor) => record.status === value,
+      onFilter: (value: string | boolean | React.Key, record: Visitor) => record.status === value,
       render: (status: string) => {
         const color =
           status === 'approved'

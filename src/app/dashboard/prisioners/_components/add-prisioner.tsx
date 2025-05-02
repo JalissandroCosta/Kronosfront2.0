@@ -148,7 +148,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               />
             </div>
 
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium">Infrações Cometidas</label>
                     <p className="text-sm text-gray-500 mb-2">Selecione as infrações cometidas pelo prisioneiro:</p>
                     <div className="grid grid-cols-2 gap-2">
@@ -177,7 +177,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
 
             <div>
               <label className="block text-sm font-medium">

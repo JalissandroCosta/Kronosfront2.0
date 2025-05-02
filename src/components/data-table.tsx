@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from 'react'
 import {
   DndContext,
   KeyboardSensor,
@@ -49,11 +48,11 @@ import {
   getSortedRowModel,
   useReactTable
 } from '@tanstack/react-table'
+import * as React from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { useIsMobile } from '@/hooks/use-mobile'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -100,6 +99,7 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 export const schema = z.object({
   id: z.number(),
@@ -146,7 +146,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value:any) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
         />
       </div>
@@ -155,7 +155,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       <div className="flex items-center justify-center">
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onCheckedChange={(value:any) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       </div>
