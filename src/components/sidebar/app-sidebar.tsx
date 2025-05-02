@@ -37,8 +37,8 @@ const Menu = [
     icon: Grid2X2
   },
   {
-    title: 'visitantes',
-    url: '/dashboard/visitantes',
+    title: 'Visitas',
+    url: '/dashboard/visitas',
     icon: Users2
   }
 ]
