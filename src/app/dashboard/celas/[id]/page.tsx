@@ -10,12 +10,15 @@ type paramsProps = {
   }
 }
 
-export default  function CelaIDPage({ params }: { params: Promise<{ id: string }> }) {
+export default function CelaIDPage({
+  params
+}: {
+  params: Promise<{ id: string }>
+}) {
   const { id } = use(params)
 
   const { data } = usePrisionerCellData(id)
-  
- 
+
   return (
     <div>
       <h1 className="text-2xl font-bold">Cela ID - {id}</h1>
@@ -23,7 +26,7 @@ export default  function CelaIDPage({ params }: { params: Promise<{ id: string }
         Aqui você pode visualizar os detalhes da cela.
       </p>
 
-      <TableClient data={data}/>
+      <TableClient data={data} />
     </div>
   )
 }

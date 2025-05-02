@@ -4,7 +4,6 @@ import { ColumnDef } from '@tanstack/react-table'
 // import { AddPrisionerDialog } from './add-prisioner'
 import { columns } from './columns'
 
-
 type TableClientProps = {
   data: PrisionerCela[] | undefined
   open?: boolean
@@ -17,7 +16,7 @@ export const TableClient = ({ data }: TableClientProps) => {
       columns={columns as ColumnDef<PrisionerCela, unknown>[]}
       data={data || []}
       search={'nome'}
-      placeholderSearch='Digite o nome do prisioneiro'
+      placeholderSearch="Digite o nome do prisioneiro"
     />
   )
 }

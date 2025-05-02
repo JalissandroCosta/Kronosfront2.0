@@ -42,11 +42,6 @@ const Menu = [
     icon: Users2
   }
 ]
-const User = {
-  name: 'shadcn',
-  email: 'm@example.com',
-  avatar: '/avatars/shadcn.jpg'
-}
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: {

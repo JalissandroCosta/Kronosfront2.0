@@ -41,10 +41,14 @@ export async function getAllCelas(): Promise<Cela[]> {
   return await handleRequest('cell/', token, 'GET CELAS')
 }
 
-export async function getAllPrisionersCelas(idCell:string): Promise<PrisionerCela[]> {
+export async function getAllPrisionersCelas(
+  idCell: string
+): Promise<PrisionerCela[]> {
   const { token } = await getUser()
 
-  return await handleRequest(`cell/${idCell}`, token, 'GET PRISIONEIROS DA CELA')
+  return await handleRequest(
+    `cell/${idCell}`,
+    token,
+    'GET PRISIONEIROS DA CELA'
+  )
 }
-
-

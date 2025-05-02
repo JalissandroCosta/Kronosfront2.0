@@ -40,6 +40,3 @@ export async function getAllVisitas(): Promise<Visita[]> {
 
   return await handleRequest('visits/', token, 'GET VISITAS')
 }
-
-
-

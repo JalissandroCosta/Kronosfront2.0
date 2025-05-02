@@ -1,34 +1,58 @@
+import { Badge } from '@/components/ui/badge'
 import {
   Card,
-  CardHeader,
-  CardDescription,
-  CardTitle,
   CardAction,
-  CardFooter
+  CardContent,
+  CardDescription,
+  CardHeader
 } from '@/components/ui/card'
+import { IconTrendingUp } from '@tabler/icons-react'
 
 type PecentualCardProps = {
   data: number
   title: string
+  capacidade?: number
+  percentual?: string
+  direction?: string
 }
 
 export const PecentualCard = (props: PecentualCardProps) => {
   return (
-    <Card className="@container/card">
-      <CardHeader className="flex items-end">
-        <CardDescription className="h-full w-full">
-          Total de {props.title}
+    <Card className="relative mx-auto w-full max-w-[220px] min-w-[180px]">
+      <CardHeader className="flex items-center">
+        <CardDescription className="w-full text-center">
+          {props.title}
         </CardDescription>
-        <CardTitle className="text-4xl font-semibold tabular-nums @[250px]/card:text-4xl">
+
+        {/* <CardTitle className="pt-2 text-4xl font-semibold tabular-nums @[250px]/card:text-4xl">
           {props.data}
-        </CardTitle>
-        {/* <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
+          {props.capacidade && `/${props.capacidade}`}
+        </CardTitle> */}
+
+        {props.percentual && (
+          <CardAction className="absolute bottom-1 right-1">
+            <Badge
+              variant="outline"
+              className={`${
+                props.direction === 'subiu'
+                  ? 'bg-green-500/10 text-green-500'
+                  : 'bg-red-500/10 text-red-500'
+              } flex items-center gap-2`}
+            >
+              {props.direction === 'subiu' ? (
+                <IconTrendingUp size={16} />
+              ) : (
+                <IconTrendingUp size={16} className="rotate-180" />
+              )}
+              {props.percentual}%
             </Badge>
-          </CardAction> */}
+          </CardAction>
+        )}
       </CardHeader>
+      <CardContent className="text-4xl font-semibold  text-center">
+      {props.data}
+      {props.capacidade && `/${props.capacidade}`}
+      </CardContent>
     </Card>
   )
 }
