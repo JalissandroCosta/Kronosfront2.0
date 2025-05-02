@@ -35,7 +35,6 @@ const handleRequest = async (
   }
 }
 
-// GET DE TODOS OS ALUNOS DO RESPONSÁVEL
 export async function getAllPrisioners(): Promise<Prisioner[]> {
   const { token } = await getUser()
 
@@ -116,15 +115,14 @@ export async function POSTPrisioner(props: Prisioner) {
 export async function DELETEPrisioner(id: string) {
   const { token } = await getUser()
 
+  console.log(id)
   try {
     const { data } = await api.delete(`prisoner/${id}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`
       }
     })
-
+    console.log('data', data)
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {

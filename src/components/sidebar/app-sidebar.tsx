@@ -1,6 +1,5 @@
 'use client'
 
-
 import { Grid2X2, Settings2, User2, Users2 } from 'lucide-react'
 
 import * as React from 'react'
@@ -14,73 +13,6 @@ import {
   SidebarRail
 } from '../ui/sidebar'
 import { NavMain } from './nav-main'
-
-// This is sample data.
-// const data = {
-//   user: {
-//     name: "shadcn",
-//     email: "m@example.com",
-//     avatar: "/avatars/shadcn.jpg",
-//   },
-//   teams: [
-//     {
-//       name: "Acme Inc",
-//       logo: GalleryVerticalEnd,
-//       plan: "Enterprise",
-//     },
-//     {
-//       name: "Acme Corp.",
-//       logo: AudioWaveform,
-//       plan: "Startup",
-//     },
-//     {
-//       name: "Evil Corp.",
-//       logo: Command,
-//       plan: "Free",
-//     },
-//   ],
-//   navMain: [
-//     {
-//       title: "Prisioners",
-//       url: "/dashboard/prisioners",
-//       icon: SquareTerminal,
-//       isActive: true,
-
-//     },
-//     {
-//       title: "Usuários",
-//       url: "#",
-//       icon: Bot,
-//     },
-//     {
-//       title: "Celas",
-//       url: "#",
-//       icon: BookOpen,
-//     },
-//     {
-//       title: "Settings",
-//       url: "#",
-//       icon: Settings2,
-//     },
-//   ],
-//   projects: [
-//     {
-//       name: "Design Engineering",
-//       url: "#",
-//       icon: Frame,
-//     },
-//     {
-//       name: "Sales & Marketing",
-//       url: "#",
-//       icon: PieChart,
-//     },
-//     {
-//       name: "Travel",
-//       url: "#",
-//       icon: Map,
-//     },
-//   ],
-// }
 
 const Menu = [
   {
@@ -96,22 +28,30 @@ const Menu = [
   },
   {
     title: 'Usuários',
-    url: '#',
+    url: '/dashboard/users',
     icon: User2
   },
   {
     title: 'Celas',
     url: '/dashboard/celas',
     icon: Grid2X2
+  },
+  {
+    title: 'visitantes',
+    url: '/dashboard/visitantes',
+    icon: Users2
   }
 ]
-const User = {
-  name: 'shadcn',
-  email: 'm@example.com',
-  avatar: '/avatars/shadcn.jpg'
+
+type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
+  user: {
+    name: string
+    email: string
+    cargo: string
+  }
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -129,7 +69,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={User} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

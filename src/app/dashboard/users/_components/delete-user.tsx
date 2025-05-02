@@ -12,7 +12,7 @@ type DeletePrisionerProps = BaseDialogProps & {
   }
 }
 
-export const DeletePrisionerDialog = (props: DeletePrisionerProps) => {
+export const DeleteUserDialog = (props: DeletePrisionerProps) => {
   const { success, warning } = useToast()
   const { DelPrisionerMutate } = usePrisionerMutate()
 

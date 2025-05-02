@@ -38,7 +38,7 @@ const formDataSchema = z.object({
   updatedAt: z.string().datetime()
 })
 
-export const AddPrisionerDialog = (props: BaseDialogProps) => {
+export const AddUserDialog = (props: BaseDialogProps) => {
   const { success, warning } = useToast()
   const { AddPrisionerMutate } = usePrisionerMutate()
 

@@ -31,7 +31,8 @@ export default [
       "react-hooks/exhaustive-deps": "warn",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
-      "@typescript-eslint/no-unused-vars": "off" // 👈 por enquanto
+      "@typescript-eslint/no-unused-vars": "off", // 👈 por enquanto,
+      "@typescript-eslint/no-explicit-any":   "off", // 👈 por enquanto
     }
   },
   prettier
