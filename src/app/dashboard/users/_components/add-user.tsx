@@ -81,8 +81,8 @@ export const AddUserDialog = (props: BaseDialogProps) => {
 
   return (
     <Dialog
-      title="Adicionar Prisioneiro"
-      description="Adicione os dados do novo prisioneiro"
+      title="Novo Usúario"
+      description="Adicione os dados do novo usúario"
       {...props}
       content={
         <FormProvider {...methods}>
@@ -92,54 +92,71 @@ export const AddUserDialog = (props: BaseDialogProps) => {
           >
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={'/default.png'} alt={'Foto do Prisioneiro'} />
+                <AvatarImage src={'/default.png'} alt={'Foto do ADM'} />
                 <AvatarFallback>{'PS'}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
                   <InputField
-                    name="cpf"
-                    label="CPF"
-                    placeholder="Insira o CPF"
-                    className=""
-                  />
-                  <InputField
-                    name="idade"
-                    label="Idade"
-                    placeholder="Insira a Idade"
-                    type="number"
-                    className=""
+                  name="cpf"
+                  label="CPF"
+                  placeholder="Insira o CPF"
+                  className=""
+                  maxLength={14}
+                  required
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                    if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
+                    if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+                    e.target.value = value.slice(0, 14); // Limit to 14 characters
+                    methods.setValue('cpf', e.target.value);
+                  }}
                   />
                 </div>
+                    <div className="p-2">
+                    <InputField
+                      name="nome"
+                      label="Nome"
+                      placeholder="Insira o Nome"
+                      className=""
+                    />
+                    </div>
+                    <div className="p-2">
+                    <InputField
+                      name="e-mail"
+                      label="E-mail"
+                      placeholder="@kronos.com.br"
+                      className=""
+                    />
+                    </div>
+
               </div>
+              
             </div>
 
-            <InputField
-              name="nome"
-              label="Nome"
-              placeholder="Insira a Nome"
-              className=""
-            />
-
-            <InputField
-              name="foto"
-              label="URL da Imagem"
-              placeholder="Insira a URL da Imagem"
-            />
-
-            <div className="grid grid-cols-2">
-              <SelectionField
-                label="Estado Civil"
-                name="estadoCivil"
-                list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
-              />
-              <InputField
-                name="filiacao"
-                label="Filiação"
-                placeholder="Insira a Filiação"
-                className=""
+            <div>
+              <label className="block text-sm font-medium">
+              Foto
+              </label>
+              <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                const reader = new FileReader()
+                reader.onload = () => {
+                  methods.setValue('foto', reader.result as string)
+                }
+                reader.readAsDataURL(file)
+                }
+              }}
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
             </div>
+
+        
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">

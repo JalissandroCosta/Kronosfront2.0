@@ -136,6 +136,11 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
             <div className="grid-cols-1">
               <InputField name="filiacao" label="Filiação" />
             </div>
+
+            <div className="grid-cols-1">
+              <InputField name="penalidade" label="Crimes Cometidos" />
+            </div>
+
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit">Salvar</Button>
             </div>
