@@ -1,5 +1,6 @@
 'use client'
 
+import { Avatar } from 'antd'
 import {
   BadgeCheck,
   Bell,
@@ -8,23 +9,10 @@ import {
   LogOut,
   Sparkles
 } from 'lucide-react'
+import { AvatarFallback, AvatarImage } from '../ui/avatar'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '../ui/sidebar'
 
-import { Avatar, AvatarFallback, AvatarImage } from './avatar.js'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from './dropdown-menu.js'
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar
-} from './sidebar.js'
 
 export function NavUser({
   user
