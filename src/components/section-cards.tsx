@@ -1,7 +1,7 @@
 import { Prisioner, Visita } from '@/@types/index'
 import { getAllPrisioners } from '@/actions/prisioner'
 import { getAllVisitas } from '@/actions/visitas'
-import { PecentualCard } from '@/app/dashboard/_componets/cardpercetual'
+import { PecentualCard } from '@/app/(dashboard)/_componets/cardpercetual'
 import { verificarTrending } from '@/utils/functions'
 
 type SectionCardsProps = {

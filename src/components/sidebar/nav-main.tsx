@@ -1,13 +1,15 @@
 'use client'
 
-import { type LucideIcon } from 'lucide-react'
 
+import { LucideIcon } from 'lucide-react'
 import {
   SidebarGroup,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem
 } from '../ui/sidebar'
+
+
 
 export function NavMain({
   items

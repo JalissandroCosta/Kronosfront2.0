@@ -8,7 +8,8 @@ import {
   getTop6DetentosMaisVisitados,
   mesclarDados
 } from '@/utils/functions'
-import { BarCharVisitarPresoComponent } from './_componets/bar-char-vistas-por-preso'
+import { BarCharVisitarPresoComponent } from '../_componets/bar-char-vistas-por-preso'
+
 
 export default async function Page() {
   const [prisioneiros, visitas] = await Promise.all([
