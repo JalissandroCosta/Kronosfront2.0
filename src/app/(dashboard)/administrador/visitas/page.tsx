@@ -1,24 +1,24 @@
 'use client'
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import type { FormProps } from 'antd';
+import React, { useState, useMemo } from 'react';
 import {
-  Button,
-  Card,
-  Checkbox,
-  Col,
-  DatePicker,
   Form,
   Input,
-  Modal,
-  notification,
-  Row,
+  Button,
   Select,
-  Space,
+  Checkbox,
+  Card,
   Table,
+  Modal,
   Tag,
+  Space,
+  Row,
+  Col,
+  DatePicker,
+  notification,
 } from 'antd';
+import type { FormProps } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import React, { useMemo, useState } from 'react';
 
 type Visitor = {
   id: string;
@@ -115,7 +115,7 @@ const VisitorManagement: React.FC = () => {
         { text: 'Advogado', value: 'lawyer' },
         { text: 'Familiar', value: 'relative' },
       ],
-      onFilter: (value: string | boolean | React.Key, record: Visitor) =>
+      onFilter: (value: string | number | boolean | React.Key, record: Visitor) =>
         (value === 'lawyer' && record.isLawyer) ||
         (value === 'relative' && record.isRelative),
       render: (_: any, record: Visitor) => (
@@ -136,7 +136,8 @@ const VisitorManagement: React.FC = () => {
         { text: 'Aprovado', value: 'approved' },
         { text: 'Rejeitado', value: 'rejected' },
       ],
-      onFilter: (value: string | boolean | React.Key, record: Visitor) => record.status === value,
+      onFilter: (value: string | number | boolean, record: Visitor) =>
+        record.status === value,
       render: (status: string) => {
         const color =
           status === 'approved'
@@ -319,7 +320,7 @@ const VisitorManagement: React.FC = () => {
         footer={null}
       >
         {currentVisitor && (
-          <Card bordered={false}>
+          <Card variant="outlined">
             <p><strong>Nome:</strong> {currentVisitor.name}</p>
             <p><strong>Documento:</strong> {currentVisitor.document}</p>
             <p><strong>Preso:</strong> {currentVisitor.prisonerName}</p>

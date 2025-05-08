@@ -12,27 +12,26 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
+import { useEffect } from 'react'
 
 const formDataSchema = z.object({
   id: z.string(),
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
-  idade: z
-    .number()
-    .min(1, { message: 'Idade deve ser maior que 0' })
-    .max(120, { message: 'Idade deve ser menor que 120' }),
-  cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
+  idade: z.number().min(1, { message: 'Idade deve ser maior que 0' }).max(120),
+  cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }),
   filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
   estadoCivil: z.union([
     z.literal('Solteiro'),
     z.literal('Casado'),
     z.literal('Divorciado'),
     z.literal('Viúvo'),
-    z.string() // permite outros valores que não estão explicitamente listados
+    z.string()
   ]),
-  foto: z.string().url().min(3, { message: 'Adicione uma URL de foto valida' }), // assume que é uma URL
+  foto: z.string().min(1, { message: 'É obrigatório enviar uma foto' }),
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime()
+  updatedAt: z.string().datetime(),
+  infractions: z.array(z.string()).optional()
 })
 
 type EditPrisionerProps = BaseDialogProps & {
@@ -42,56 +41,51 @@ type EditPrisionerProps = BaseDialogProps & {
     idade: number
     cpf: string
     filiacao: string
-    estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado' | 'Viúvo' | string
+    estadoCivil: string
     foto: string
     reincidencia: boolean
-    createdAt: string // ou Date, se você for converter depois
-    updatedAt: string // idem
+    createdAt: string
+    updatedAt: string
+    infractions?: string[]
   }
 }
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
   const { PutPrisionerMutate } = usePrisionerMutate()
+
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
-      id: props.data.id || '',
-      nome: props.data.nome || '',
+      ...props.data,
       idade: Number(props.data.idade) || 0,
-      cpf: props.data.cpf || '',
-      filiacao: props.data.filiacao || '',
-      estadoCivil: props.data.estadoCivil || 'Solteiro',
-      foto: props.data.foto || '',
-      reincidencia: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      infractions: props.data.infractions || []
     }
   })
 
-  methods.setValue('nome', props.data.nome || '')
-  methods.setValue('id', props.data.id || '')
-  methods.setValue('idade', Number(props.data.idade) || 0)
-  methods.setValue('foto', props.data.foto || '')
-  methods.setValue('cpf', props.data.cpf || '')
-  methods.setValue('estadoCivil', props.data.estadoCivil || '')
-  methods.setValue('filiacao', props.data.filiacao || '')
+  useEffect(() => {
+    methods.reset({
+      ...props.data,
+      idade: Number(props.data.idade),
+      infractions: props.data.infractions || []
+    })
+  }, [props.data, methods])
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
     PutPrisionerMutate.mutate(
-      { ...data, idade: Number(data.idade) },
+      { ...data },
       {
         onSuccess: () => {
           props.setOpen?.(false)
           success({
             title: 'Usuário Editado com sucesso',
-            description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
+            description: `O prisioneiro ${data?.nome} foi editado com sucesso.`
           })
         },
         onError: () => {
           warning({
             title: 'Erro ao editar prisioneiro',
-            description: 'Ocorreu um erro ao aditar o prisioneiro.'
+            description: 'Ocorreu um erro ao editar o prisioneiro.'
           })
         }
       }
@@ -105,25 +99,18 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
       {...props}
       content={
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="grid gap-6"
-          >
+          <form onSubmit={methods.handleSubmit(onSubmit)} className="grid gap-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={props.data.foto} alt={props.data.nome} />
-                <AvatarFallback>
-                  {props.data.nome.substring(0, 2)}
-                </AvatarFallback>
+                <AvatarImage src={methods.watch('foto')} alt={methods.watch('nome')} />
+                <AvatarFallback>{methods.watch('nome')?.substring(0, 2)}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <div className="grid grid-cols-2 gap-3">
-                  <InputField name="id" label="ID" disabled />
-                </div>
+                <InputField name="id" label="ID" disabled />
               </div>
             </div>
+
             <InputField name="nome" label="Nome" />
-            <InputField name="foto" label="Foto" />
             <div className="grid grid-cols-3 gap-3">
               <SelectionField
                 label="Estado Civil"
@@ -133,12 +120,43 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
               <InputField name="cpf" label="CPF" />
               <InputField name="idade" label="Idade" type="number" />
             </div>
-            <div className="grid-cols-1">
-              <InputField name="filiacao" label="Filiação" />
+
+            <InputField name="filiacao" label="Filiação" />
+
+            {/* FOTO COM VALIDAÇÃO */}
+            <div>
+              <label className="block text-sm font-medium">Foto</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    const reader = new FileReader()
+                    reader.onload = () => {
+                      methods.setValue('foto', reader.result as string)
+                    }
+                    reader.readAsDataURL(file)
+                  }
+                }}
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {methods.formState.errors.foto && (
+                <p className="text-sm text-red-500 mt-1">
+                  {methods.formState.errors.foto.message}
+                </p>
+              )}
             </div>
 
-            <div className="grid-cols-1">
-              <InputField name="penalidade" label="Crimes Cometidos" />
+            {/* INFRAÇÕES - APENAS VISUALIZAÇÃO */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Crimes Cometidos</label>
+              <input
+                type="text"
+                readOnly
+                value={methods.watch('infractions')?.join(', ') || ''}
+                className="w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground shadow-sm"
+              />
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
