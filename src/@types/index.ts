@@ -70,3 +70,11 @@ export type Visita = {
     oabNumero: string
   }
 }
+
+export type Visitante = {
+  id?: string
+  nome: string
+  grauParentesco: string | undefined // Adicionado grauParentesco como opcional
+  cpf: string
+  idDetento: string
+}
