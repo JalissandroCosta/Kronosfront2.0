@@ -5,8 +5,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useState } from 'react'
-import { DeletePrisionerDialog } from './delete-prisioner'
-import { EditPrisionerDialog } from './edite-prisioner'
+import { ShowPrisionerDialog } from './show-prisioner'
+
+
 
 export type Prisioner = {
   id: string
@@ -85,16 +86,14 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
 
   return (
     <div className="flex gap-2">
-      <EditPrisionerDialog
+      <ShowPrisionerDialog
         data={row.original}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >
-        <Button variant={'secondary'}>Editar</Button>
-      </EditPrisionerDialog>
-      <DeletePrisionerDialog data={{ id, nome }}>
-        <Button variant={'destructive'}>Excluir</Button>
-      </DeletePrisionerDialog>
+       
+        <Button variant={'secondary'}>Mostrar</Button>
+      </ShowPrisionerDialog>
     </div>
   )
 }
