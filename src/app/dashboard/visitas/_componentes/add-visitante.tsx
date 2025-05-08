@@ -109,7 +109,7 @@ export const AddVisitanteDialog = (props: BaseDialogProps) => {
               <SelectionField
                 label="Grau de Parentesco"
                 name="grauParentesco"
-                list={['Pai/Mãe', 'Filho', 'Irmão', 'conjuge', 'Amigo', 'Outro']}
+                list={['Pai/Mãe', 'Filho', 'Irmão', 'conjuge', 'Amigo', 'Advogado']}
               />
             </div>
 
