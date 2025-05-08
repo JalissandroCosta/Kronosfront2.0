@@ -26,19 +26,19 @@ export const routesLink: RoutesLink[] = [
   {
     title: 'Prisioneiros',
     url: '/prisioners',
-    hole: ['ADM','DIR'],
+    hole: ['ADM','DIR',"INSP"],
     icon: 'Users2' 
   },
   {
     title: 'Celas',
     url: '/celas',
-    hole: ['ADM','DIR'],
+    hole: ['ADM','DIR',"INSP"],
     icon: 'Grid2X2' 
   },
   {
     title: 'Visitas',
     url: '/visitas',
-    hole: ['ADM','DIR'],
+    hole: ['ADM','DIR',"INSP"],
     icon: 'Users2' 
   }
 ]
