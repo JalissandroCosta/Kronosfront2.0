@@ -38,7 +38,7 @@ export default function LoginScreen() {
     e.preventDefault()
 
     const response: handleLoginProps = await handleLogin(cpf, password)
-    console.log(response)
+
     if (!response.auth) {
       warning({
         title: `${response.message}`

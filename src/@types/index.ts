@@ -25,6 +25,10 @@ export type Alocacao = {
   celaId: string
   dataAlocacao: string
 }
+export type AlocacaoPrisioner = { 
+  detentoId: string
+  celaId: string
+}
 
 export type Cela = {
   id: string
@@ -77,4 +81,24 @@ export type Visitante = {
   grauParentesco: string | undefined // Adicionado grauParentesco como opcional
   cpf: string
   idDetento: string
+}
+
+
+export interface Detento {
+  id: string
+  nome: string
+  idade: number
+  estadoCivil: string
+  cpf: string
+  filiacao: string
+  foto: string
+  reincidencia: boolean
+  createdAt: string // ou Date, se você converter
+  updatedAt: string // ou Date, se você converter
+}
+
+export interface CreateDetentoResponse {
+  message: string
+  detento: Detento
+  
 }

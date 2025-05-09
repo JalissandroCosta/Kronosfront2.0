@@ -7,9 +7,12 @@ import { InputField } from '@/components/ui/fields/field'
 import { SelectionField } from '@/components/ui/select/field-selection'
 import { useToast } from '@/hooks/use-toast'
 
-import { FormProvider, useForm } from 'react-hook-form'
+import { Cela } from '@/@types'
+import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 // Esquema de validação
@@ -36,13 +39,30 @@ const formDataSchema = z.object({
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  infractions: z.array(z.string()).optional()
+  infractions: z.array(z.string()),
+  celaId: z.string()
 })
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
+  const [celas, setCelas] = useState<Cela[]>([])
   const { success, warning } = useToast()
   const { AddPrisionerMutate } = usePrisionerMutate()
 
+  useEffect(() => {
+    const fetchCelas = async () => {
+      
+      const todasAsCelas  = await getAllCelas()
+      const celasFiltradas = todasAsCelas.filter(
+        cela => cela.alocacoes.length < cela.capacidade
+      )
+
+      setCelas(celasFiltradas)
+    }
+   
+    fetchCelas()
+  }, [setCelas])
+  
+ 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
@@ -61,6 +81,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
   })
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
+
     AddPrisionerMutate.mutate(
       { ...data, idade: Number(data.idade) },
       {
@@ -69,7 +90,21 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
           success({
             title: 'Usuário adicionado com sucesso',
             description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
-          })
+          }) 
+          methods.reset({
+          id: '',
+          nome: '',
+          idade: '',
+          cpf: '',
+          filiacao: '',
+          estadoCivil: 'Solteiro',
+          foto: '',
+          reincidencia: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          infractions: [],
+          celaId: ''
+          })    
         },
         onError: () => {
           warning({
@@ -133,7 +168,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               placeholder="Insira o Nome"
             />
 
-            <div className="grid grid-cols-2">
+            <div className="w-full grid grid-cols-3 gap-3 justify-center items-center">
               <SelectionField
                 label="Estado Civil"
                 name="estadoCivil"
@@ -144,6 +179,12 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                 label="Filiação"
                 placeholder="Insira a Filiação"
               />
+              <SelectionField
+                  placeholder="Selecione a cela"
+                  label="Celas"
+                  name="celaId"
+                  list={celas}
+                  />
             </div>
 
             <div>
@@ -174,10 +215,12 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                   </div>
                 ))}
               </div>
+             
             </div>
 
-            {/* FOTO COM VALIDAÇÃO */}
-            <div>
+           <div className='w-full flex flex-row gap-4 justify-between'>
+             {/* FOTO COM VALIDAÇÃO */}
+             <div>
               <label className="block text-sm font-medium">Foto</label>
               <input
                 type="file"
@@ -200,7 +243,8 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                 </p>
               )}
             </div>
-
+           
+           </div>
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">
                 Salvar

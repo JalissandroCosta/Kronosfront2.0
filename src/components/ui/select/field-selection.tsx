@@ -1,3 +1,4 @@
+import { Cela } from '@/@types'
 import { ComponentProps } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import {
@@ -10,12 +11,14 @@ import {
 import { FieldWrapper } from './field-wrapper'
 
 type SelectionFieldProps = ComponentProps<typeof Select> & {
+  placeholder?: string
   label: string
   name: string
-  list: string[]
+  list: string[] | Cela[]
 }
 
 export const SelectionField = ({
+  placeholder='Selecione a opção',
   label,
   name,
   list,
@@ -39,19 +42,29 @@ export const SelectionField = ({
             defaultValue={field.value}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Selecione" />
+              <SelectValue placeholder={placeholder} />
             </SelectTrigger>
 
             <SelectContent>
               <>
                 <SelectItem value="0" disabled>
-                  Selecione uma opção
+                  {placeholder}
                 </SelectItem>
-                {list.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
+                {list.map((item) => {
+                if (typeof item === 'string') {
+                  return (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  )
+                } else {
+                  return (
+                    <SelectItem key={item.id} value={item.id}>
+                      Cela {item.numero}
+                    </SelectItem>
+                  )
+                }
+              })}
               </>
             </SelectContent>
           </Select>

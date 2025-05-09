@@ -8,8 +8,6 @@ import Link from 'next/link'
 export default async function GerenciamentoCelasScreen() {
   const celas = await getAllCelas()
 
-
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col space-y-4">
@@ -107,7 +105,7 @@ export default async function GerenciamentoCelasScreen() {
               </CardHeader>
               <CardContent>
                 <Link
-                  href={`/dashboard/celas/${cela.id}`}
+                  href={`celas/${cela.id}`}
                   className="flex h-full flex-col items-center justify-center rounded-lg bg-blue-500 p-3 text-white transition-colors hover:bg-blue-600"
                 >
                   Gerenciamento

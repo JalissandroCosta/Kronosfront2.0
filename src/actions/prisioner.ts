@@ -38,7 +38,12 @@ const handleRequest = async (
 export async function getAllPrisioners(): Promise<Prisioner[]> {
   const { token } = await getUser()
 
-  return await handleRequest('prisoner/', token, 'GET PRISIONERS')
+  const response = await handleRequest('prisoner/', token, 'GET PRISIONERS')
+  if (response.message) {
+    return []
+  }
+
+  return response
 }
 
 export async function PUTPrisioner(props: Prisioner) {
@@ -76,8 +81,10 @@ export async function PUTPrisioner(props: Prisioner) {
   }
 }
 
+
 export async function POSTPrisioner(props: Prisioner) {
   const { token } = await getUser()
+  
 
   const { id, idade, createdAt, updatedAt, ...payload } = props
   try {
@@ -95,8 +102,10 @@ export async function POSTPrisioner(props: Prisioner) {
         }
       }
     )
+   
 
     return data
+    
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
@@ -115,14 +124,14 @@ export async function POSTPrisioner(props: Prisioner) {
 export async function DELETEPrisioner(id: string) {
   const { token } = await getUser()
 
-  console.log(id)
+
   try {
     const { data } = await api.delete(`prisoner/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-    console.log('data', data)
+  
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -142,3 +151,48 @@ export async function DELETEPrisioner(id: string) {
     throw new Error('DELETE CADASTRO PRISIONEIRO.')
   }
 }
+export interface Alocacao {
+  id: string;
+  detentoId: string;
+  celaId: string;
+  dataAlocacao: string; // formato ISO 8601
+}
+
+export interface CreateAlocacaoResponse {
+  message: string;
+  alocacao: Alocacao;
+}
+export async function POSTPrisionerAlocation(celaId:string,detentoId:string) {
+  const { token } = await getUser()
+
+  try {
+    const { data } = await api.post(
+      "allocation/",
+      {
+        celaId,
+        detentoId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache'
+        }
+      }
+    )
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST ALOCAR PRISIONEIRO from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch PUT ALOCAR PRISIONEIRO from API: ${error.message}`
+      )
+    }
+    throw new Error('PUT ALOCAR PRISIONEIRO.')
+  }
+}
+

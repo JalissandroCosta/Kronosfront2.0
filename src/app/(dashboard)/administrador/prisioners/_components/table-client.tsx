@@ -11,14 +11,26 @@ type TableClientProps = {
   setOpen?: (open: boolean) => void
 }
 
-export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
+type celasDisponiveis=
+{
+  id: string,
+  numero: number,
+  capacidade: number,
+  pavilhao: string,
+  alocacoes: Array<any>
+}
+
+export const TableClient =  ({ data, open, setOpen }: TableClientProps) => {
+// const allCells:celasDisponiveis[] = await getAllCelas()
+// const celasDisponiveis:celasDisponiveis[] = allCells.filter((celas) => celas.alocacoes.length < celas.capacidade)
+
   return (
     <DataTable
       columns={columns as ColumnDef<Prisioner, unknown>[]}
       data={data || []}
       search={'nome'}
       button={
-        <AddPrisionerDialog open={open} setOpen={setOpen}>
+        <AddPrisionerDialog open={open} setOpen={setOpen} >
           <Button variant="outline" className="ml-auto">
             Adicionar Prisioneiro
           </Button>
