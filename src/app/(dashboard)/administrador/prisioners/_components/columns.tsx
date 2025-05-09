@@ -2,26 +2,16 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
+import { Alocacao, Prisioner } from '@/@types'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useState } from 'react'
 import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
-export type Prisioner = {
-  id: string
-  nome: string
-  idade: number
-  cpf: string
-  filiacao: string
-  estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado'
-  foto: string
-  reincidencia: boolean
-  createdAt: string // ISO Date string
-  updatedAt: string // ISO Date string
-}
 
-export const columns: ColumnDef<Prisioner>[] = [
+
+export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[] }>[] = [
   {
     accessorKey: 'foto',
     header: 'Foto',
@@ -86,7 +76,7 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
   return (
     <div className="flex gap-2">
       <EditPrisionerDialog
-        data={row.original}
+        data={{ ...row.original, alocacoes: (row.original as any).alocacoes || [] }}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >

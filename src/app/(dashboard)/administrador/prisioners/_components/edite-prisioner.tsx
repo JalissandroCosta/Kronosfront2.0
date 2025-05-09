@@ -9,11 +9,15 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Prisioner } from '@/@types'
+import { Alocacao, Prisioner as BasePrisioner } from '@/@types'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import * as z from 'zod'
+
+type Prisioner = BasePrisioner & {
+  infractions?: string[]
+}
 
 const formDataSchema = z.object({
   id: z.string(),
@@ -37,26 +41,10 @@ const formDataSchema = z.object({
 })
 
 type EditPrisionerProps = BaseDialogProps & {
-  data: {
-    id: string
-    nome: string
-    idade: number
-    cpf: string
-    filiacao: string
-    estadoCivil: string
-    foto: string
-    reincidencia: boolean
-    createdAt: string
-    updatedAt: string
-    infractions?: string[]
-    celaId: string
-  }
+  data: Prisioner & { alocacoes: Alocacao[] }
 }
 
-type editePrisionerProps = Prisioner & {
-  celaId: string
-  infractions: string[]
-}
+
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
