@@ -48,7 +48,6 @@ type ShowPrisionerProps = BaseDialogProps & {
 }
 
 export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
- 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
@@ -66,8 +65,6 @@ export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
     })
   }, [props.data, methods])
 
- 
-
   return (
     <Dialog
       title="Prisioneiro"
@@ -75,18 +72,23 @@ export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
       {...props}
       content={
         <FormProvider {...methods}>
-          <form  className="grid gap-6">
+          <form className="grid gap-6">
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={methods.watch('foto')} alt={methods.watch('nome')} />
-                <AvatarFallback>{methods.watch('nome')?.substring(0, 2)}</AvatarFallback>
+                <AvatarImage
+                  src={methods.watch('foto')}
+                  alt={methods.watch('nome')}
+                />
+                <AvatarFallback>
+                  {methods.watch('nome')?.substring(0, 2)}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <InputField name="id" label="ID" disabled />
               </div>
             </div>
 
-            <InputField name="nome" label="Nome" disabled/>
+            <InputField name="nome" label="Nome" disabled />
             <div className="grid grid-cols-3 gap-3">
               <SelectionField
                 label="Estado Civil"
@@ -94,8 +96,8 @@ export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
                 list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
                 disabled
               />
-              <InputField name="cpf" label="CPF" disabled/>
-              <InputField name="idade" label="Idade" type="number" disabled/>
+              <InputField name="cpf" label="CPF" disabled />
+              <InputField name="idade" label="Idade" type="number" disabled />
             </div>
 
             <InputField name="filiacao" label="Filiação" disabled />
@@ -127,17 +129,17 @@ export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
 
             {/* INFRAÇÕES - APENAS VISUALIZAÇÃO */}
             <div>
-              <label className="block text-sm font-medium mb-1">Crimes Cometidos</label>
+              <label className="mb-1 block text-sm font-medium">
+                Crimes Cometidos
+              </label>
               <input
                 type="text"
                 readOnly
                 value={methods.watch('infractions')?.join(', ') || ''}
-                className="w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground shadow-sm"
+                className="bg-background text-foreground w-full rounded-md border px-3 py-2 text-sm shadow-sm"
                 disabled
               />
             </div>
-
-           
           </form>
         </FormProvider>
       }

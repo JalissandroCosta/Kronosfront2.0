@@ -81,10 +81,8 @@ export async function PUTPrisioner(props: Prisioner) {
   }
 }
 
-
 export async function POSTPrisioner(props: Prisioner) {
   const { token } = await getUser()
-  
 
   const { id, idade, createdAt, updatedAt, ...payload } = props
   try {
@@ -102,10 +100,8 @@ export async function POSTPrisioner(props: Prisioner) {
         }
       }
     )
-   
 
     return data
-    
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
@@ -124,14 +120,13 @@ export async function POSTPrisioner(props: Prisioner) {
 export async function DELETEPrisioner(id: string) {
   const { token } = await getUser()
 
-
   try {
     const { data } = await api.delete(`prisoner/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
-  
+
     return data
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
@@ -152,22 +147,25 @@ export async function DELETEPrisioner(id: string) {
   }
 }
 export interface Alocacao {
-  id: string;
-  detentoId: string;
-  celaId: string;
-  dataAlocacao: string; // formato ISO 8601
+  id: string
+  detentoId: string
+  celaId: string
+  dataAlocacao: string // formato ISO 8601
 }
 
 export interface CreateAlocacaoResponse {
-  message: string;
-  alocacao: Alocacao;
+  message: string
+  alocacao: Alocacao
 }
-export async function POSTPrisionerAlocation(celaId:string,detentoId:string) {
+export async function POSTPrisionerAlocation(
+  celaId: string,
+  detentoId: string
+) {
   const { token } = await getUser()
 
   try {
     const { data } = await api.post(
-      "allocation/",
+      'allocation/',
       {
         celaId,
         detentoId
@@ -195,4 +193,3 @@ export async function POSTPrisionerAlocation(celaId:string,detentoId:string) {
     throw new Error('PUT ALOCAR PRISIONEIRO.')
   }
 }
-

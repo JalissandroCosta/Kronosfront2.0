@@ -18,7 +18,7 @@ type SelectionFieldProps = ComponentProps<typeof Select> & {
 }
 
 export const SelectionField = ({
-  placeholder='Selecione a opção',
+  placeholder = 'Selecione a opção',
   label,
   name,
   list,
@@ -51,20 +51,20 @@ export const SelectionField = ({
                   {placeholder}
                 </SelectItem>
                 {list.map((item) => {
-                if (typeof item === 'string') {
-                  return (
-                    <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>
-                  )
-                } else {
-                  return (
-                    <SelectItem key={item.id} value={item.id}>
-                      Cela {item.numero}
-                    </SelectItem>
-                  )
-                }
-              })}
+                  if (typeof item === 'string') {
+                    return (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    )
+                  } else {
+                    return (
+                      <SelectItem key={item.id} value={item.id}>
+                        Cela {item.numero}
+                      </SelectItem>
+                    )
+                  }
+                })}
               </>
             </SelectContent>
           </Select>

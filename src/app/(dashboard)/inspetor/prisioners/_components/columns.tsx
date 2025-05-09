@@ -7,8 +7,6 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { ShowPrisionerDialog } from './show-prisioner'
 
-
-
 export type Prisioner = {
   id: string
   nome: string
@@ -91,7 +89,6 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >
-       
         <Button variant={'secondary'}>Mostrar</Button>
       </ShowPrisionerDialog>
     </div>

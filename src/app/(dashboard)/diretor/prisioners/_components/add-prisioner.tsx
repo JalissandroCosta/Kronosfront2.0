@@ -88,10 +88,16 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
       {...props}
       content={
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)} className="grid gap-6">
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="grid gap-6"
+          >
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={methods.watch('foto') || '/default.png'} alt="Foto do Prisioneiro" />
+                <AvatarImage
+                  src={methods.watch('foto') || '/default.png'}
+                  alt="Foto do Prisioneiro"
+                />
                 <AvatarFallback>{'PS'}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
@@ -107,7 +113,10 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                       if (value.length > 3)
                         value = value.replace(/^(\d{3})(\d)/, '$1.$2')
                       if (value.length > 7)
-                        value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+                        value = value.replace(
+                          /^(\d{3})\.(\d{3})(\d)/,
+                          '$1.$2.$3'
+                        )
                       if (value.length > 11)
                         value = value.replace(
                           /^(\d{3})\.(\d{3})\.(\d{3})(\d)/,
@@ -127,11 +136,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               </div>
             </div>
 
-            <InputField
-              name="nome"
-              label="Nome"
-              placeholder="Insira o Nome"
-            />
+            <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
 
             <div className="grid grid-cols-2">
               <SelectionField
@@ -147,32 +152,40 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">Infrações Cometidas</label>
+              <label className="block text-sm font-medium">
+                Infrações Cometidas
+              </label>
               <div className="grid grid-cols-2 gap-2">
-                {['Furto', 'Roubo', 'Homicídio', 'Tráfico de Drogas'].map((infraction) => (
-                  <div key={infraction} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id={infraction}
-                      value={infraction}
-                      onChange={(e) => {
-                        const selected = methods.getValues('infractions') || []
-                        if (e.target.checked) {
-                          methods.setValue('infractions', [...selected, infraction])
-                        } else {
-                          methods.setValue(
-                            'infractions',
-                            selected.filter((item) => item !== infraction)
-                          )
-                        }
-                      }}
-                      className="mr-2"
-                    />
-                    <label htmlFor={infraction} className="text-sm">
-                      {infraction}
-                    </label>
-                  </div>
-                ))}
+                {['Furto', 'Roubo', 'Homicídio', 'Tráfico de Drogas'].map(
+                  (infraction) => (
+                    <div key={infraction} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={infraction}
+                        value={infraction}
+                        onChange={(e) => {
+                          const selected =
+                            methods.getValues('infractions') || []
+                          if (e.target.checked) {
+                            methods.setValue('infractions', [
+                              ...selected,
+                              infraction
+                            ])
+                          } else {
+                            methods.setValue(
+                              'infractions',
+                              selected.filter((item) => item !== infraction)
+                            )
+                          }
+                        }}
+                        className="mr-2"
+                      />
+                      <label htmlFor={infraction} className="text-sm">
+                        {infraction}
+                      </label>
+                    </div>
+                  )
+                )}
               </div>
             </div>
 
@@ -192,10 +205,10 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                     reader.readAsDataURL(file)
                   }
                 }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
               />
               {methods.formState.errors.foto && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="mt-1 text-sm text-red-500">
                   {methods.formState.errors.foto.message}
                 </p>
               )}

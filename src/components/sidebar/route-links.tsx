@@ -1,4 +1,3 @@
-
 export type RoutesLink = {
   title: string
   url: string
@@ -14,32 +13,32 @@ export const routesLink: RoutesLink[] = [
   {
     title: 'Painel',
     url: '/',
-    hole: ['ADM','DIR'],
+    hole: ['ADM', 'DIR'],
     icon: 'Settings2'
   },
   {
     title: 'Usuários',
     url: '/users',
-    hole: ['ADM','DIR'],
-    icon: 'Users2' 
+    hole: ['ADM', 'DIR'],
+    icon: 'Users2'
   },
   {
     title: 'Prisioneiros',
     url: '/prisioners',
-    hole: ['ADM','DIR',"INSP"],
-    icon: 'Users2' 
+    hole: ['ADM', 'DIR', 'INSP'],
+    icon: 'Users2'
   },
   {
     title: 'Celas',
     url: '/celas',
-    hole: ['ADM','DIR',"INSP"],
-    icon: 'Grid2X2' 
+    hole: ['ADM', 'DIR', 'INSP'],
+    icon: 'Grid2X2'
   },
   {
     title: 'Visitas',
     url: '/visitas',
-    hole: ['ADM','DIR',"INSP"],
-    icon: 'Users2' 
+    hole: ['ADM', 'DIR', 'INSP'],
+    icon: 'Users2'
   }
 ]
 

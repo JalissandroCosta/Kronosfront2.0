@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
-import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
+import { TrendingUp } from 'lucide-react'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
 import {
   Card,
@@ -9,51 +9,48 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+  CardTitle
+} from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-
-
-
+  ChartTooltipContent
+} from '@/components/ui/chart'
 
 const chartData = [
-  { preso: "Marcos Afonso", visitas: 186, mobile: 80 },
-  { preso: "Lucas da Silva", visitas: 305, mobile: 200 },
-  { preso: "Jorge D.Mac", visitas: 237, mobile: 120 },
-  { preso: "Fabio de Sá", visitas: 73, mobile: 190 },
-  { preso: "Laura D. Mac", visitas: 209, mobile: 130 },
-  { preso: "Robson D. Mac", visitas: 214, mobile: 140 },
+  { preso: 'Marcos Afonso', visitas: 186, mobile: 80 },
+  { preso: 'Lucas da Silva', visitas: 305, mobile: 200 },
+  { preso: 'Jorge D.Mac', visitas: 237, mobile: 120 },
+  { preso: 'Fabio de Sá', visitas: 73, mobile: 190 },
+  { preso: 'Laura D. Mac', visitas: 209, mobile: 130 },
+  { preso: 'Robson D. Mac', visitas: 214, mobile: 140 }
 ]
 
 const chartConfig = {
   desktop: {
-    label: "olha",
-    color: "hsl(var(--chart-1))",
+    label: 'olha',
+    color: 'hsl(var(--chart-1))'
   },
   mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    label: 'Mobile',
+    color: 'hsl(var(--chart-2))'
   },
   label: {
-    color: "hsl(var(--background))",
-  },
+    color: 'hsl(var(--background))'
+  }
 } satisfies ChartConfig
 
 type ChartBarProps = {
   chartData: {
     detentoId: string
-      preso: string
-      visitas: number
-      foto: string
+    preso: string
+    visitas: number
+    foto: string
   }[]
 }
 
-export function BarCharVisitarPresoComponent({chartData}:ChartBarProps) {
+export function BarCharVisitarPresoComponent({ chartData }: ChartBarProps) {
   return (
     <Card>
       <CardHeader>
@@ -61,7 +58,10 @@ export function BarCharVisitarPresoComponent({chartData}:ChartBarProps) {
         <CardDescription>Ranking Top 6</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="max-h-[450px] lg:w-[500px]">
+        <ChartContainer
+          config={chartConfig}
+          className="max-h-[450px] lg:w-[500px]"
+        >
           <BarChart
             accessibilityLayer
             data={chartData}
@@ -115,10 +115,10 @@ export function BarCharVisitarPresoComponent({chartData}:ChartBarProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
+        <div className="flex gap-2 leading-none font-medium">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="text-muted-foreground leading-none">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

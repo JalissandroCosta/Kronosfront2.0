@@ -25,7 +25,7 @@ export type Alocacao = {
   celaId: string
   dataAlocacao: string
 }
-export type AlocacaoPrisioner = { 
+export type AlocacaoPrisioner = {
   detentoId: string
   celaId: string
 }
@@ -83,7 +83,6 @@ export type Visitante = {
   idDetento: string
 }
 
-
 export interface Detento {
   id: string
   nome: string
@@ -100,5 +99,4 @@ export interface Detento {
 export interface CreateDetentoResponse {
   message: string
   detento: Detento
-  
 }

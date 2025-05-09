@@ -41,7 +41,7 @@ export async function SectionCards({ data }: SectionCardsProps) {
 
       <PecentualCard
         data={AllPresioneiros.length}
-        title={'Total de Funcionarios'}     
+        title={'Total de Funcionarios'}
       />
     </div>
   )

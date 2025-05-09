@@ -98,65 +98,68 @@ export const AddUserDialog = (props: BaseDialogProps) => {
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
                   <InputField
-                  name="cpf"
-                  label="CPF"
-                  placeholder="Insira o CPF"
-                  className=""
-                  maxLength={14}
-                  required
-                  onChange={(e) => {
-                    let value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-                    if (value.length > 3) value = value.replace(/^(\d{3})(\d)/, '$1.$2');
-                    if (value.length > 7) value = value.replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3');
-                    if (value.length > 11) value = value.replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
-                    e.target.value = value.slice(0, 14); // Limit to 14 characters
-                    methods.setValue('cpf', e.target.value);
-                  }}
+                    name="cpf"
+                    label="CPF"
+                    placeholder="Insira o CPF"
+                    className=""
+                    maxLength={14}
+                    required
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/\D/g, '') // Remove non-numeric characters
+                      if (value.length > 3)
+                        value = value.replace(/^(\d{3})(\d)/, '$1.$2')
+                      if (value.length > 7)
+                        value = value.replace(
+                          /^(\d{3})\.(\d{3})(\d)/,
+                          '$1.$2.$3'
+                        )
+                      if (value.length > 11)
+                        value = value.replace(
+                          /^(\d{3})\.(\d{3})\.(\d{3})(\d)/,
+                          '$1.$2.$3-$4'
+                        )
+                      e.target.value = value.slice(0, 14) // Limit to 14 characters
+                      methods.setValue('cpf', e.target.value)
+                    }}
                   />
                 </div>
-                    <div className="p-2">
-                    <InputField
-                      name="nome"
-                      label="Nome"
-                      placeholder="Insira o Nome"
-                      className=""
-                    />
-                    </div>
-                    <div className="p-2">
-                    <InputField
-                      name="e-mail"
-                      label="E-mail"
-                      placeholder="@kronos.com.br"
-                      className=""
-                    />
-                    </div>
-
+                <div className="p-2">
+                  <InputField
+                    name="nome"
+                    label="Nome"
+                    placeholder="Insira o Nome"
+                    className=""
+                  />
+                </div>
+                <div className="p-2">
+                  <InputField
+                    name="e-mail"
+                    label="E-mail"
+                    placeholder="@kronos.com.br"
+                    className=""
+                  />
+                </div>
               </div>
-              
             </div>
 
             <div>
-              <label className="block text-sm font-medium">
-              Foto
-              </label>
+              <label className="block text-sm font-medium">Foto</label>
               <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                const reader = new FileReader()
-                reader.onload = () => {
-                  methods.setValue('foto', reader.result as string)
-                }
-                reader.readAsDataURL(file)
-                }
-              }}
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (file) {
+                    const reader = new FileReader()
+                    reader.onload = () => {
+                      methods.setValue('foto', reader.result as string)
+                    }
+                    reader.readAsDataURL(file)
+                  }
+                }}
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
               />
             </div>
-
-        
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">

@@ -51,7 +51,6 @@ export default function LoginScreen() {
       title: 'Usuário Autenticado com Sucesso'
     })
 
-    
     if (response.userRole === 'ADM') router.push('/administrador')
     if (response.userRole === 'INSP') router.push('/inspetor')
     if (response.userRole === 'DIR') router.push('/diretor')

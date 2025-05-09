@@ -1,6 +1,5 @@
 'use client'
 
-
 import { LucideIcon } from 'lucide-react'
 import {
   SidebarGroup,
@@ -8,8 +7,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '../ui/sidebar'
-
-
 
 export function NavMain({
   items

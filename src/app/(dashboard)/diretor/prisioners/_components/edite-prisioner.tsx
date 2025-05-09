@@ -99,11 +99,19 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
       {...props}
       content={
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)} className="grid gap-6">
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="grid gap-6"
+          >
             <div className="flex items-center gap-4">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={methods.watch('foto')} alt={methods.watch('nome')} />
-                <AvatarFallback>{methods.watch('nome')?.substring(0, 2)}</AvatarFallback>
+                <AvatarImage
+                  src={methods.watch('foto')}
+                  alt={methods.watch('nome')}
+                />
+                <AvatarFallback>
+                  {methods.watch('nome')?.substring(0, 2)}
+                </AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <InputField name="id" label="ID" disabled />
@@ -139,10 +147,10 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                     reader.readAsDataURL(file)
                   }
                 }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
               />
               {methods.formState.errors.foto && (
-                <p className="text-sm text-red-500 mt-1">
+                <p className="mt-1 text-sm text-red-500">
                   {methods.formState.errors.foto.message}
                 </p>
               )}
@@ -150,12 +158,14 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
 
             {/* INFRAÇÕES - APENAS VISUALIZAÇÃO */}
             <div>
-              <label className="block text-sm font-medium mb-1">Crimes Cometidos</label>
+              <label className="mb-1 block text-sm font-medium">
+                Crimes Cometidos
+              </label>
               <input
                 type="text"
                 readOnly
                 value={methods.watch('infractions')?.join(', ') || ''}
-                className="w-full rounded-md border bg-background px-3 py-2 text-sm text-foreground shadow-sm"
+                className="bg-background text-foreground w-full rounded-md border px-3 py-2 text-sm shadow-sm"
               />
             </div>
 

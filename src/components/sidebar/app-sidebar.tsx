@@ -1,10 +1,10 @@
 'use client'
 
-import * as Icons from 'lucide-react'; // importa todos os ícones
-import { LucideIcon } from 'lucide-react';
-import * as React from 'react';
+import * as Icons from 'lucide-react' // importa todos os ícones
+import { LucideIcon } from 'lucide-react'
+import * as React from 'react'
 
-import { NavUser } from '../nav-user';
+import { NavUser } from '../nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -12,18 +12,16 @@ import {
   SidebarGroup,
   SidebarHeader,
   SidebarRail
-} from '../ui/sidebar';
-import { NavMain } from './nav-main';
-import { RoutesLink } from './route-links';
-
-
+} from '../ui/sidebar'
+import { NavMain } from './nav-main'
+import { RoutesLink } from './route-links'
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: {
     name: string
     email: string
     cargo: string
-  },
+  }
   listMenu: RoutesLink[]
 }
 
@@ -32,15 +30,11 @@ function getLucideIcon(name: string): LucideIcon | undefined {
   return Icons[name as keyof typeof Icons] as LucideIcon | undefined
 }
 
-
-
-export function AppSidebar({ user ,listMenu, ...props }: AppSidebarProps) {
-
-
+export function AppSidebar({ user, listMenu, ...props }: AppSidebarProps) {
   const items = listMenu.map((link) => ({
     title: link.title,
     url: link.url,
-    icon: getLucideIcon(link.icon), // Pass the icon name as a string
+    icon: getLucideIcon(link.icon) // Pass the icon name as a string
   }))
 
   return (
@@ -58,7 +52,7 @@ export function AppSidebar({ user ,listMenu, ...props }: AppSidebarProps) {
       <SidebarContent>
         <NavMain items={items} />
         <SidebarGroup>
-      {/* <SidebarMenu>
+          {/* <SidebarMenu>
         {listMenu.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild tooltip={item.title}>
@@ -70,7 +64,7 @@ export function AppSidebar({ user ,listMenu, ...props }: AppSidebarProps) {
           </SidebarMenuItem>
         ))}
       </SidebarMenu> */}
-    </SidebarGroup>
+        </SidebarGroup>
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

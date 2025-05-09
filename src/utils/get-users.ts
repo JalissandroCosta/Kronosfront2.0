@@ -23,7 +23,6 @@ export async function getUser() {
 
   const decode = jwt.decode(data.value) as IUser
 
-
   return {
     ...decode,
     token: data.value

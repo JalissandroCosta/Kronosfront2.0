@@ -30,7 +30,7 @@ export const PecentualCard = (props: PecentualCardProps) => {
         </CardTitle> */}
 
         {props.percentual && (
-          <CardAction className="absolute bottom-1 right-1">
+          <CardAction className="absolute right-1 bottom-1">
             <Badge
               variant="outline"
               className={`${
@@ -49,9 +49,9 @@ export const PecentualCard = (props: PecentualCardProps) => {
           </CardAction>
         )}
       </CardHeader>
-      <CardContent className="text-4xl font-semibold  text-center">
-      {props.data}
-      {props.capacidade && `/${props.capacidade}`}
+      <CardContent className="text-center text-4xl font-semibold">
+        {props.data}
+        {props.capacidade && `/${props.capacidade}`}
       </CardContent>
     </Card>
   )

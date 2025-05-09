@@ -9,18 +9,20 @@ import {
 } from '@/actions/prisioner'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-
 type addPrisionerProps = Prisioner & {
   celaId: string
   infractions: string[]
 }
 
-const addPrisioner = async (data:addPrisionerProps) => {
-  const {  celaId, infractions ,...rest } = data
-  const {detento }:CreateDetentoResponse = await POSTPrisioner(rest)
+const addPrisioner = async (data: addPrisionerProps) => {
+  const { celaId, infractions, ...rest } = data
+  const { detento }: CreateDetentoResponse = await POSTPrisioner(rest)
   infractions.map(async (infracao) => await POSTInfracao(detento.id, infracao))
-  const alocacao:CreateAlocacaoResponse = await POSTPrisionerAlocation(celaId,detento.id)
- 
+  const alocacao: CreateAlocacaoResponse = await POSTPrisionerAlocation(
+    celaId,
+    detento.id
+  )
+
   return detento
 }
 

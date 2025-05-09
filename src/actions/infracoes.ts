@@ -36,13 +36,13 @@ const handleRequest = async (
 
 export async function POSTInfracao(detentoId: string, descricao: string) {
   const { token } = await getUser()
-  
+
   try {
     const { data } = await api.post(
       'infringement/',
       {
-       detentoId,
-       descricao
+        detentoId,
+        descricao
       },
       {
         headers: {
@@ -52,10 +52,8 @@ export async function POSTInfracao(detentoId: string, descricao: string) {
         }
       }
     )
-   
 
     return data
-    
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
@@ -76,7 +74,3 @@ export async function POSTInfracao(detentoId: string, descricao: string) {
 
 //   return await handleRequest('cell/', token, 'GET CELAS')
 // }
-
-
-
-

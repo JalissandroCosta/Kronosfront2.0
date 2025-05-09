@@ -8,8 +8,6 @@ import Link from 'next/link'
 export default async function GerenciamentoCelasScreen() {
   const celas = await getAllCelas()
 
-
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col space-y-4">

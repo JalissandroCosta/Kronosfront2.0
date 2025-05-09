@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react'
 import {
   Form,
   Input,
@@ -14,91 +14,93 @@ import {
   Row,
   Col,
   DatePicker,
-  notification,
-} from 'antd';
-import type { FormProps } from 'antd';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import moment from 'moment';
+  notification
+} from 'antd'
+import type { FormProps } from 'antd'
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+import moment from 'moment'
 
 type Visitor = {
-  id: string;
-  name: string;
-  document: string;
-  prisonerName: string;
-  prisonerId: string;
-  isLawyer: boolean;
-  isRelative: boolean;
-  relationship?: string;
-  visitDate: string;
-  status: 'pending' | 'approved' | 'rejected';
-};
+  id: string
+  name: string
+  document: string
+  prisonerName: string
+  prisonerId: string
+  isLawyer: boolean
+  isRelative: boolean
+  relationship?: string
+  visitDate: string
+  status: 'pending' | 'approved' | 'rejected'
+}
 
-const { Option } = Select;
+const { Option } = Select
 
 const VisitorManagement: React.FC = () => {
-  const [form] = Form.useForm();
-  const [visitors, setVisitors] = useState<Visitor[]>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentVisitor, setCurrentVisitor] = useState<Visitor | null>(null);
-  const [searchText, setSearchText] = useState('');
+  const [form] = Form.useForm()
+  const [visitors, setVisitors] = useState<Visitor[]>([])
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [currentVisitor, setCurrentVisitor] = useState<Visitor | null>(null)
+  const [searchText, setSearchText] = useState('')
 
   // handlers
-  const openForm = () => setIsModalVisible(true);
+  const openForm = () => setIsModalVisible(true)
   const closeForm = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
+    form.resetFields()
+    setIsModalVisible(false)
+  }
 
   const onFinish: FormProps<Visitor>['onFinish'] = (values) => {
     const newVisitor: Visitor = {
       ...values,
       id: Date.now().toString(),
       visitDate: moment(values.visitDate).toISOString(),
-      status: 'pending',
-    };
-    setVisitors((prev) => [...prev, newVisitor]);
-    closeForm();
-    notification.success({ message: 'Visitante registrado com sucesso' });
-  };
+      status: 'pending'
+    }
+    setVisitors((prev) => [...prev, newVisitor])
+    closeForm()
+    notification.success({ message: 'Visitante registrado com sucesso' })
+  }
 
   const handleApprove = (id: string) => {
     setVisitors((prev) =>
       prev.map((v) => (v.id === id ? { ...v, status: 'approved' } : v))
-    );
-    notification.success({ message: 'Visita aprovada' });
-  };
+    )
+    notification.success({ message: 'Visita aprovada' })
+  }
 
   const handleReject = (id: string) => {
     setVisitors((prev) =>
       prev.map((v) => (v.id === id ? { ...v, status: 'rejected' } : v))
-    );
-    notification.error({ message: 'Visita rejeitada' });
-  };
+    )
+    notification.error({ message: 'Visita rejeitada' })
+  }
 
   const showDetails = (visitor: Visitor) => {
-    setCurrentVisitor(visitor);
-    notification.info({ message: 'Exibindo detalhes do visitante' });
-  };
+    setCurrentVisitor(visitor)
+    notification.info({ message: 'Exibindo detalhes do visitante' })
+  }
 
   const filteredData = useMemo(() => {
-    return visitors.filter((v) =>
-      v.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      v.prisonerName.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [visitors, searchText]);
+    return visitors.filter(
+      (v) =>
+        v.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        v.prisonerName.toLowerCase().includes(searchText.toLowerCase())
+    )
+  }, [visitors, searchText])
 
   const columns = [
     {
       title: 'Nome Visitante',
       dataIndex: 'name',
       key: 'name',
-      sorter: (a: Visitor, b: Visitor) => a.name.localeCompare(b.name),
+      sorter: (a: Visitor, b: Visitor) => a.name.localeCompare(b.name)
     },
     {
       title: 'Nome Preso',
       dataIndex: 'prisonerName',
       key: 'prisonerName',
-      sorter: (a: Visitor, b: Visitor) => a.prisonerName.localeCompare(b.prisonerName),
+      sorter: (a: Visitor, b: Visitor) =>
+        a.prisonerName.localeCompare(b.prisonerName)
     },
     {
       title: 'Data Visita',
@@ -106,16 +108,19 @@ const VisitorManagement: React.FC = () => {
       key: 'visitDate',
       render: (date: string) => moment(date).format('DD/MM/YYYY HH:mm'),
       sorter: (a: Visitor, b: Visitor) =>
-        moment(a.visitDate).unix() - moment(b.visitDate).unix(),
+        moment(a.visitDate).unix() - moment(b.visitDate).unix()
     },
     {
       title: 'Tipo',
       key: 'type',
       filters: [
         { text: 'Advogado', value: 'lawyer' },
-        { text: 'Familiar', value: 'relative' },
+        { text: 'Familiar', value: 'relative' }
       ],
-      onFilter: (value: string | number | boolean | React.Key, record: Visitor) =>
+      onFilter: (
+        value: string | number | boolean | React.Key,
+        record: Visitor
+      ) =>
         (value === 'lawyer' && record.isLawyer) ||
         (value === 'relative' && record.isRelative),
       render: (_: any, record: Visitor) => (
@@ -125,7 +130,7 @@ const VisitorManagement: React.FC = () => {
             <Tag color="green">Familiar ({record.relationship})</Tag>
           )}
         </>
-      ),
+      )
     },
     {
       title: 'Status',
@@ -134,7 +139,7 @@ const VisitorManagement: React.FC = () => {
       filters: [
         { text: 'Pendente', value: 'pending' },
         { text: 'Aprovado', value: 'approved' },
-        { text: 'Rejeitado', value: 'rejected' },
+        { text: 'Rejeitado', value: 'rejected' }
       ],
       onFilter: (value: string | number | boolean, record: Visitor) =>
         record.status === value,
@@ -143,10 +148,10 @@ const VisitorManagement: React.FC = () => {
           status === 'approved'
             ? 'green'
             : status === 'rejected'
-            ? 'red'
-            : 'orange';
-        return <Tag color={color}>{status.toUpperCase()}</Tag>;
-      },
+              ? 'red'
+              : 'orange'
+        return <Tag color={color}>{status.toUpperCase()}</Tag>
+      }
     },
     {
       title: 'Ações',
@@ -158,10 +163,7 @@ const VisitorManagement: React.FC = () => {
           </Button>
           {record.status === 'pending' && (
             <>
-              <Button
-                type="link"
-                onClick={() => handleApprove(record.id)}
-              >
+              <Button type="link" onClick={() => handleApprove(record.id)}>
                 Aprovar
               </Button>
               <Button
@@ -174,9 +176,9 @@ const VisitorManagement: React.FC = () => {
             </>
           )}
         </Space>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   return (
     <div className="visitor-management">
@@ -203,7 +205,7 @@ const VisitorManagement: React.FC = () => {
         pagination={{ pageSize: 5 }}
         scroll={{ x: 'max-content' }}
         onRow={(record) => ({
-          onClick: () => showDetails(record),
+          onClick: () => showDetails(record)
         })}
       />
 
@@ -222,9 +224,7 @@ const VisitorManagement: React.FC = () => {
           <Form.Item
             label="Nome do Visitante"
             name="name"
-            rules={[
-              { required: true, message: 'Insira o nome do visitante' },
-            ]}
+            rules={[{ required: true, message: 'Insira o nome do visitante' }]}
           >
             <Input placeholder="Nome completo" />
           </Form.Item>
@@ -232,9 +232,7 @@ const VisitorManagement: React.FC = () => {
           <Form.Item
             label="Documento"
             name="document"
-            rules={[
-              { required: true, message: 'Insira o documento' },
-            ]}
+            rules={[{ required: true, message: 'Insira o documento' }]}
           >
             <Input placeholder="CPF ou RG" />
           </Form.Item>
@@ -242,9 +240,7 @@ const VisitorManagement: React.FC = () => {
           <Form.Item
             label="Nome do Preso"
             name="prisonerName"
-            rules={[
-              { required: true, message: 'Insira o nome do preso' },
-            ]}
+            rules={[{ required: true, message: 'Insira o nome do preso' }]}
           >
             <Input placeholder="Nome completo" />
           </Form.Item>
@@ -252,9 +248,7 @@ const VisitorManagement: React.FC = () => {
           <Form.Item
             label="ID do Preso"
             name="prisonerId"
-            rules={[
-              { required: true, message: 'Insira o ID do preso' },
-            ]}
+            rules={[{ required: true, message: 'Insira o ID do preso' }]}
           >
             <Input placeholder="Número de registro" />
           </Form.Item>
@@ -262,14 +256,9 @@ const VisitorManagement: React.FC = () => {
           <Form.Item
             label="Data e Hora da Visita"
             name="visitDate"
-            rules={[
-              { required: true, message: 'Selecione data e hora' },
-            ]}
+            rules={[{ required: true, message: 'Selecione data e hora' }]}
           >
-            <DatePicker
-              showTime
-              style={{ width: '100%' }}
-            />
+            <DatePicker showTime style={{ width: '100%' }} />
           </Form.Item>
 
           <Form.Item name="isLawyer" valuePropName="checked">
@@ -290,7 +279,7 @@ const VisitorManagement: React.FC = () => {
                   label="Grau Parentesco"
                   name="relationship"
                   rules={[
-                    { required: true, message: 'Especifique o parentesco' },
+                    { required: true, message: 'Especifique o parentesco' }
                   ]}
                 >
                   <Select placeholder="Selecione">
@@ -321,18 +310,33 @@ const VisitorManagement: React.FC = () => {
       >
         {currentVisitor && (
           <Card variant="outlined">
-            <p><strong>Nome:</strong> {currentVisitor.name}</p>
-            <p><strong>Documento:</strong> {currentVisitor.document}</p>
-            <p><strong>Preso:</strong> {currentVisitor.prisonerName}</p>
-            <p><strong>ID Preso:</strong> {currentVisitor.prisonerId}</p>
-            <p><strong>Data Visita:</strong>{' '}
+            <p>
+              <strong>Nome:</strong> {currentVisitor.name}
+            </p>
+            <p>
+              <strong>Documento:</strong> {currentVisitor.document}
+            </p>
+            <p>
+              <strong>Preso:</strong> {currentVisitor.prisonerName}
+            </p>
+            <p>
+              <strong>ID Preso:</strong> {currentVisitor.prisonerId}
+            </p>
+            <p>
+              <strong>Data Visita:</strong>{' '}
               {moment(currentVisitor.visitDate).format('DD/MM/YYYY HH:mm')}
             </p>
-            <p><strong>Status:</strong>{' '}
-              <Tag color={
-                currentVisitor.status === 'approved' ? 'green' :
-                currentVisitor.status === 'rejected' ? 'red' : 'orange'
-              }>
+            <p>
+              <strong>Status:</strong>{' '}
+              <Tag
+                color={
+                  currentVisitor.status === 'approved'
+                    ? 'green'
+                    : currentVisitor.status === 'rejected'
+                      ? 'red'
+                      : 'orange'
+                }
+              >
                 {currentVisitor.status.toUpperCase()}
               </Tag>
             </p>
@@ -340,7 +344,7 @@ const VisitorManagement: React.FC = () => {
         )}
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default VisitorManagement;
+export default VisitorManagement
