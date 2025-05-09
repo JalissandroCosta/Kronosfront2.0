@@ -9,10 +9,11 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { Prisioner } from '@/@types'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { useEffect } from 'react'
+import * as z from 'zod'
 
 const formDataSchema = z.object({
   id: z.string(),
@@ -31,7 +32,8 @@ const formDataSchema = z.object({
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  infractions: z.array(z.string()).optional()
+  infractions: z.array(z.string()).optional(),
+  celaId: z.string()
 })
 
 type EditPrisionerProps = BaseDialogProps & {
@@ -47,7 +49,13 @@ type EditPrisionerProps = BaseDialogProps & {
     createdAt: string
     updatedAt: string
     infractions?: string[]
+    celaId: string
   }
+}
+
+type editePrisionerProps = Prisioner & {
+  celaId: string
+  infractions: string[]
 }
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
@@ -58,6 +66,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       ...props.data,
+      celaId:"1",
       idade: Number(props.data.idade) || 0,
       infractions: props.data.infractions || []
     }
@@ -66,8 +75,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   useEffect(() => {
     methods.reset({
       ...props.data,
-      idade: Number(props.data.idade),
-      infractions: props.data.infractions || []
+      idade: Number(props.data.idade)
     })
   }, [props.data, methods])
 
@@ -113,23 +121,29 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                   {methods.watch('nome')?.substring(0, 2)}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
-                <InputField name="id" label="ID" disabled />
+              <div className="flex gap-3">
+                {/* <InputField name="id" label="ID" disabled /> */}
+                 <InputField name="cpf" label="CPF" />
+                 <InputField name="idade" label="Idade" />
               </div>
             </div>
 
             <InputField name="nome" label="Nome" />
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
               <SelectionField
                 label="Estado Civil"
                 name="estadoCivil"
                 list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
               />
-              <InputField name="cpf" label="CPF" />
-              <InputField name="idade" label="Idade" type="number" />
+            <InputField name="filiacao" label="Filiação" className='col-span-2'/>
+             <SelectionField
+                placeholder="Selecione a cela"
+                label="Cela"
+                name="celaId"
+                list={["1","2","3"]}
+              />
             </div>
 
-            <InputField name="filiacao" label="Filiação" />
 
             {/* FOTO COM VALIDAÇÃO */}
             <div>
@@ -156,18 +170,6 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
               )}
             </div>
 
-            {/* INFRAÇÕES - APENAS VISUALIZAÇÃO */}
-            <div>
-              <label className="mb-1 block text-sm font-medium">
-                Crimes Cometidos
-              </label>
-              <input
-                type="text"
-                readOnly
-                value={methods.watch('infractions')?.join(', ') || ''}
-                className="bg-background text-foreground w-full rounded-md border px-3 py-2 text-sm shadow-sm"
-              />
-            </div>
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit">Salvar</Button>

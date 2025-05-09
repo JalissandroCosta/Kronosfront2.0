@@ -35,7 +35,13 @@ const handleRequest = async (
   }
 }
 
-export async function getAllPrisioners(): Promise<Prisioner[]> {
+type getAllPrisonerModelResponse = Array<
+  Prisioner & {
+    alocacoes: Alocacao[]
+  }
+>
+
+export async function getAllPrisioners(): Promise<getAllPrisonerModelResponse> {
   const { token } = await getUser()
 
   const response = await handleRequest('prisoner/', token, 'GET PRISIONERS')

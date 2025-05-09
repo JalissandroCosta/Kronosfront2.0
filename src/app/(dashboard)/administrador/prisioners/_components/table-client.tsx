@@ -11,17 +11,8 @@ type TableClientProps = {
   setOpen?: (open: boolean) => void
 }
 
-type celasDisponiveis = {
-  id: string
-  numero: number
-  capacidade: number
-  pavilhao: string
-  alocacoes: Array<any>
-}
 
 export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
-  // const allCells:celasDisponiveis[] = await getAllCelas()
-  // const celasDisponiveis:celasDisponiveis[] = allCells.filter((celas) => celas.alocacoes.length < celas.capacidade)
 
   return (
     <DataTable
