@@ -175,6 +175,13 @@ export function verificarTrending(
   dados: DadosMensais[],
   chave: 'visita' | 'detento'
 ): VerificarTrendingProps {
+  if (dados.length < 2) {
+    return {
+      direcao: 'estável',
+      valorFormatado: '0.0'
+    }
+  }
+
   const penultimo = dados[dados.length - 2][chave]
   const ultimo = dados[dados.length - 1][chave]
 
