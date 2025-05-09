@@ -32,7 +32,7 @@ export const AddUserDialog = (props: BaseDialogProps) => {
       nome: '',
       cpf: '',
       cargo: '',
-      senha: 'Solteiro'
+      senha: ''
     }
   })
 
@@ -70,12 +70,12 @@ export const AddUserDialog = (props: BaseDialogProps) => {
           >
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-4 gap-3">
                   <InputField
                     name="cpf"
                     label="CPF"
                     placeholder="Insira o CPF"
-                    className=""
+                    className="col-span-3"
                     maxLength={14}
                     required
                     onChange={(e) => {
@@ -96,19 +96,36 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                       methods.setValue('cpf', e.target.value)
                     }}
                   />
-                  <SelectionField
+                 
+                   <SelectionField
                     placeholder="Selecione o cargo"
                     label="Cargo"
                     name="cargo"
                     list={['ADM', 'INSP', 'DIR']}
                   />
                 </div>
-                <div className="p-2">
+                <div className="pt-3 grid grid-cols-4 gap-3">
                   <InputField
                     name="nome"
                     label="Nome"
                     placeholder="Insira o Nome"
-                    className=""
+                    className="col-span-4"
+                  />
+               
+                </div>
+                 <div className="pt-3 grid grid-cols-4 gap-3">
+                  <InputField
+                    name="senha"
+                    label="Senha"
+                    placeholder="Insira o senha"
+                    className="col-span-3"
+                    type='password'
+                  />
+                   <SelectionField
+                    placeholder="Selecione o Nivel"
+                    label="Nivel"
+                    name="nivelPermissao"
+                    list={['1', '2', '3','4','5','6','7','8','9','10']}
                   />
                 </div>
                 {/* <div className="p-2">
