@@ -1,12 +1,13 @@
+"use client"
 import { Cela } from '@/@types'
-import { getAllCelas } from '@/actions/celas'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useCellData } from '@/hooks/celas/useCelasData'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default async function GerenciamentoCelasScreen() {
-  const celas = await getAllCelas()
+export default  function GerenciamentoCelasScreen() {
+  const {data} = useCellData()
 
   return (
     <div className="container mx-auto p-4">
@@ -79,7 +80,7 @@ export default async function GerenciamentoCelasScreen() {
 
         {/* Grid de Celas */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {celas.map((cela: Cela) => (
+          {(data ?? []).map((cela: Cela) => (
             <Card key={cela.id} className="transition-shadow hover:shadow-lg">
               <CardHeader>
                 <div className="flex justify-between">
