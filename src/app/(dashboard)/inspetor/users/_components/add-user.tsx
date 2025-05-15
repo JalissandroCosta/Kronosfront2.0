@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
 import { InputField } from '@/components/ui/fields/field'
-import { SelectionField } from '@/components/ui/select/field-selection'
 import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
@@ -59,24 +58,24 @@ export const AddUserDialog = (props: BaseDialogProps) => {
   })
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    AddPrisionerMutate.mutate(
-      { ...data, idade: Number(data.idade) },
-      {
-        onSuccess: () => {
-          props.setOpen?.(false)
-          success({
-            title: 'Usuário adicionado com sucesso',
-            description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
-          })
-        },
-        onError: () => {
-          warning({
-            title: 'Erro ao adicionar prisioneiro',
-            description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-          })
-        }
-      }
-    )
+    // AddPrisionerMutate.mutate(
+    //   { ...data, idade: Number(data.idade) },
+    //   {
+    //     onSuccess: () => {
+    //       props.setOpen?.(false)
+    //       success({
+    //         title: 'Usuário adicionado com sucesso',
+    //         description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+    //       })
+    //     },
+    //     onError: () => {
+    //       warning({
+    //         title: 'Erro ao adicionar prisioneiro',
+    //         description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+    //       })
+    //     }
+    //   }
+    // )
   }
 
   return (

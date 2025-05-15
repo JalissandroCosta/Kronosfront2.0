@@ -1,14 +1,9 @@
-import { getAllPrisioners } from '@/actions/prisioner'
-import { getAllVisitas } from '@/actions/visitas'
-import { ChartBar } from '@/components/chart-bar'
-import { SectionCards } from '@/components/section-cards'
-import {
-  contarPrisioneirosPorMes,
-  contarVisitasPorMes,
-  getTop6DetentosMaisVisitados,
-  mesclarDados
-} from '@/utils/functions'
-import { BarCharVisitarPresoComponent } from '../_componets/bar-char-vistas-por-preso'
+import { getAllPrisioners } from "@/actions/prisioner"
+import { getAllVisitas } from "@/actions/visitas"
+import { ChartBar } from "@/components/chart-bar"
+import { SectionCards } from "@/components/section-cards"
+import { contarPrisioneirosPorMes, contarVisitasPorMes, getTop6DetentosMaisVisitados, mesclarDados } from "@/utils/functions"
+import { BarCharVisitarPresoComponent } from "../_componets/bar-char-vistas-por-preso"
 
 export default async function Page() {
   const [prisioneiros, visitas] = await Promise.all([

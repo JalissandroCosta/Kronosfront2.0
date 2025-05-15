@@ -105,7 +105,7 @@ export default async function GerenciamentoCelasScreen() {
               </CardHeader>
               <CardContent>
                 <Link
-                  href={`/dashboard/celas/${cela.id}`}
+                  href={`celas/${cela.id}`}
                   className="flex h-full flex-col items-center justify-center rounded-lg bg-blue-500 p-3 text-white transition-colors hover:bg-blue-600"
                 >
                   Gerenciamento

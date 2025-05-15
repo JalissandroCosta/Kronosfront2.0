@@ -7,9 +7,12 @@ import { InputField } from '@/components/ui/fields/field'
 import { SelectionField } from '@/components/ui/select/field-selection'
 import { useToast } from '@/hooks/use-toast'
 
-import { FormProvider, useForm } from 'react-hook-form'
+import { Cela } from '@/@types'
+import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 // Esquema de validação
@@ -36,12 +39,27 @@ const formDataSchema = z.object({
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  infractions: z.array(z.string()).optional()
+  infractions: z.array(z.string()),
+  celaId: z.string()
 })
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
+  const [celas, setCelas] = useState<Cela[]>([])
   const { success, warning } = useToast()
   const { AddPrisionerMutate } = usePrisionerMutate()
+
+  useEffect(() => {
+    const fetchCelas = async () => {
+      const todasAsCelas = await getAllCelas()
+      const celasFiltradas = todasAsCelas.filter(
+        (cela) => cela.alocacoes.length < cela.capacidade
+      )
+
+      setCelas(celasFiltradas)
+    }
+
+    fetchCelas()
+  }, [setCelas])
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
@@ -69,6 +87,20 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
           success({
             title: 'Usuário adicionado com sucesso',
             description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+          })
+          methods.reset({
+            id: '',
+            nome: '',
+            idade: '',
+            cpf: '',
+            filiacao: '',
+            estadoCivil: 'Solteiro',
+            foto: '',
+            reincidencia: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            infractions: [],
+            celaId: ''
           })
         },
         onError: () => {
@@ -138,7 +170,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
 
             <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
 
-            <div className="grid grid-cols-2">
+            <div className="grid w-full grid-cols-3 items-center justify-center gap-3">
               <SelectionField
                 label="Estado Civil"
                 name="estadoCivil"
@@ -148,6 +180,12 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                 name="filiacao"
                 label="Filiação"
                 placeholder="Insira a Filiação"
+              />
+              <SelectionField
+                placeholder="Selecione a cela"
+                label="Celas"
+                name="celaId"
+                list={celas}
               />
             </div>
 
@@ -189,31 +227,32 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               </div>
             </div>
 
-            {/* FOTO COM VALIDAÇÃO */}
-            <div>
-              <label className="block text-sm font-medium">Foto</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                      methods.setValue('foto', reader.result as string)
+            <div className="flex w-full flex-row justify-between gap-4">
+              {/* FOTO COM VALIDAÇÃO */}
+              <div>
+                <label className="block text-sm font-medium">Foto</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0]
+                    if (file) {
+                      const reader = new FileReader()
+                      reader.onload = () => {
+                        methods.setValue('foto', reader.result as string)
+                      }
+                      reader.readAsDataURL(file)
                     }
-                    reader.readAsDataURL(file)
-                  }
-                }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-              />
-              {methods.formState.errors.foto && (
-                <p className="mt-1 text-sm text-red-500">
-                  {methods.formState.errors.foto.message}
-                </p>
-              )}
+                  }}
+                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+                />
+                {methods.formState.errors.foto && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {methods.formState.errors.foto.message}
+                  </p>
+                )}
+              </div>
             </div>
-
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">
                 Salvar
