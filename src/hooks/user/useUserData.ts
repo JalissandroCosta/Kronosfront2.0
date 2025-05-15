@@ -1,7 +1,7 @@
 import { getAllUser } from '@/actions/user'
 import { useQuery } from '@tanstack/react-query'
 
-const fetchPrisionerData = async () => {
+const fetchUserData = async () => {
   try {
     const users = await getAllUser()
     return users
@@ -13,7 +13,7 @@ const fetchPrisionerData = async () => {
 export function useUserData() {
   const query = useQuery({
     queryKey: ['users'],
-    queryFn: fetchPrisionerData!,
+    queryFn: fetchUserData!,
     refetchInterval: 1000 * 60 * 5 // 5 minutes
   })
 

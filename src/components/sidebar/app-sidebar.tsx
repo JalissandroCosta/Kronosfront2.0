@@ -1,7 +1,7 @@
 'use client'
 
-import { Grid2X2, Settings2, User2, Users2 } from 'lucide-react'
-
+import * as Icons from 'lucide-react' // importa todos os ícones
+import { LucideIcon } from 'lucide-react'
 import * as React from 'react'
 
 import { NavUser } from '../nav-user'
@@ -9,39 +9,12 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
   SidebarHeader,
   SidebarRail
 } from '../ui/sidebar'
 import { NavMain } from './nav-main'
-
-const Menu = [
-  {
-    title: 'Painel',
-    url: '/dashboard',
-    icon: Settings2
-  },
-  {
-    title: 'Prisioneiros',
-    url: '/dashboard/prisioners',
-    icon: Users2,
-    isActive: true
-  },
-  {
-    title: 'Usuários',
-    url: '/dashboard/users',
-    icon: User2
-  },
-  {
-    title: 'Celas',
-    url: '/dashboard/celas',
-    icon: Grid2X2
-  },
-  {
-    title: 'Visitas',
-    url: '/dashboard/visitas',
-    icon: Users2
-  }
-]
+import { RoutesLink } from './route-links'
 
 type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
   user: {
@@ -49,9 +22,21 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
     email: string
     cargo: string
   }
+  listMenu: RoutesLink[]
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+// Função auxiliar segura
+function getLucideIcon(name: string): LucideIcon | undefined {
+  return Icons[name as keyof typeof Icons] as LucideIcon | undefined
+}
+
+export function AppSidebar({ user, listMenu, ...props }: AppSidebarProps) {
+  const items = listMenu.map((link) => ({
+    title: link.title,
+    url: link.url,
+    icon: getLucideIcon(link.icon) // Pass the icon name as a string
+  }))
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -65,7 +50,21 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={Menu} />
+        <NavMain items={items} />
+        <SidebarGroup>
+          {/* <SidebarMenu>
+        {listMenu.map((item) => (
+          <SidebarMenuItem key={item.title}>
+            <SidebarMenuButton asChild tooltip={item.title}>
+              <a href={item.url} className="flex items-center gap-2">
+                {item.icon && <item.icon className="h-4 w-4" />}
+                <span>{item.title}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        ))}
+      </SidebarMenu> */}
+        </SidebarGroup>
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

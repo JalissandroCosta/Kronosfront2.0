@@ -52,11 +52,12 @@ export async function handleLogin(cpf: string, senha: string) {
 
     // Extraindo o "role" do token (se existir) para definir o tipo de usuário
     const payload = JSON.parse(atob(data.token.split('.')[1]))
-    // const userRole = payload?.tipo
+    const userRole = payload?.cargo
 
     return {
       auth: true,
-      message: 'Login realizado com sucesso'
+      message: 'Login realizado com sucesso',
+      userRole
     }
   } catch (error) {
     return handleAuthError(error as AxiosError)

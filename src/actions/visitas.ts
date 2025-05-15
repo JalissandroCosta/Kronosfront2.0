@@ -38,5 +38,7 @@ const handleRequest = async (
 export async function getAllVisitas(): Promise<Visita[]> {
   const { token } = await getUser()
 
+  const response = await handleRequest('visits/', token, 'GET VISITAS')
+
   return await handleRequest('visits/', token, 'GET VISITAS')
 }

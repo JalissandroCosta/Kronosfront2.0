@@ -175,6 +175,13 @@ export function verificarTrending(
   dados: DadosMensais[],
   chave: 'visita' | 'detento'
 ): VerificarTrendingProps {
+  if (dados.length < 2) {
+    return {
+      direcao: 'estável',
+      valorFormatado: '0.0'
+    }
+  }
+
   const penultimo = dados[dados.length - 2][chave]
   const ultimo = dados[dados.length - 1][chave]
 
@@ -186,8 +193,7 @@ export function verificarTrending(
   return { direcao, valorFormatado }
 }
 
-function resumeName(name:string){
-
+function resumeName(name: string) {
   const partes = name.split(' ')
   if (partes.length > 2) {
     return partes[0] + ' ' + partes[1]
@@ -197,7 +203,6 @@ function resumeName(name:string){
     return partes[0]
   }
 }
-
 
 export function getTop6DetentosMaisVisitados(visitas: Visita[]) {
   const contador = new Map<
@@ -211,7 +216,7 @@ export function getTop6DetentosMaisVisitados(visitas: Visita[]) {
       contador.set(detentoId, {
         visitas: 1,
         preso: resumeName(detento.nome),
-        foto: detento.foto,
+        foto: detento.foto
       })
     } else {
       contador.get(detentoId)!.visitas++
@@ -225,9 +230,8 @@ export function getTop6DetentosMaisVisitados(visitas: Visita[]) {
       detentoId,
       preso: data.preso,
       visitas: data.visitas,
-      foto: data.foto,
+      foto: data.foto
     }))
 
   return ordenados
 }
-

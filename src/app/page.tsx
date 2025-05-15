@@ -23,6 +23,7 @@ import { useState } from 'react'
 type handleLoginProps = {
   auth: boolean
   message?: string
+  userRole?: string
 }
 
 export default function LoginScreen() {
@@ -49,7 +50,12 @@ export default function LoginScreen() {
     success({
       title: 'Usuário Autenticado com Sucesso'
     })
-    router.push('/dashboard')
+
+    if (response.userRole === 'ADM') router.push('/administrador')
+    if (response.userRole === 'INSP') router.push('/inspetor')
+    if (response.userRole === 'DIR') router.push('/diretor')
+    // if (response.tipo === 'R') router.push('/responsavel')
+    // router.push('/dashboard')
   }
 
   return (

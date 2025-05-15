@@ -1,7 +1,8 @@
 import { Prisioner, Visita } from '@/@types/index'
+import { getAllCelas } from '@/actions/celas'
 import { getAllPrisioners } from '@/actions/prisioner'
 import { getAllVisitas } from '@/actions/visitas'
-import { PecentualCard } from '@/app/dashboard/_componets/cardpercetual'
+import { PecentualCard } from '@/app/(dashboard)/_componets/cardpercetual'
 import { verificarTrending } from '@/utils/functions'
 
 type SectionCardsProps = {
@@ -12,6 +13,7 @@ type SectionCardsProps = {
   }[]
 }
 export async function SectionCards({ data }: SectionCardsProps) {
+  const celas = await getAllCelas()
   const AllPresioneiros: Prisioner[] = await getAllPrisioners()
   const AllVisitas: Visita[] = await getAllVisitas()
   const visitas = verificarTrending(data, 'visita')
@@ -34,14 +36,14 @@ export async function SectionCards({ data }: SectionCardsProps) {
       <PecentualCard
         data={AllPresioneiros.length}
         title={'Capacidade da Prisão'}
-        capacidade={900}
+        capacidade={celas.length * 10 }
         direction={detentos?.direcao}
         percentual={detentos?.valorFormatado}
       />
 
       <PecentualCard
         data={AllPresioneiros.length}
-        title={'Total de Funcionarios'}     
+        title={'Total de Funcionarios'}
       />
     </div>
   )
