@@ -15,8 +15,6 @@ const fetchPrisionerCellData = async ({
   }
 }
 
-
-
 export function usePrisionerCellData(id: string) {
   const query = useQuery({
     queryKey: ['prisioners-celas', id],

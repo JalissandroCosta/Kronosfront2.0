@@ -32,10 +32,9 @@ export default function CelaIDPage({
 
   return (
     <div>
-      <div className='flex gap-4 mb-2'>
-
-      <ButtonBack/>
-      <h1 className="text-2xl font-bold">Cela Nº - {cela?.numero}</h1>
+      <div className="mb-2 flex gap-4">
+        <ButtonBack />
+        <h1 className="text-2xl font-bold">Cela Nº - {cela?.numero}</h1>
       </div>
       <p className="text-muted-foreground text-sm">
         Aqui você pode visualizar os detalhes da cela.

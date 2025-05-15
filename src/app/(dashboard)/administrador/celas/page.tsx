@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { Cela } from '@/@types'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -6,8 +6,8 @@ import { useCellData } from '@/hooks/celas/useCelasData'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default  function GerenciamentoCelasScreen() {
-  const {data} = useCellData()
+export default function GerenciamentoCelasScreen() {
+  const { data } = useCellData()
 
   return (
     <div className="container mx-auto p-4">

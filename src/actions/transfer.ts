@@ -4,15 +4,17 @@ import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
 
-
-export async function POSTTransferPrisioner( detentoId: string,celaDestinoId: string) {
+export async function POSTTransferPrisioner(
+  detentoId: string,
+  celaDestinoId: string
+) {
   const { token } = await getUser()
 
   try {
     const { data } = await api.post(
       'transfer/',
       {
-       detentoId,
+        detentoId,
         celaDestinoId
       },
       {
@@ -39,5 +41,3 @@ export async function POSTTransferPrisioner( detentoId: string,celaDestinoId: st
     throw new Error('POST TRANSFERENCIA DE PRISIONEIRO.')
   }
 }
-
-

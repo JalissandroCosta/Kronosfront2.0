@@ -10,8 +10,6 @@ const fetchCellData = async () => {
   }
 }
 
-
-
 export function useCellData() {
   const query = useQuery({
     queryKey: ['celas'],

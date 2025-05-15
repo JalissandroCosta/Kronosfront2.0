@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import { useHandleBack } from '@/hooks/use-router'
 
-
 import { ChevronLeft } from 'lucide-react'
 
 export const ButtonBack = () => {
@@ -16,7 +15,7 @@ export const ButtonBack = () => {
       className="border-none"
       size={'sm'}
     >
-      <ChevronLeft /> 
+      <ChevronLeft />
     </Button>
   )
 }

@@ -2,7 +2,6 @@
 
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -27,7 +26,7 @@ import { Input } from '../ui/input'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  search?: string
+  search?: boolean
   placeholderSearch?: string
   data: TData[]
   button?: ReactNode
@@ -41,7 +40,8 @@ export function DataTable<TData, TValue>({
   placeholderSearch
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [globalFilter, setGlobalFilter] = useState('')
+
   const table = useReactTable({
     data,
     columns,
@@ -49,11 +49,12 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: 'includesString',
     state: {
       sorting,
-      columnFilters
+      globalFilter
     },
     initialState: {
       pagination: {
@@ -64,18 +65,14 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      {/* Ações ( adicicionar, excluir, filtro, voltar.....) */}
+      {/* Ações (adicionar, excluir, filtro, voltar...) */}
       <div className="flex w-full items-center justify-between py-4">
         {search && (
           <div className="flex w-full items-start py-4">
             <Input
-              placeholder={placeholderSearch}
-              value={
-                (table.getColumn(search)?.getFilterValue() as string) ?? ''
-              }
-              onChange={(event) =>
-                table.getColumn(search)?.setFilterValue(event.target.value)
-              }
+              placeholder="Procurar"
+              value={globalFilter}
+              onChange={(event) => setGlobalFilter(event.target.value)}
               className="max-w-sm"
             />
           </div>
@@ -89,18 +86,16 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -134,7 +129,8 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {/* Botões de Paginações */}
+
+      {/* Botões de Paginação */}
       <div className="flex w-full items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"

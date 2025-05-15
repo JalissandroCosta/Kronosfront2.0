@@ -42,7 +42,7 @@ const formDataSchema = z.object({
   updatedAt: z.string().datetime(),
   infractions: z.array(z.string()),
   celaId: z.string(),
-  celaDestinoId:z.string()
+  celaDestinoId: z.string()
 })
 
 type TransferPrisionerDialogProps = BaseDialogProps & PrisionerCela & {}
@@ -52,7 +52,7 @@ export const TransferPrisionerDialog = (
 ) => {
   const [celasAll, setCelasAll] = useState<Cela[]>([])
   const [celasDisp, setCelasDisp] = useState<Cela[]>([])
- 
+
   const { success, warning } = useToast()
   const { trasnferPrisionerMutate } = usePrisionerMutate()
 
@@ -63,11 +63,10 @@ export const TransferPrisionerDialog = (
         (cela) => cela.alocacoes.length < cela.capacidade
       )
       setCelasAll(todasAsCelas)
-      setCelasDisp(celasFiltradas)  
+      setCelasDisp(celasFiltradas)
     }
     fetchCelas()
-   
-  }, [ props.alocacoes, setCelasDisp])
+  }, [props.alocacoes, setCelasDisp])
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
@@ -84,7 +83,7 @@ export const TransferPrisionerDialog = (
       updatedAt: props.updatedAt,
       infractions: props.infracoes?.map((i) => i.id) || [],
       celaId: props.alocacoes[0].celaId || '',
-      celaDestinoId:''
+      celaDestinoId: ''
     }
   })
 
@@ -122,9 +121,6 @@ export const TransferPrisionerDialog = (
       }
     )
   }
-
- 
- 
 
   return (
     <Dialog
@@ -169,7 +165,7 @@ export const TransferPrisionerDialog = (
                 disabled
               />
             </div>
-            
+
             <div className="flex gap-3">
               <SelectionField
                 placeholder="Selecione a cela"
