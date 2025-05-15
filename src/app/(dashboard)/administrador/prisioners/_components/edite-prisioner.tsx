@@ -44,8 +44,6 @@ type EditPrisionerProps = BaseDialogProps & {
   data: Prisioner & { alocacoes: Alocacao[] }
 }
 
-
-
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
   const { PutPrisionerMutate } = usePrisionerMutate()
@@ -54,7 +52,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       ...props.data,
-      celaId:"1",
+      celaId: '1',
       idade: Number(props.data.idade) || 0,
       infractions: props.data.infractions || []
     }
@@ -111,8 +109,8 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
               </Avatar>
               <div className="flex gap-3">
                 {/* <InputField name="id" label="ID" disabled /> */}
-                 <InputField name="cpf" label="CPF" />
-                 <InputField name="idade" label="Idade" />
+                <InputField name="cpf" label="CPF" />
+                <InputField name="idade" label="Idade" />
               </div>
             </div>
 
@@ -123,15 +121,18 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 name="estadoCivil"
                 list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
               />
-            <InputField name="filiacao" label="Filiação" className='col-span-2'/>
-             <SelectionField
+              <InputField
+                name="filiacao"
+                label="Filiação"
+                className="col-span-2"
+              />
+              <SelectionField
                 placeholder="Selecione a cela"
                 label="Cela"
                 name="celaId"
-                list={["1","2","3"]}
+                list={['1', '2', '3']}
               />
             </div>
-
 
             {/* FOTO COM VALIDAÇÃO */}
             <div>
@@ -157,7 +158,6 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 </p>
               )}
             </div>
-
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit">Salvar</Button>

@@ -9,8 +9,6 @@ import { useState } from 'react'
 import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
-
-
 export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[] }>[] = [
   {
     accessorKey: 'foto',
@@ -76,7 +74,10 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
   return (
     <div className="flex gap-2">
       <EditPrisionerDialog
-        data={{ ...row.original, alocacoes: (row.original as any).alocacoes || [] }}
+        data={{
+          ...row.original,
+          alocacoes: (row.original as any).alocacoes || []
+        }}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >

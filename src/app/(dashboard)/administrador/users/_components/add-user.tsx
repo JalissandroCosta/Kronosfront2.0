@@ -96,36 +96,35 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                       methods.setValue('cpf', e.target.value)
                     }}
                   />
-                 
-                   <SelectionField
+
+                  <SelectionField
                     placeholder="Selecione o cargo"
                     label="Cargo"
                     name="cargo"
                     list={['ADM', 'INSP', 'DIR']}
                   />
                 </div>
-                <div className="pt-3 grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-4 gap-3 pt-3">
                   <InputField
                     name="nome"
                     label="Nome"
                     placeholder="Insira o Nome"
                     className="col-span-4"
                   />
-               
                 </div>
-                 <div className="pt-3 grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-4 gap-3 pt-3">
                   <InputField
                     name="senha"
                     label="Senha"
                     placeholder="Insira o senha"
                     className="col-span-3"
-                    type='password'
+                    type="password"
                   />
-                   <SelectionField
+                  <SelectionField
                     placeholder="Selecione o Nivel"
                     label="Nivel"
                     name="nivelPermissao"
-                    list={['1', '2', '3','4','5','6','7','8','9','10']}
+                    list={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
                   />
                 </div>
                 {/* <div className="p-2">

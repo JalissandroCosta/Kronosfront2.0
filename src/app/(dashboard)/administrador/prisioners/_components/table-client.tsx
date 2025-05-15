@@ -11,9 +11,7 @@ type TableClientProps = {
   setOpen?: (open: boolean) => void
 }
 
-
 export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
-
   return (
     <DataTable
       columns={columns as ColumnDef<Prisioner, unknown>[]}
