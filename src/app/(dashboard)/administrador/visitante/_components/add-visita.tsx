@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast'
 
 import { Cela } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
-import { ComboBoxComponet } from '@/components/ui/combo-box'
+import { ComboBox } from '@/app/(dashboard)/administrador/visitante/_components/combo-box'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -107,7 +107,6 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
               </Avatar>
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
-                  
                   <InputField
                     name="cpf"
                     label="CPF"
@@ -142,9 +141,9 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             </div>
 
             <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
-      <ComboBoxComponet
-                  label='TESTE'
-                  name='TESTE'/>
+            <div className='w-full'>
+              <ComboBox label="detento" name="detento" />
+            </div>
             <div className="flex w-full flex-row justify-between gap-4">
               {/* FOTO COM VALIDAÇÃO */}
               {/* <div>

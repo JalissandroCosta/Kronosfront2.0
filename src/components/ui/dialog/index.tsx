@@ -32,7 +32,7 @@ export const Dialog = ({
   setOpen
 }: DialogProps) => {
   return (
-    <DialogRoot open={open} onOpenChange={setOpen}>
+    <DialogRoot open={open} onOpenChange={setOpen} modal={false}>
       {children && (
         <DialogTrigger asChild className="cursor-pointer">
           {children}
