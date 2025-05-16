@@ -1,6 +1,6 @@
 'use server'
 
-import { Visita, Visitante } from '@/@types'
+import { Visitante } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -40,6 +40,8 @@ export async function getAllVisitante(): Promise<Visitante[]> {
 
   return await handleRequest('visit/', token, 'GET VISITANTES')
 }
+
+
 export async function POSTVisitante(props: Visitante) {
   const { token } = await getUser()
 
@@ -48,7 +50,6 @@ export async function POSTVisitante(props: Visitante) {
     const { data } = await api.post(
       'visit/',
       {
-        id: props.id,
         nome,
         grauParentesco,
         cpf,

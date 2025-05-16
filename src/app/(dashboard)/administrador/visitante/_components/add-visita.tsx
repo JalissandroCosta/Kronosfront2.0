@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast'
 import { Cela } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
 import { ComboBox } from '@/app/(dashboard)/administrador/visitante/_components/combo-box'
-import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
+import { useVisitanteMutate } from '@/hooks/visitante/useVisitanteMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -19,7 +19,8 @@ import * as z from 'zod'
 const formDataSchema = z.object({
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }),
-  grauParentesco: z.string()
+  grauParentesco: z.string(),
+  idDetento:z.string()
   // foto: z
   //   .string()
   //   .min(1, { message: 'É obrigatório enviar uma foto do prisioneiro' })
@@ -29,7 +30,7 @@ const formDataSchema = z.object({
 export const AddVisitaDialog = (props: BaseDialogProps) => {
   const [celas, setCelas] = useState<Cela[]>([])
   const { success, warning } = useToast()
-  const { AddPrisionerMutate } = usePrisionerMutate()
+  const { AddVisitanteMutate } = useVisitanteMutate()
 
   useEffect(() => {
     const fetchCelas = async () => {
@@ -49,44 +50,38 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
     defaultValues: {
       nome: '',
       cpf: '',
-      grauParentesco: ''
+      grauParentesco: '',
+      idDetento:''
       // foto: '',
     }
   })
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    // AddPrisionerMutate.mutate(
-    //   { ...data, idade: Number(data.idade) },
-    //   {
-    //     onSuccess: () => {
-    //       props.setOpen?.(false)
-    //       success({
-    //         title: 'Usuário adicionado com sucesso',
-    //         description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
-    //       })
-    //       methods.reset({
-    //         id: '',
-    //         nome: '',
-    //         idade: '',
-    //         cpf: '',
-    //         filiacao: '',
-    //         estadoCivil: 'Solteiro',
-    //         foto: '',
-    //         reincidencia: false,
-    //         createdAt: new Date().toISOString(),
-    //         updatedAt: new Date().toISOString(),
-    //         infractions: [],
-    //         celaId: ''
-    //       })
-    //     },
-    //     onError: () => {
-    //       warning({
-    //         title: 'Erro ao adicionar prisioneiro',
-    //         description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-    //       })
-    //     }
-    //   }
-    // )
+  
+    AddVisitanteMutate.mutate(
+      { ...data },
+      {
+        onSuccess: () => {
+          props.setOpen?.(false)
+          success({
+            title: 'Visitante adicionado com sucesso',
+            description: `O visitante ${data?.nome} foi adicionado com sucesso.`
+          })
+          methods.reset({
+            nome: '',
+            cpf: '',
+            grauParentesco: '',
+            idDetento:''
+          })
+        },
+        onError: () => {
+          warning({
+            title: 'Erro ao adicionar visitante',
+            description: 'Ocorreu um erro ao adicionar o visitante.'
+          })
+        }
+      }
+    )
   }
 
   return (
@@ -142,33 +137,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
 
             <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
             <div className='w-full'>
-              <ComboBox label="detento" name="detento" />
-            </div>
-            <div className="flex w-full flex-row justify-between gap-4">
-              {/* FOTO COM VALIDAÇÃO */}
-              {/* <div>
-                <label className="block text-sm font-medium">Foto</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0]
-                    if (file) {
-                      const reader = new FileReader()
-                      reader.onload = () => {
-                        methods.setValue('foto', reader.result as string)
-                      }
-                      reader.readAsDataURL(file)
-                    }
-                  }}
-                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-                />
-                {methods.formState.errors.foto && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {methods.formState.errors.foto.message}
-                  </p>
-                )}
-              </div> */}
+              <ComboBox label="detento" name="idDetento" />
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">
