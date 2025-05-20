@@ -23,7 +23,7 @@ export function useVisitanteMutate() {
   const AddVisitanteMutate = useMutation({
     mutationFn: addVisitante,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['Visitantes'] })
+      queryClient.invalidateQueries({ queryKey: ['visitantes'] })
     }
   })
   // const PutVisitanteMutate = useMutation({

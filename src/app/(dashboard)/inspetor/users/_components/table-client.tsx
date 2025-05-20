@@ -15,7 +15,7 @@ export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
     <DataTable
       columns={columns as ColumnDef<User, unknown>[]}
       data={data || []}
-      search={'nome'}
+      search
       // button={
       //   <AddUserDialog open={open} setOpen={setOpen}>
       //     <Button variant="outline" className="ml-auto">

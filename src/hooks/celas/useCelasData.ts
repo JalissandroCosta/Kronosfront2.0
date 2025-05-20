@@ -1,24 +1,19 @@
-import { getAllPrisionersCelas } from '@/actions/celas'
+import { getAllCelas } from '@/actions/celas'
 import { useQuery } from '@tanstack/react-query'
 
-const fetchPrisionerCellData = async ({
-  queryKey
-}: {
-  queryKey: [string, string]
-}) => {
-  const [, id] = queryKey
+const fetchCellData = async () => {
   try {
-    const prisionersAlocation = await getAllPrisionersCelas(id)
-    return prisionersAlocation
+    const cells = await getAllCelas()
+    return cells
   } catch (error) {
     console.log(error)
   }
 }
 
-export function usePrisionerCellData(id: string) {
+export function useCellData() {
   const query = useQuery({
-    queryKey: ['prisioners-celas', id],
-    queryFn: fetchPrisionerCellData,
+    queryKey: ['celas'],
+    queryFn: fetchCellData,
     refetchInterval: 1000 * 60 * 5 // 5 minutes
   })
 

@@ -53,21 +53,16 @@ export async function getAllPrisionersCelas(
   )
 }
 
-
 export type getInfoCelaResponse = {
-    id: string;
-    numero: number;
-    capacidade: number;
-    pavilhao: string;
+  id: string
+  numero: number
+  capacidade: number
+  pavilhao: string
 }
 export async function getInfoCela(
   idCell: string
 ): Promise<getInfoCelaResponse> {
   const { token } = await getUser()
 
-  return await handleRequest(
-    `cell/${idCell}`,
-    token,
-    'GET INFO DA CELA'
-  )
+  return await handleRequest(`cell/${idCell}`, token, 'GET INFO DA CELA')
 }

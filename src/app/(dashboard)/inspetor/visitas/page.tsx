@@ -349,12 +349,10 @@
 
 // export default VisitorManagement
 
-
-
 export default function Page() {
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="flex h-full w-full items-center justify-center">
       <h1>Pagina de Visitas ou Visitantes em desenvolvimentos</h1>
     </div>
-  );
+  )
 }

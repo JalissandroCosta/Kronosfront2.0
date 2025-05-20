@@ -35,7 +35,13 @@ export const routesLink: RoutesLink[] = [
     icon: 'Grid2X2'
   },
   {
-    title: 'Visitas',
+    title: 'Visitantes',
+    url: '/visitante',
+    hole: ['ADM', 'DIR', 'INSP'],
+    icon: 'Users2'
+  },
+  {
+    title: 'Registro de Visitas',
     url: '/visitas',
     hole: ['ADM', 'DIR', 'INSP'],
     icon: 'Users2'

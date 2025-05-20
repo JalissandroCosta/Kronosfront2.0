@@ -36,7 +36,7 @@ export async function SectionCards({ data }: SectionCardsProps) {
       <PecentualCard
         data={AllPresioneiros.length}
         title={'Capacidade da Prisão'}
-        capacidade={celas.length * 10 }
+        capacidade={celas.length * 10}
         direction={detentos?.direcao}
         percentual={detentos?.valorFormatado}
       />

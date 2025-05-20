@@ -14,7 +14,7 @@ type SelectionFieldProps = ComponentProps<typeof Select> & {
   placeholder?: string
   label: string
   name: string
-  list: string[] | Cela[] 
+  list: string[] | Cela[]
 }
 
 export const SelectionField = ({
@@ -50,14 +50,14 @@ export const SelectionField = ({
                 <SelectItem value="0" disabled>
                   {placeholder}
                 </SelectItem>
-                { list.map((item) => {
+                {list.map((item) => {
                   if (typeof item === 'string') {
                     return (
                       <SelectItem key={item} value={item}>
                         {item}
                       </SelectItem>
                     )
-                  } else  {
+                  } else {
                     return (
                       <SelectItem key={item.id} value={item.id}>
                         Cela {item.numero}

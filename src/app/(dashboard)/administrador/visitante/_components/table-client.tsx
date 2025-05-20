@@ -1,12 +1,12 @@
-import { Prisioner } from '@/@types'
+import { Visitante } from '@/@types'
 import { DataTable } from '@/components/table/data-table'
 import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
-import { AddPrisionerDialog } from './add-prisioner'
+import { AddVisitaDialog } from './add-visita'
 import { columns } from './columns'
 
 type TableClientProps = {
-  data: Prisioner[] | undefined
+  data: Visitante[] | undefined
   open?: boolean
   setOpen?: (open: boolean) => void
 }
@@ -14,15 +14,15 @@ type TableClientProps = {
 export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
   return (
     <DataTable
-      columns={columns as ColumnDef<Prisioner, unknown>[]}
+      columns={columns as ColumnDef<Visitante, unknown>[]}
       data={data || []}
       search
       button={
-        <AddPrisionerDialog open={open} setOpen={setOpen}>
+        <AddVisitaDialog open={open} setOpen={setOpen}>
           <Button variant="outline" className="ml-auto">
-            Adicionar Prisioneiro
+            Adicionar Visiante
           </Button>
-        </AddPrisionerDialog>
+        </AddVisitaDialog>
       }
     />
   )

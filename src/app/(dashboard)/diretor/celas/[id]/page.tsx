@@ -1,7 +1,8 @@
 'use client'
 
 import { getInfoCela, getInfoCelaResponse } from '@/actions/celas'
-import { usePrisionerCellData } from '@/hooks/celas/useCelasData'
+
+import { usePrisionerCellData } from '@/hooks/celas/usePrisionerCelasData'
 import { use, useEffect, useState } from 'react'
 import { TableClient } from './_components/table-client'
 
@@ -16,19 +17,18 @@ export default function CelaIDPage({
 }: {
   params: Promise<{ id: string }>
 }) {
-  const [cela,setCela] = useState<getInfoCelaResponse>()
+  const [cela, setCela] = useState<getInfoCelaResponse>()
   const { id } = use(params)
 
   const { data } = usePrisionerCellData(id)
 
-  useEffect(()=>{
-    const fetchdata = async()=>{
-
+  useEffect(() => {
+    const fetchdata = async () => {
       const data = await getInfoCela(id)
       setCela(data)
     }
     fetchdata()
-  },[id,setCela])
+  }, [id, setCela])
 
   return (
     <div>
