@@ -86,6 +86,10 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
     )
   }
 
+  const tags = Array.from({ length: 50 }).map(
+  (_, i, a) => `v1.2.0-beta.${a.length - i}`
+)
+
   return (
     <Dialog
       title="Editar Prisioneiro"
@@ -133,6 +137,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 list={['1', '2', '3']}
               />
             </div>
+           
 
             {/* FOTO COM VALIDAÇÃO */}
             <div>
@@ -158,6 +163,19 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 </p>
               )}
             </div>
+             {/* <ScrollArea className="h-72 w-48 rounded-md border">
+      <div className="p-4">
+        <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+        {tags.map((tag) => (
+          <>
+            <div key={tag} className="text-sm">
+              {tag}
+            </div>
+            <Separator className="my-2" />
+          </>
+        ))}
+      </div>
+            </ScrollArea> */}
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit">Salvar</Button>
