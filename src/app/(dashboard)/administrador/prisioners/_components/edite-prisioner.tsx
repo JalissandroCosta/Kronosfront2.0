@@ -127,7 +127,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 className="col-span-2"
               />
               <SelectionField
-                placeholder="Selecione a cela"
+                placeholder="Cela"
                 label="Cela"
                 name="celaId"
                 list={['1', '2', '3']}
