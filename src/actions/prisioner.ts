@@ -1,6 +1,6 @@
 'use server'
 
-import { Prisioner } from '@/@types'
+import { infracoes, Prisioner } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -37,7 +37,8 @@ const handleRequest = async (
 
 type getAllPrisonerModelResponse = Array<
   Prisioner & {
-    alocacoes: Alocacao[]
+    alocacoes: Alocacao[],
+    infracoes:infracoes[]
   }
 >
 
