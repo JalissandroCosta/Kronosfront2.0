@@ -5,7 +5,7 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Alocacao, infracoes, Prisioner } from '@/@types'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
@@ -81,15 +81,19 @@ export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[],infracoes:in
 // Novo componente extraído
 function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
+
+ const dataMemo = useMemo(() => ({
+    ...row.original,
+    alocacoes: (row.original as any).alocacoes || [],
+    infractions: (row.original as any).infracoes || []
+  }), [row.original])
+
   const { id, nome } = row.original
 
   return (
     <div className="flex gap-2">
-      <EditPrisionerDialog
-        data={{
-          ...row.original,
-          alocacoes: (row.original as any).alocacoes || []
-        }}
+       <EditPrisionerDialog
+        data={dataMemo}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >

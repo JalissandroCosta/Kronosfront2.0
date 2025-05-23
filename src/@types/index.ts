@@ -102,6 +102,8 @@ export interface CreateDetentoResponse {
 }
 
 export type infracoes ={
+  id?: string,
+  dataInfracao?: string,
   detentoId: string,
   descricao: string,
 }
