@@ -92,26 +92,13 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   }, [props.open, methods, props.data])
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    const currentIds = tags.map((tag) => tag.id).filter(Boolean) // IDs atuais (já existentes)
-    const existingIds = (props.data.infractions || [])
-      .map((inf) => {
-        if (typeof inf === 'string') return ''
-        if (typeof inf === 'object' && inf !== null && 'id' in inf) {
-          return (inf as infracoes).id
-        }
-        return ''
-      })
-      .filter(Boolean) // IDs originais
-
-    const isDifferent =
-      currentIds.length !== existingIds.length ||
-      currentIds.some((id) => !existingIds.includes(id)) ||
-      existingIds.some((id) => !currentIds.includes(id))
-
-    const infracaoList = tags.map((tag) => tag.descricao) // Envia apenas descrições
+    // Pegando só as descrições das novas tags que NÃO foram removidas
+  const infracoesParaAdicionar = newTags.filter(
+    (descricao) => !tagsRemoves.includes(descricao)
+  )
 
     PutPrisionerMutate.mutate(
-      { ...data, infractions: isDifferent ? infracaoList : [] },
+      { ...data, infractions: infracoesParaAdicionar  ? infracoesParaAdicionar  : [] },
       {
         onSuccess: () => {
           props.setOpen?.(false)
@@ -119,6 +106,10 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
             title: 'Prisioneiro editado com sucesso',
             description: `O prisioneiro ${data?.nome} foi atualizado.`
           })
+
+          // 🔥 Limpar os estados após sucesso
+        setNewsTags([])
+        
         },
         onError: () => {
           warning({
@@ -134,6 +125,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
         DelInfraPrisionerMutate.mutate(tagId, {
           onSuccess: () => {
             console.log('Infracao deletada com sucesso')
+            setTagsRemoves([])
           },
           onError: () => {
             console.log('Erro ao deletar infracao')
