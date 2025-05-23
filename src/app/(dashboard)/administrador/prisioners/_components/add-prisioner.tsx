@@ -84,8 +84,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
   })
 
   async function onSubmit(data: z.infer<typeof formDataSchema>) {
-  
-     const image = await uploadImageToCloudinary(file as File)
+    const image = await uploadImageToCloudinary(file as File)
 
     console.log(image)
     AddPrisionerMutate.mutate(
@@ -120,10 +119,9 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
         }
       }
     )
-  
   }
 
-   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     setFile(e.target.files?.[0])
     if (file) {
@@ -147,22 +145,22 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-               <div
+              <div
                 className="relative cursor-pointer"
                 onClick={() => inputFileRef.current?.click()}
               >
                 <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={methods.watch('foto') || '/default.png'}
-                  alt="Foto do Prisioneiro"
-                />
-                <AvatarFallback>{'PS'}</AvatarFallback>
-              </Avatar>
-              <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
-                <Pencil className="text-muted-foreground h-4 w-4" />
+                  <AvatarImage
+                    src={methods.watch('foto') || '/default.png'}
+                    alt="Foto do Prisioneiro"
+                  />
+                  <AvatarFallback>{'PS'}</AvatarFallback>
+                </Avatar>
+                <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
+                  <Pencil className="text-muted-foreground h-4 w-4" />
+                </div>
               </div>
-              </div>
-             
+
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
                   <InputField
@@ -278,13 +276,13 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                   }}
                   className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
                 /> */}
-                 <input
-              type="file"
-              accept="image/*"
-              ref={inputFileRef}
-              onChange={handleImageChange}
-              className="hidden"
-            />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={inputFileRef}
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
                 {methods.formState.errors.foto && (
                   <p className="mt-1 text-sm text-red-500">
                     {methods.formState.errors.foto.message}
@@ -293,15 +291,19 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               </div>
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button type="submit" className="cursor-pointer" disabled={AddPrisionerMutate.isPending}>
-               {AddPrisionerMutate.isPending ? (
-      <>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Salvando...
-      </>
-    ) : (
-      'Salvar'
-    )}
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                disabled={AddPrisionerMutate.isPending}
+              >
+                {AddPrisionerMutate.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  'Salvar'
+                )}
               </Button>
             </div>
           </form>

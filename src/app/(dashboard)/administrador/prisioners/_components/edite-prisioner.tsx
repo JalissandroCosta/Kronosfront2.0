@@ -93,12 +93,15 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
     // Pegando só as descrições das novas tags que NÃO foram removidas
-  const infracoesParaAdicionar = newTags.filter(
-    (descricao) => !tagsRemoves.includes(descricao)
-  )
+    const infracoesParaAdicionar = newTags.filter(
+      (descricao) => !tagsRemoves.includes(descricao)
+    )
 
     PutPrisionerMutate.mutate(
-      { ...data, infractions: infracoesParaAdicionar  ? infracoesParaAdicionar  : [] },
+      {
+        ...data,
+        infractions: infracoesParaAdicionar ? infracoesParaAdicionar : []
+      },
       {
         onSuccess: () => {
           props.setOpen?.(false)
@@ -108,8 +111,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
           })
 
           // 🔥 Limpar os estados após sucesso
-        setNewsTags([])
-        
+          setNewsTags([])
         },
         onError: () => {
           warning({
@@ -229,13 +231,13 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" disabled={PutPrisionerMutate.isPending}>
                 {PutPrisionerMutate.isPending ? (
-      <>
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Salvando...
-      </>
-    ) : (
-      'Salvar'
-    )}
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  'Salvar'
+                )}
               </Button>
             </div>
           </form>
