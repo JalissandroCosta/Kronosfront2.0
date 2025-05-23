@@ -31,12 +31,11 @@ type putPrisionerProps = Prisioner & {
 }
 
 const putPrisioner = async (data: putPrisionerProps) => {
-
-  const {  infractions, ...rest } = data
+  const { infractions, ...rest } = data
   const prisioners = await PUTPrisioner(data)
 
   infractions.map(async (infracao) => await POSTInfracao(rest.id, infracao))
-  
+
   return prisioners
 }
 
@@ -44,7 +43,7 @@ const delPrisioner = async (id: string) => {
   const prisioners = await DELETEPrisioner(id)
   return prisioners
 }
-const delInfraPrisioner = async (id: string,) => {
+const delInfraPrisioner = async (id: string) => {
   const prisioners = await DELETEInfracao(id)
   return prisioners
 }
@@ -75,5 +74,10 @@ export function usePrisionerMutate() {
       queryClient.invalidateQueries({ queryKey: ['prisioners'] })
     }
   })
-  return { AddPrisionerMutate, PutPrisionerMutate, DelPrisionerMutate,DelInfraPrisionerMutate }
+  return {
+    AddPrisionerMutate,
+    PutPrisionerMutate,
+    DelPrisionerMutate,
+    DelInfraPrisionerMutate
+  }
 }

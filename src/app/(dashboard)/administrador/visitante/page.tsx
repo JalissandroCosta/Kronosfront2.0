@@ -4,7 +4,6 @@ import { useVisitanteData } from '@/hooks/visitante/useVisitanteData'
 import { useState } from 'react'
 import { TableClient } from './_components/table-client'
 
-
 export default function PageVisitante() {
   const { data } = useVisitanteData()
   const [open, setOpen] = useState(false)

@@ -37,8 +37,8 @@ const handleRequest = async (
 
 type getAllPrisonerModelResponse = Array<
   Prisioner & {
-    alocacoes: Alocacao[],
-    infracoes:infracoes[]
+    alocacoes: Alocacao[]
+    infracoes: infracoes[]
   }
 >
 

@@ -44,18 +44,17 @@ const formDataSchema = z.object({
 })
 
 type EditPrisionerProps = BaseDialogProps & {
-  data: Prisioner & { alocacoes: Alocacao[], infractions: infracoes[] }
+  data: Prisioner & { alocacoes: Alocacao[]; infractions: infracoes[] }
 }
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
-  const { PutPrisionerMutate,DelInfraPrisionerMutate } = usePrisionerMutate()
+  const { PutPrisionerMutate, DelInfraPrisionerMutate } = usePrisionerMutate()
   const [tags, setTags] = useState<infracoes[]>(props.data.infractions || [])
   const [tagsRemoves, setTagsRemoves] = useState<string[]>([])
   const [newTags, setNewsTags] = useState<string[]>([])
   const [celasAll, setCelasAll] = useState<Cela[]>([])
 
- 
   const inputFileRef = useRef<HTMLInputElement>(null)
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
@@ -68,80 +67,80 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
     }
   })
 
- useEffect(() => {
-   if (!props.open) return
-  methods.reset({
-    ...props.data,
-    celaId: props.data.alocacoes[0]?.celaId ?? '',
-    idade: Number(props.data.idade) || 0,
-    infractions: props.data.infractions
-      ? props.data.infractions.map((item: string | infracoes) =>
-          typeof item === 'string' ? item : item.descricao
-        )
-      : []
-  })
+  useEffect(() => {
+    if (!props.open) return
+    methods.reset({
+      ...props.data,
+      celaId: props.data.alocacoes[0]?.celaId ?? '',
+      idade: Number(props.data.idade) || 0,
+      infractions: props.data.infractions
+        ? props.data.infractions.map((item: string | infracoes) =>
+            typeof item === 'string' ? item : item.descricao
+          )
+        : []
+    })
 
-  const fetchCelas = async () => {
-    const todasAsCelas = await getAllCelas()
-    const celasFiltradas = todasAsCelas.filter(
-      (cela) => cela.alocacoes.length < cela.capacidade
-    )
-    setCelasAll(celasFiltradas) // Aqui estava errado, você colocava todas em vez de filtradas
-  }
+    const fetchCelas = async () => {
+      const todasAsCelas = await getAllCelas()
+      const celasFiltradas = todasAsCelas.filter(
+        (cela) => cela.alocacoes.length < cela.capacidade
+      )
+      setCelasAll(celasFiltradas) // Aqui estava errado, você colocava todas em vez de filtradas
+    }
 
-  fetchCelas()
-}, [props.open, methods, props.data])
-
+    fetchCelas()
+  }, [props.open, methods, props.data])
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-  const currentIds = tags.map((tag) => tag.id).filter(Boolean) // IDs atuais (já existentes)
-  const existingIds = (props.data.infractions || [])
-    .map((inf) => {
-      if (typeof inf === 'string') return '';
-      if (typeof inf === 'object' && inf !== null && 'id' in inf) {
-        return (inf as infracoes).id;
-      }
-      return '';
-    })
-    .filter(Boolean) // IDs originais
-
-  const isDifferent =
-    currentIds.length !== existingIds.length ||
-    currentIds.some((id) => !existingIds.includes(id)) ||
-    existingIds.some((id) => !currentIds.includes(id))
-
-  const infracaoList = tags.map((tag) => tag.descricao) // Envia apenas descrições
-
-  PutPrisionerMutate.mutate( 
-    { ...data, infractions: isDifferent ? infracaoList : [] }, {
-    onSuccess: () => {
-      props.setOpen?.(false)
-      success({
-        title: 'Prisioneiro editado com sucesso',
-        description: `O prisioneiro ${data?.nome} foi atualizado.`,
+    const currentIds = tags.map((tag) => tag.id).filter(Boolean) // IDs atuais (já existentes)
+    const existingIds = (props.data.infractions || [])
+      .map((inf) => {
+        if (typeof inf === 'string') return ''
+        if (typeof inf === 'object' && inf !== null && 'id' in inf) {
+          return (inf as infracoes).id
+        }
+        return ''
       })
-    },
-    onError: () => {
-      warning({
-        title: 'Erro ao editar prisioneiro',
-        description: 'Ocorreu um erro ao editar o prisioneiro.',
-      })
-    },
-  })
-   
-    if (tagsRemoves.length > 0) {
-      tagsRemoves.forEach((tagId) => {
-      DelInfraPrisionerMutate.mutate(tagId, {
+      .filter(Boolean) // IDs originais
+
+    const isDifferent =
+      currentIds.length !== existingIds.length ||
+      currentIds.some((id) => !existingIds.includes(id)) ||
+      existingIds.some((id) => !currentIds.includes(id))
+
+    const infracaoList = tags.map((tag) => tag.descricao) // Envia apenas descrições
+
+    PutPrisionerMutate.mutate(
+      { ...data, infractions: isDifferent ? infracaoList : [] },
+      {
         onSuccess: () => {
-          console.log('Infracao deletada com sucesso')
+          props.setOpen?.(false)
+          success({
+            title: 'Prisioneiro editado com sucesso',
+            description: `O prisioneiro ${data?.nome} foi atualizado.`
+          })
         },
         onError: () => {
-          console.log('Erro ao deletar infracao')
+          warning({
+            title: 'Erro ao editar prisioneiro',
+            description: 'Ocorreu um erro ao editar o prisioneiro.'
+          })
         }
+      }
+    )
+
+    if (tagsRemoves.length > 0) {
+      tagsRemoves.forEach((tagId) => {
+        DelInfraPrisionerMutate.mutate(tagId, {
+          onSuccess: () => {
+            console.log('Infracao deletada com sucesso')
+          },
+          onError: () => {
+            console.log('Erro ao deletar infracao')
+          }
+        })
       })
-    })
     }
-   
   }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -154,7 +153,6 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
       reader.readAsDataURL(file)
     }
   }
-
 
   return (
     <Dialog
@@ -181,8 +179,8 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                     {methods.watch('nome')?.substring(0, 2)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="absolute bottom-0 right-0 rounded-full bg-background p-1 shadow-md">
-                  <Pencil className="h-4 w-4 text-muted-foreground" />
+                <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
+                  <Pencil className="text-muted-foreground h-4 w-4" />
                 </div>
               </div>
               <div className="flex gap-3">

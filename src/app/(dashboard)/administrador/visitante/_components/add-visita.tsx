@@ -20,7 +20,7 @@ const formDataSchema = z.object({
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }),
   grauParentesco: z.string(),
-  idDetento:z.string()
+  idDetento: z.string()
   // foto: z
   //   .string()
   //   .min(1, { message: 'É obrigatório enviar uma foto do prisioneiro' })
@@ -51,13 +51,12 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
       nome: '',
       cpf: '',
       grauParentesco: '',
-      idDetento:''
+      idDetento: ''
       // foto: '',
     }
   })
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-  
     AddVisitanteMutate.mutate(
       { ...data },
       {
@@ -71,7 +70,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             nome: '',
             cpf: '',
             grauParentesco: '',
-            idDetento:''
+            idDetento: ''
           })
         },
         onError: () => {
@@ -136,7 +135,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             </div>
 
             <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
-            <div className='w-full'>
+            <div className="w-full">
               <ComboBox label="detento" name="idDetento" />
             </div>
             <div className="mt-4 flex justify-end gap-2">

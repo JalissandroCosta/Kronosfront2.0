@@ -41,7 +41,6 @@ export async function getAllVisitante(): Promise<Visitante[]> {
   return await handleRequest('visit/', token, 'GET VISITANTES')
 }
 
-
 export async function POSTVisitante(props: Visitante) {
   const { token } = await getUser()
 

@@ -9,7 +9,9 @@ import { useMemo, useState } from 'react'
 import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
-export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[],infracoes:infracoes[] }>[] = [
+export const columns: ColumnDef<
+  Prisioner & { alocacoes: Alocacao[]; infracoes: infracoes[] }
+>[] = [
   {
     accessorKey: 'foto',
     header: 'Foto',
@@ -42,8 +44,8 @@ export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[],infracoes:in
     cell: ({ row }) => {
       const numeroDeInfracoes = row.original.infracoes
       return (
-        <div className="w-full h-full flex items-center justify-center">
-        {numeroDeInfracoes.length}
+        <div className="flex h-full w-full items-center justify-center">
+          {numeroDeInfracoes.length}
         </div>
       )
     }
@@ -82,17 +84,20 @@ export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[],infracoes:in
 function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
 
- const dataMemo = useMemo(() => ({
-    ...row.original,
-    alocacoes: (row.original as any).alocacoes || [],
-    infractions: (row.original as any).infracoes || []
-  }), [row.original])
+  const dataMemo = useMemo(
+    () => ({
+      ...row.original,
+      alocacoes: (row.original as any).alocacoes || [],
+      infractions: (row.original as any).infracoes || []
+    }),
+    [row.original]
+  )
 
   const { id, nome } = row.original
 
   return (
     <div className="flex gap-2">
-       <EditPrisionerDialog
+      <EditPrisionerDialog
         data={dataMemo}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
