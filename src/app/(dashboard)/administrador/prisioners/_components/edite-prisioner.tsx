@@ -13,7 +13,7 @@ import { Alocacao, Prisioner as BasePrisioner, Cela, infracoes } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Pencil } from 'lucide-react'
+import { Loader2, Pencil } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import * as z from 'zod'
 import { TagInput } from './tag-input'
@@ -227,7 +227,16 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
             />
 
             <div className="mt-4 flex justify-end gap-2">
-              <Button type="submit">Salvar</Button>
+              <Button type="submit" disabled={PutPrisionerMutate.isPending}>
+                {PutPrisionerMutate.isPending ? (
+      <>
+        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        Salvando...
+      </>
+    ) : (
+      'Salvar'
+    )}
+              </Button>
             </div>
           </form>
         </FormProvider>

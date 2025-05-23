@@ -112,8 +112,11 @@ export async function POSTPrisioner(props: Prisioner) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
-      )
+        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${ 
+        typeof error.response?.data === 'object'
+        ? JSON.stringify(error.response.data)
+        : error.response?.data || error.message}`
+          )
     }
     if (error instanceof Error) {
       throw new Error(
