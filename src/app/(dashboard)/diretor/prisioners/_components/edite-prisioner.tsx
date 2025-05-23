@@ -11,8 +11,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { useEffect } from 'react'
+import * as z from 'zod'
 
 const formDataSchema = z.object({
   id: z.string(),
@@ -72,24 +72,24 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   }, [props.data, methods])
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    PutPrisionerMutate.mutate(
-      { ...data },
-      {
-        onSuccess: () => {
-          props.setOpen?.(false)
-          success({
-            title: 'Usuário Editado com sucesso',
-            description: `O prisioneiro ${data?.nome} foi editado com sucesso.`
-          })
-        },
-        onError: () => {
-          warning({
-            title: 'Erro ao editar prisioneiro',
-            description: 'Ocorreu um erro ao editar o prisioneiro.'
-          })
-        }
-      }
-    )
+    // PutPrisionerMutate.mutate(
+    //   { ...data },
+    //   {
+    //     onSuccess: () => {
+    //       props.setOpen?.(false)
+    //       success({
+    //         title: 'Usuário Editado com sucesso',
+    //         description: `O prisioneiro ${data?.nome} foi editado com sucesso.`
+    //       })
+    //     },
+    //     onError: () => {
+    //       warning({
+    //         title: 'Erro ao editar prisioneiro',
+    //         description: 'Ocorreu um erro ao editar o prisioneiro.'
+    //       })
+    //     }
+    //   }
+    // )
   }
 
   return (

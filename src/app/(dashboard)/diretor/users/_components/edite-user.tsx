@@ -78,24 +78,24 @@ export const EditUserDialog = (props: EditPrisionerProps) => {
   methods.setValue('filiacao', props.data.filiacao || '')
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    PutPrisionerMutate.mutate(
-      { ...data, idade: Number(data.idade) },
-      {
-        onSuccess: () => {
-          props.setOpen?.(false)
-          success({
-            title: 'Usuário Editado com sucesso',
-            description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
-          })
-        },
-        onError: () => {
-          warning({
-            title: 'Erro ao editar prisioneiro',
-            description: 'Ocorreu um erro ao aditar o prisioneiro.'
-          })
-        }
-      }
-    )
+    // PutPrisionerMutate.mutate(
+    //   { ...data, idade: Number(data.idade) },
+    //   {
+    //     onSuccess: () => {
+    //       props.setOpen?.(false)
+    //       success({
+    //         title: 'Usuário Editado com sucesso',
+    //         description: `O prisioneiro ${data?.nome} foi Editado com sucesso.`
+    //       })
+    //     },
+    //     onError: () => {
+    //       warning({
+    //         title: 'Erro ao editar prisioneiro',
+    //         description: 'Ocorreu um erro ao aditar o prisioneiro.'
+    //       })
+    //     }
+    //   }
+    // )
   }
 
   return (

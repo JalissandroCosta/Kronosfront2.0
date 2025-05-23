@@ -116,14 +116,14 @@ export async function getAllUser(): Promise<User[]> {
 // export async function DELETEPrisioner(id: string) {
 //   const { token } = await getUser()
 
-//   console.log(id)
+//
 //   try {
 //     const { data } = await api.delete(`prisoner/${id}`, {
 //       headers: {
 //         Authorization: `Bearer ${token}`,
 //       }
 //     })
-//     console.log('data', data)
+//  
 //     return data
 //   } catch (error: unknown) {
 //     if (error instanceof AxiosError) {
