@@ -100,3 +100,10 @@ export interface CreateDetentoResponse {
   message: string
   detento: Detento
 }
+
+export type infracoes = {
+  id?: string
+  dataInfracao?: string
+  detentoId: string
+  descricao: string
+}

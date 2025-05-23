@@ -69,6 +69,36 @@ export async function POSTInfracao(detentoId: string, descricao: string) {
   }
 }
 
+export async function DELETEInfracao(id: string) {
+  const { token } = await getUser()
+
+  try {
+    const { data } = await api.delete(`infringement/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch DELETE INFRACAO from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch DELETE INFRACAO from API: ${error.message}`
+      )
+    }
+    throw new Error('DELETE INFRACAO.')
+  }
+}
+
 // export async function getAllInfracoes(): Promise<Cela[]> {
 //   const { token } = await getUser()
 

@@ -9,11 +9,14 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
-import { Alocacao, Prisioner as BasePrisioner } from '@/@types'
+import { Alocacao, Prisioner as BasePrisioner, Cela, infracoes } from '@/@types'
+import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { Loader2, Pencil } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import * as z from 'zod'
+import { TagInput } from './tag-input'
 
 type Prisioner = BasePrisioner & {
   infractions?: string[]
@@ -41,40 +44,74 @@ const formDataSchema = z.object({
 })
 
 type EditPrisionerProps = BaseDialogProps & {
-  data: Prisioner & { alocacoes: Alocacao[] }
+  data: Prisioner & { alocacoes: Alocacao[]; infractions: infracoes[] }
 }
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
-  const { PutPrisionerMutate } = usePrisionerMutate()
+  const { PutPrisionerMutate, DelInfraPrisionerMutate } = usePrisionerMutate()
+  const [tags, setTags] = useState<infracoes[]>(props.data.infractions || [])
+  const [tagsRemoves, setTagsRemoves] = useState<string[]>([])
+  const [newTags, setNewsTags] = useState<string[]>([])
+  const [celasAll, setCelasAll] = useState<Cela[]>([])
+
+  const inputFileRef = useRef<HTMLInputElement>(null)
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       ...props.data,
-      celaId: '1',
+      celaId: props.data.alocacoes[0]?.celaId,
       idade: Number(props.data.idade) || 0,
       infractions: props.data.infractions || []
     }
   })
 
   useEffect(() => {
+    if (!props.open) return
     methods.reset({
       ...props.data,
-      idade: Number(props.data.idade)
+      celaId: props.data.alocacoes[0]?.celaId ?? '',
+      idade: Number(props.data.idade) || 0,
+      infractions: props.data.infractions
+        ? props.data.infractions.map((item: string | infracoes) =>
+            typeof item === 'string' ? item : item.descricao
+          )
+        : []
     })
-  }, [props.data, methods])
+
+    const fetchCelas = async () => {
+      const todasAsCelas = await getAllCelas()
+      const celasFiltradas = todasAsCelas.filter(
+        (cela) => cela.alocacoes.length < cela.capacidade
+      )
+      setCelasAll(celasFiltradas) // Aqui estava errado, você colocava todas em vez de filtradas
+    }
+
+    fetchCelas()
+  }, [props.open, methods, props.data])
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
+    // Pegando só as descrições das novas tags que NÃO foram removidas
+    const infracoesParaAdicionar = newTags.filter(
+      (descricao) => !tagsRemoves.includes(descricao)
+    )
+
     PutPrisionerMutate.mutate(
-      { ...data },
+      {
+        ...data,
+        infractions: infracoesParaAdicionar ? infracoesParaAdicionar : []
+      },
       {
         onSuccess: () => {
           props.setOpen?.(false)
           success({
-            title: 'Usuário Editado com sucesso',
-            description: `O prisioneiro ${data?.nome} foi editado com sucesso.`
+            title: 'Prisioneiro editado com sucesso',
+            description: `O prisioneiro ${data?.nome} foi atualizado.`
           })
+
+          // 🔥 Limpar os estados após sucesso
+          setNewsTags([])
         },
         onError: () => {
           warning({
@@ -84,6 +121,31 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
         }
       }
     )
+
+    if (tagsRemoves.length > 0) {
+      tagsRemoves.forEach((tagId) => {
+        DelInfraPrisionerMutate.mutate(tagId, {
+          onSuccess: () => {
+            console.log('Infracao deletada com sucesso')
+            setTagsRemoves([])
+          },
+          onError: () => {
+            console.log('Erro ao deletar infracao')
+          }
+        })
+      })
+    }
+  }
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        methods.setValue('foto', reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   return (
@@ -98,17 +160,24 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={methods.watch('foto')}
-                  alt={methods.watch('nome')}
-                />
-                <AvatarFallback>
-                  {methods.watch('nome')?.substring(0, 2)}
-                </AvatarFallback>
-              </Avatar>
+              <div
+                className="relative cursor-pointer"
+                onClick={() => inputFileRef.current?.click()}
+              >
+                <Avatar className="h-20 w-20">
+                  <AvatarImage
+                    src={methods.watch('foto')}
+                    alt={methods.watch('nome')}
+                  />
+                  <AvatarFallback>
+                    {methods.watch('nome')?.substring(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
+                  <Pencil className="text-muted-foreground h-4 w-4" />
+                </div>
+              </div>
               <div className="flex gap-3">
-                {/* <InputField name="id" label="ID" disabled /> */}
                 <InputField name="cpf" label="CPF" />
                 <InputField name="idade" label="Idade" />
               </div>
@@ -127,40 +196,49 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
                 className="col-span-2"
               />
               <SelectionField
-                placeholder="Selecione a cela"
+                placeholder="Cela"
                 label="Cela"
                 name="celaId"
-                list={['1', '2', '3']}
+                list={celasAll}
+                disabled
               />
             </div>
 
-            {/* FOTO COM VALIDAÇÃO */}
-            <div>
-              <label className="block text-sm font-medium">Foto</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                      methods.setValue('foto', reader.result as string)
-                    }
-                    reader.readAsDataURL(file)
-                  }
-                }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-              />
-              {methods.formState.errors.foto && (
-                <p className="mt-1 text-sm text-red-500">
-                  {methods.formState.errors.foto.message}
-                </p>
-              )}
-            </div>
+            <input
+              type="file"
+              accept="image/*"
+              ref={inputFileRef}
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            {methods.formState.errors.foto && (
+              <p className="mt-1 text-sm text-red-500">
+                {methods.formState.errors.foto.message}
+              </p>
+            )}
+            <TagInput
+              idDetento={props.data.id}
+              tags={tags}
+              setTags={setTags}
+              setNewTags={setNewsTags}
+              setremoves={setTagsRemoves}
+              placeholder="Adiione uma infração"
+              showSearchIcon={false}
+              inputClassName="bg-gray-900 border-gray-700"
+              tagsContainerClassName="bg-gray-900 border-gray-700"
+            />
 
             <div className="mt-4 flex justify-end gap-2">
-              <Button type="submit">Salvar</Button>
+              <Button type="submit" disabled={PutPrisionerMutate.isPending}>
+                {PutPrisionerMutate.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  'Salvar'
+                )}
+              </Button>
             </div>
           </form>
         </FormProvider>

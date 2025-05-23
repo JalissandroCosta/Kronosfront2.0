@@ -9,7 +9,11 @@ import {
   CommandItem,
   CommandList
 } from '@/components/ui/command'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
 import { usePrisionerData } from '@/hooks/prisioner/usePrisionerData'
 import { cn } from '@/lib/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
@@ -58,8 +62,12 @@ export const ComboBox = ({
               </Button>
             </PopoverTrigger>
             <PopoverContent
-            side="bottom" align="start" sideOffset={4} avoidCollisions={false}
-            className=" min-w-[350px] max-w-[400px] p-0">
+              side="bottom"
+              align="start"
+              sideOffset={4}
+              avoidCollisions={false}
+              className="max-w-[400px] min-w-[350px] p-0"
+            >
               <Command>
                 <CommandInput placeholder="Procurar detento..." />
                 <CommandList>
@@ -70,7 +78,8 @@ export const ComboBox = ({
                         key={preso.id}
                         value={preso.nome}
                         onSelect={() => {
-                          const newValue = preso.id === field.value ? '' : preso.id
+                          const newValue =
+                            preso.id === field.value ? '' : preso.id
                           field.onChange(newValue)
                           setOpen(false)
                         }}
@@ -78,13 +87,15 @@ export const ComboBox = ({
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',
-                            field.value === preso.id ? 'opacity-100' : 'opacity-0'
+                            field.value === preso.id
+                              ? 'opacity-100'
+                              : 'opacity-0'
                           )}
                         />
                         <div className="flex flex-col">
                           <span>{preso.nome}</span>
-                          <span className="text-xs text-muted-foreground">
-                            CPF: {preso.cpf} 
+                          <span className="text-muted-foreground text-xs">
+                            CPF: {preso.cpf}
                           </span>
                         </div>
                         {/* {preso.nome} */}

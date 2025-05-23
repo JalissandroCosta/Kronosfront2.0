@@ -1,5 +1,5 @@
 import { CreateDetentoResponse, Prisioner } from '@/@types'
-import { DELETEInfracao, POSTInfracao } from '@/actions/infracoes'
+import { POSTInfracao } from '@/actions/infracoes'
 import {
   CreateAlocacaoResponse,
   DELETEPrisioner,
@@ -26,25 +26,13 @@ const addPrisioner = async (data: addPrisionerProps) => {
   return detento
 }
 
-type putPrisionerProps = Prisioner & {
-  infractions: string[]
-}
-
-const putPrisioner = async (data: putPrisionerProps) => {
-  const { infractions, ...rest } = data
+const putPrisioner = async (data: Prisioner) => {
   const prisioners = await PUTPrisioner(data)
-
-  infractions.map(async (infracao) => await POSTInfracao(rest.id, infracao))
-
   return prisioners
 }
 
 const delPrisioner = async (id: string) => {
   const prisioners = await DELETEPrisioner(id)
-  return prisioners
-}
-const delInfraPrisioner = async (id: string) => {
-  const prisioners = await DELETEInfracao(id)
   return prisioners
 }
 
@@ -68,16 +56,5 @@ export function usePrisionerMutate() {
       queryClient.invalidateQueries({ queryKey: ['prisioners'] })
     }
   })
-  const DelInfraPrisionerMutate = useMutation({
-    mutationFn: delInfraPrisioner,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['prisioners'] })
-    }
-  })
-  return {
-    AddPrisionerMutate,
-    PutPrisionerMutate,
-    DelPrisionerMutate,
-    DelInfraPrisionerMutate
-  }
+  return { AddPrisionerMutate, PutPrisionerMutate, DelPrisionerMutate }
 }

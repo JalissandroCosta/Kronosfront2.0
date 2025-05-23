@@ -1,6 +1,6 @@
 'use server'
 
-import { Prisioner } from '@/@types'
+import { infracoes, Prisioner } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -38,6 +38,7 @@ const handleRequest = async (
 type getAllPrisonerModelResponse = Array<
   Prisioner & {
     alocacoes: Alocacao[]
+    infracoes: infracoes[]
   }
 >
 
@@ -111,7 +112,11 @@ export async function POSTPrisioner(props: Prisioner) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
+        `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
       )
     }
     if (error instanceof Error) {
