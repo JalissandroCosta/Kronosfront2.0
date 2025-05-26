@@ -94,18 +94,18 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   }, [props.open, methods, props.data])
 
   async function onSubmit(data: z.infer<typeof formDataSchema>) {
-    const image = await uploadImageToCloudinary(file as File)
+   
     // Pegando só as descrições das novas tags que NÃO foram removidas
     const infracoesParaAdicionar = newTags.filter(
       (descricao) => !tagsRemoves.includes(descricao)
     )
-
+        
   
     PutPrisionerMutate.mutate(
       {
         ...data,
         infractions: infracoesParaAdicionar ? infracoesParaAdicionar : [],
-        foto: file ? image : data.foto,
+        foto: file ? await uploadImageToCloudinary(file as File) : data.foto,
       },
       {
         onSuccess: () => {
