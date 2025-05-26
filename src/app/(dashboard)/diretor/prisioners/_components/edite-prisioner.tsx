@@ -11,14 +11,13 @@ import { FormProvider, useForm } from 'react-hook-form'
 
 import { Alocacao, Prisioner as BasePrisioner, Cela, infracoes } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
-import { TagInput } from '@/app/(dashboard)/administrador/prisioners/_components/tag-input'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { uploadImageToCloudinary } from '@/services/cloudinary'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Pencil } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import * as z from 'zod'
-
+import { TagInput } from './tag-input'
 
 type Prisioner = BasePrisioner & {
   infractions?: string[]
@@ -231,7 +230,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
               setTags={setTags}
               setNewTags={setNewsTags}
               setremoves={setTagsRemoves}
-              placeholder="Adicione uma infração"
+              placeholder="Adiione uma infração"
               showSearchIcon={false}
               inputClassName="bg-gray-900 border-gray-700"
               tagsContainerClassName="bg-gray-900 border-gray-700"
