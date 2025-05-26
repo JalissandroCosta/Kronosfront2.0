@@ -1,11 +1,11 @@
 'use client'
 
-import { useVisitasData } from '@/hooks/visitas/useVisitasData'
+import { useVisitanteData } from '@/hooks/visitante/useVisitanteData'
 import { useState } from 'react'
 import { TableClient } from './_components/table-client'
 
 export default function PageVisitante() {
-  const { data } = useVisitasData()
+  const { data } = useVisitanteData()
   const [open, setOpen] = useState(false)
 
   // const allPrisioners = await getAllPrisioners()
