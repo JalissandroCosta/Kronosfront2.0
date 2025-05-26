@@ -42,3 +42,45 @@ export async function getAllVisitas(): Promise<Visita[]> {
 
   return await handleRequest('visits/', token, 'GET VISITAS')
 }
+
+
+
+type POSTVisitaProps = {
+  detentoId: string
+  visitanteId: string
+}
+
+export async function POSTVisita(props: POSTVisitaProps) {
+  const { token } = await getUser()
+
+
+  try {
+    const { data } = await api.post(
+      'visits/',
+      {
+      ...props
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO VISITA from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO VISITA from API: ${error.message}`
+      )
+    }
+    throw new Error('POST CADASTRO VISITA.')
+  }
+}

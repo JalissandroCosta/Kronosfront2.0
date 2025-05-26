@@ -8,15 +8,6 @@ const addVisitante = async (data: Visitante) => {
   return Visitantes
 }
 
-// const putVisitante = async (data: Visitante) => {
-//   const Visitantes = await PUTVisitante(data)
-//   return Visitantes
-// }
-
-// const delVisitante = async (id: string) => {
-//   const Visitantes = await DELETEVisitante(id)
-//   return Visitantes
-// }
 
 export function useVisitanteMutate() {
   const queryClient = useQueryClient()
@@ -26,17 +17,6 @@ export function useVisitanteMutate() {
       queryClient.invalidateQueries({ queryKey: ['visitantes'] })
     }
   })
-  // const PutVisitanteMutate = useMutation({
-  //   mutationFn: putVisitante,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['Visitantes'] })
-  //   }
-  // })
-  // const DelVisitanteMutate = useMutation({
-  //   mutationFn: delVisitante,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['Visitantes'] })
-  //   }
-  // })
+
   return { AddVisitanteMutate }
 }
