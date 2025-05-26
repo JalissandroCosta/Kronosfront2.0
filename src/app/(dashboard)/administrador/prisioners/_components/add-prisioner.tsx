@@ -110,6 +110,8 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             infractions: [],
             celaId: ''
           })
+
+          setFile(undefined)
         },
         onError: () => {
           warning({

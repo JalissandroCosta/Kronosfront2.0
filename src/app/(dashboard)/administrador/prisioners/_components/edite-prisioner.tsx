@@ -12,6 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Alocacao, Prisioner as BasePrisioner, Cela, infracoes } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
+import { uploadImageToCloudinary } from '@/services/cloudinary'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Pencil } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -49,6 +50,7 @@ type EditPrisionerProps = BaseDialogProps & {
 
 export const EditPrisionerDialog = (props: EditPrisionerProps) => {
   const { success, warning } = useToast()
+  const [file, setFile] = useState<File>()
   const { PutPrisionerMutate, DelInfraPrisionerMutate } = usePrisionerMutate()
   const [tags, setTags] = useState<infracoes[]>(props.data.infractions || [])
   const [tagsRemoves, setTagsRemoves] = useState<string[]>([])
@@ -91,16 +93,19 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
     fetchCelas()
   }, [props.open, methods, props.data])
 
-  function onSubmit(data: z.infer<typeof formDataSchema>) {
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+    const image = await uploadImageToCloudinary(file as File)
     // Pegando só as descrições das novas tags que NÃO foram removidas
     const infracoesParaAdicionar = newTags.filter(
       (descricao) => !tagsRemoves.includes(descricao)
     )
 
+  
     PutPrisionerMutate.mutate(
       {
         ...data,
-        infractions: infracoesParaAdicionar ? infracoesParaAdicionar : []
+        infractions: infracoesParaAdicionar ? infracoesParaAdicionar : [],
+        foto: file ? image : data.foto,
       },
       {
         onSuccess: () => {
@@ -112,6 +117,7 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
 
           // 🔥 Limpar os estados após sucesso
           setNewsTags([])
+          setFile(undefined)
         },
         onError: () => {
           warning({
@@ -139,6 +145,8 @@ export const EditPrisionerDialog = (props: EditPrisionerProps) => {
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
+    setFile(e.target.files?.[0])
+
     if (file) {
       const reader = new FileReader()
       reader.onload = () => {
