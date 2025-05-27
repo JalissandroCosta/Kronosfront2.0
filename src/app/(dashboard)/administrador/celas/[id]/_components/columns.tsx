@@ -70,7 +70,6 @@ function ActionCell({ row }: { row: { original: PrisionerCela } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   // const { id, nome } = row.original
 
-
   return (
     <div className="flex gap-2">
       <TransferPrisionerDialog

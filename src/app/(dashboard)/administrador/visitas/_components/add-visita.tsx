@@ -20,14 +20,11 @@ const formDataSchema = z.object({
 })
 
 export const AddVisitaDialog = (props: BaseDialogProps) => {
-
   const { data } = usePrisionerData()
   const visitantes = useVisitanteData()
-  const {AddVisitaMutate}=useVisitaMutate()
+  const { AddVisitaMutate } = useVisitaMutate()
   const { success, warning } = useToast()
   const { AddVisitanteMutate } = useVisitanteMutate()
-
-
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
@@ -39,8 +36,8 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
 
   function onSubmit(data: z.infer<typeof formDataSchema>) {
     AddVisitaMutate.mutate(
-      { 
-       ...data
+      {
+        ...data
       },
       {
         onSuccess: () => {
@@ -75,11 +72,15 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             onSubmit={methods.handleSubmit(onSubmit)}
             className="grid gap-6"
           >
-            <div className='flex justify-between gap-3'>
-              <ComboBox label="Visitante" name="visitanteId" datalist={visitantes.data!} />
+            <div className="flex justify-between gap-3">
+              <ComboBox
+                label="Visitante"
+                name="visitanteId"
+                datalist={visitantes.data!}
+              />
               <ComboBox label="Preso" name="detentoId" datalist={data!} />
             </div>
-          
+
             {/* <InputField name="nome" label="Nome" placeholder="Insira o Nome" />
             <div className="w-full">
               <ComboBox label="detento" name="idDetento" />

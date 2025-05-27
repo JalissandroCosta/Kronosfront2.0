@@ -12,8 +12,6 @@ const addVisita = async (props: AddVisitaProps) => {
   return visita
 }
 
-
-
 export function useVisitaMutate() {
   const queryClient = useQueryClient()
   const AddVisitaMutate = useMutation({

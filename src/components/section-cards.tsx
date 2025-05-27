@@ -43,10 +43,7 @@ export async function SectionCards({ data }: SectionCardsProps) {
         percentual={detentos?.valorFormatado}
       />
 
-      <PecentualCard
-        data={totalUsers.length}
-        title={'Total Usuários'}
-      />
+      <PecentualCard data={totalUsers.length} title={'Total Usuários'} />
     </div>
   )
 }

@@ -49,7 +49,6 @@ export type Visita = {
   id: string
   detentoId: string
   visitanteId: string
-  advogadoId: string
   dataVisita: string // formato ISO string (ex: "2025-02-14T16:18:18.089Z")
   detento: {
     id: string
@@ -80,6 +79,7 @@ export type Visitante = {
   nome: string
   grauParentesco: string | undefined // Adicionado grauParentesco como opcional
   cpf: string
+  foto: string // Adicionado foto como opcional
   idDetento: string
 }
 

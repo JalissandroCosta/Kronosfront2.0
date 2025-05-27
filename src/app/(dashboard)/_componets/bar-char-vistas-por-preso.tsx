@@ -55,7 +55,6 @@ export function BarCharVisitarPresoComponent({ chartData }: ChartBarProps) {
     <Card>
       <CardHeader>
         <CardTitle>Relatorio de Presos mais Visitados</CardTitle>
-      
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -114,7 +113,6 @@ export function BarCharVisitarPresoComponent({ chartData }: ChartBarProps) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-   
     </Card>
   )
 }

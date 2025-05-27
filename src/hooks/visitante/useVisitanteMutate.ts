@@ -8,7 +8,6 @@ const addVisitante = async (data: Visitante) => {
   return Visitantes
 }
 
-
 export function useVisitanteMutate() {
   const queryClient = useQueryClient()
   const AddVisitanteMutate = useMutation({

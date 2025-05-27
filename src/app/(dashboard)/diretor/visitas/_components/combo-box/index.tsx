@@ -36,7 +36,7 @@ export const ComboBox = ({
   ...props
 }: ComboboxProps) => {
   const [open, setOpen] = useState<boolean>(false)
- 
+
   const { control } = useFormContext()
 
   return (

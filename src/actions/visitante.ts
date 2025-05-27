@@ -44,7 +44,7 @@ export async function getAllVisitante(): Promise<Visitante[]> {
 export async function POSTVisitante(props: Visitante) {
   const { token } = await getUser()
 
-  const { nome, grauParentesco, cpf, idDetento } = props
+  const { nome, grauParentesco, cpf, idDetento, foto } = props
   try {
     const { data } = await api.post(
       'visit/',
@@ -52,7 +52,8 @@ export async function POSTVisitante(props: Visitante) {
         nome,
         grauParentesco,
         cpf,
-        idDetento
+        idDetento,
+        foto
       },
       {
         headers: {

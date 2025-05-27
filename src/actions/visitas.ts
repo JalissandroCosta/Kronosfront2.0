@@ -1,6 +1,5 @@
 'use server'
 
-import { Visita } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -35,15 +34,13 @@ const handleRequest = async (
   }
 }
 
-export async function getAllVisitas(): Promise<Visita[]> {
+export async function getAllVisitas() {
   const { token } = await getUser()
 
   const response = await handleRequest('visits/', token, 'GET VISITAS')
 
-  return await handleRequest('visits/', token, 'GET VISITAS')
+  return response
 }
-
-
 
 type POSTVisitaProps = {
   detentoId: string
@@ -53,12 +50,11 @@ type POSTVisitaProps = {
 export async function POSTVisita(props: POSTVisitaProps) {
   const { token } = await getUser()
 
-
   try {
     const { data } = await api.post(
       'visits/',
       {
-      ...props
+        ...props
       },
       {
         headers: {

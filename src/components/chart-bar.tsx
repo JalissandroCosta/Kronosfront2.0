@@ -55,7 +55,6 @@ export function ChartBar({ chartData }: ChartBarProps) {
     <Card>
       <CardHeader>
         <CardTitle>Relatorio de Entrada : Visitantes / Detentos</CardTitle>
-        
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="max-h-[250px] w-full">

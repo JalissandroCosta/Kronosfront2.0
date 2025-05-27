@@ -86,7 +86,7 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
   async function onSubmit(data: z.infer<typeof formDataSchema>) {
     const image = await uploadImageToCloudinary(file as File)
 
-    console.log(image)
+
     AddPrisionerMutate.mutate(
       { ...data, idade: Number(data.idade), foto: image },
       {

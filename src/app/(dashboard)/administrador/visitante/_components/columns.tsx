@@ -2,28 +2,29 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Alocacao, Prisioner } from '@/@types'
+import { Prisioner, Visitante } from '@/@types'
+import Image from 'next/image'
 import { useState } from 'react'
 
-export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[] }>[] = [
-  // {
-  //   accessorKey: 'foto',
-  //   header: 'Foto',
-  //   cell: ({ row }) => {
-  //     const foto = row.original.foto
-  //     return (
-  //       <div className="h-10 w-10 overflow-hidden rounded-full">
-  //         <Image
-  //           src={foto == 'string' ? '/default.png' : foto}
-  //           width={100}
-  //           height={100}
-  //           alt="Foto do prisioneiro"
-  //           className="h-full w-full object-cover"
-  //         />
-  //       </div>
-  //     )
-  //   }
-  // },
+export const columns: ColumnDef<Visitante>[] = [
+  {
+    accessorKey: 'foto',
+    header: 'Foto',
+    cell: ({ row }) => {
+      const foto = row.original.foto!
+      return (
+        <div className="h-10 w-10 overflow-hidden rounded-full">
+          <Image
+            src={foto === null  ? '/default.png' : foto}
+            width={100}
+            height={100}
+            alt="Foto do prisioneiro"
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )
+    }
+  },
   {
     accessorKey: 'nome',
     header: 'Nome'
@@ -37,7 +38,7 @@ export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[] }>[] = [
     header: 'Parentesco'
   },
   {
-    header: 'Detento',
+    header: 'Detento Vinculado',
     cell: ({ row }) => {
       const detento = (row.original as any).detento
       return detento?.nome ?? 'N/A'
@@ -67,10 +68,10 @@ export const columns: ColumnDef<Prisioner & { alocacoes: Alocacao[] }>[] = [
   //     })
   //   }
   // },
-  {
-    accessorKey: 'Ações',
-    cell: ({ row }) => <ActionCell row={row} />
-  }
+  // {
+  //   accessorKey: 'Ações',
+  //   cell: ({ row }) => <ActionCell row={row} />
+  // }
 ]
 
 // Novo componente extraído

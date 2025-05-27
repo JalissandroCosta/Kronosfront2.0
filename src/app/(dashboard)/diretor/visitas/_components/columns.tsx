@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
 export const columns: ColumnDef<Visita>[] = [
-
   {
     accessorKey: 'visitante.nome',
     header: 'Visitante'
@@ -17,7 +16,7 @@ export const columns: ColumnDef<Visita>[] = [
     accessorKey: 'visitante.grauParentesco',
     header: 'Parentesco'
   },
-    {
+  {
     accessorKey: 'detento.foto',
     header: 'Foto',
     cell: ({ row }) => {
@@ -57,11 +56,11 @@ export const columns: ColumnDef<Visita>[] = [
   {
     accessorKey: 'Ações',
     cell: ({ row }) => {
-      return(
-       <div className="flex gap-2">
-      <Button variant={'secondary'}>Editar</Button>
-      <Button variant={'destructive'}>Excluir</Button>
-    </div> 
+      return (
+        <div className="flex gap-2">
+          <Button variant={'secondary'}>Editar</Button>
+          <Button variant={'destructive'}>Excluir</Button>
+        </div>
       )
     }
   }
