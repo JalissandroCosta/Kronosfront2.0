@@ -8,6 +8,24 @@ import Image from 'next/image'
 
 export const columns: ColumnDef<Visita>[] = [
   {
+      accessorKey: 'foto',
+      header: 'Foto',
+      cell: ({ row }) => {
+        const foto = row.original.visitante?.foto
+        return (
+          <div className="h-10 w-10 overflow-hidden rounded-full">
+            <Image
+              src={foto === null  ? '/default.png' : foto}
+              width={100}
+              height={100}
+              alt="Foto do prisioneiro"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        )
+      }
+    },
+  {
     accessorKey: 'visitante.nome',
     header: 'Visitante'
   },
