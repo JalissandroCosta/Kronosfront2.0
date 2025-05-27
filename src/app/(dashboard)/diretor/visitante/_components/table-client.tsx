@@ -20,7 +20,7 @@ export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
       button={
         <AddVisitaDialog open={open} setOpen={setOpen}>
           <Button variant="outline" className="ml-auto">
-            Adicionar Visiante
+            Adicionar Visitante
           </Button>
         </AddVisitaDialog>
       }

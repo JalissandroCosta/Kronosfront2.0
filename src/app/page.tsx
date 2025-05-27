@@ -109,8 +109,17 @@ export default function LoginScreen() {
               </div>
             </div>
             <div className="flex items-center justify-end">
-              <Button variant="link" className="px-0 font-normal" type="button">
-                Esqueceu sua senha?
+              <Button
+              variant="link"
+              className="px-0 font-normal"
+              type="button"
+              onMouseEnter={() =>
+                warning({
+                title: 'Entre em contato com o suporte técnico atráves do ramal 045'
+                })
+              }
+              >
+              Esqueceu sua senha?
               </Button>
             </div>
           </CardContent>
@@ -120,12 +129,7 @@ export default function LoginScreen() {
             </Button>
           </CardFooter>
         </form>
-        <div className="px-8 pb-6 text-center text-sm">
-          Não tem uma conta?{' '}
-          <Button variant="link" className="px-1 font-normal" type="button">
-            Cadastre-se
-          </Button>
-        </div>
+
       </Card>
     </div>
   )

@@ -127,7 +127,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
                   />
                   <InputField
                     name="grauParentesco"
-                    label="Grau Parentesco"
+                    label="Grau de Parentesco"
                     placeholder="Insira o nivel Parentesco"
                   />
                 </div>
