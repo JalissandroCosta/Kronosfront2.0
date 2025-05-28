@@ -15,7 +15,7 @@ export const TableClient = ({ data }: TableClientProps) => {
     <DataTable
       columns={columns as ColumnDef<PrisionerCela, unknown>[]}
       data={data || []}
-      placeholderSearch="Digite o nome do prisioneiro"
+      search
     />
   )
 }

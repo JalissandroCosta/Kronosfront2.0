@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ShowPrisionerDialog } from './show-prisioner'
 
 export type Prisioner = {
@@ -82,15 +82,24 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const { id, nome } = row.original
 
+
+  const dataMemo = useMemo(
+      () => ({
+        ...row.original,
+        alocacoes: (row.original as any).alocacoes || [],
+        infractions: (row.original as any).infracoes || []
+      }),
+      [row.original]
+    )
   return (
     <div className="flex gap-2">
-      <ShowPrisionerDialog
-        data={row.original}
-        open={openEditDialog}
-        setOpen={setOpenEditDialog}
-      >
-        <Button variant={'secondary'}>Mostrar</Button>
-      </ShowPrisionerDialog>
+     <ShowPrisionerDialog
+             data={dataMemo}
+             open={openEditDialog}
+             setOpen={setOpenEditDialog}
+           >
+             <Button variant={'secondary'}>Editar</Button>
+           </ShowPrisionerDialog>
     </div>
   )
 }
