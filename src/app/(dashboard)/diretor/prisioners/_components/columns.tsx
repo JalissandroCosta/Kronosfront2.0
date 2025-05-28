@@ -2,26 +2,16 @@
 
 import { ColumnDef } from '@tanstack/react-table'
 
+import { Alocacao, infracoes, Prisioner } from '@/@types'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
-export type Prisioner = {
-  id: string
-  nome: string
-  idade: number
-  cpf: string
-  filiacao: string
-  estadoCivil: 'Solteiro' | 'Casado' | 'Divorciado'
-  foto: string
-  reincidencia: boolean
-  createdAt: string // ISO Date string
-  updatedAt: string // ISO Date string
-}
-
-export const columns: ColumnDef<Prisioner>[] = [
+export const columns: ColumnDef<
+  Prisioner & { alocacoes: Alocacao[]; infracoes: infracoes[] }
+>[] = [
   {
     accessorKey: 'foto',
     header: 'Foto',
@@ -47,6 +37,18 @@ export const columns: ColumnDef<Prisioner>[] = [
   {
     accessorKey: 'cpf',
     header: 'CPF'
+  },
+  {
+    accessorKey: 'infracoes',
+    header: 'Infrações',
+    cell: ({ row }) => {
+      const numeroDeInfracoes = row.original.infracoes
+      return (
+        <div className="flex h-full w-full items-center justify-center">
+          {numeroDeInfracoes.length}
+        </div>
+      )
+    }
   },
   {
     accessorKey: 'createdAt',
@@ -81,12 +83,22 @@ export const columns: ColumnDef<Prisioner>[] = [
 // Novo componente extraído
 function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
+
+  const dataMemo = useMemo(
+    () => ({
+      ...row.original,
+      alocacoes: (row.original as any).alocacoes || [],
+      infractions: (row.original as any).infracoes || []
+    }),
+    [row.original]
+  )
+
   const { id, nome } = row.original
 
   return (
     <div className="flex gap-2">
       <EditPrisionerDialog
-        data={row.original}
+        data={dataMemo}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >

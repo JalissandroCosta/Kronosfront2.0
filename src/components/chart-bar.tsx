@@ -55,7 +55,6 @@ export function ChartBar({ chartData }: ChartBarProps) {
     <Card>
       <CardHeader>
         <CardTitle>Relatorio de Entrada : Visitantes / Detentos</CardTitle>
-        <CardDescription>Janeiro - Junho 2025</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="max-h-[250px] w-full">
@@ -85,9 +84,6 @@ export function ChartBar({ chartData }: ChartBarProps) {
           ) : (
             <TrendingDown className="h-4 w-4 text-red-500" />
           )}
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Mostrando o total de visitantes dos últimos 6 meses
         </div>
       </CardFooter>
     </Card>

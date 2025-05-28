@@ -123,7 +123,7 @@ export async function getAllUser(): Promise<User[]> {
 //         Authorization: `Bearer ${token}`,
 //       }
 //     })
-//  
+//
 //     return data
 //   } catch (error: unknown) {
 //     if (error instanceof AxiosError) {

@@ -66,3 +66,44 @@ export async function getInfoCela(
 
   return await handleRequest(`cell/${idCell}`, token, 'GET INFO DA CELA')
 }
+
+
+type POSTCellProps = {
+   numero: number,
+  capacidade: number,
+  pavilhao: string
+}
+
+export async function POSTCell(dataCell:POSTCellProps) {
+  const { token } = await getUser()
+
+  try {
+    const { data } = await api.post(
+      'cell/',
+      {
+        ...dataCell
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST ADD CELL from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch POST ADD CELL from API: ${error.message}`
+      )
+    }
+    throw new Error('POST ADD CELL.')
+  }
+}

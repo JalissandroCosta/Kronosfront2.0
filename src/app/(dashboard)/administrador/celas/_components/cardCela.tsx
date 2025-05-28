@@ -33,7 +33,7 @@ export const CelaCard = ({
         <div className="mt-2 space-y-2">
           <p className="text-sm">
             <span className="font-medium">Capacidade:</span> {alocacoes.length}/
-            {capacidade} animais
+            {capacidade} presos
           </p>
         </div>
       </CardContent>

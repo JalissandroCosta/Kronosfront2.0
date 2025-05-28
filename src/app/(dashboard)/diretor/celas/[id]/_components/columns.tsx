@@ -4,7 +4,9 @@ import { PrisionerCela } from '@/@types'
 import { ColumnDef } from '@tanstack/react-table'
 import Image from 'next/image'
 
+import { Button } from '@/components/ui/button'
 import { useState } from 'react'
+import { TransferPrisionerDialog } from '../../_components/transfer-prisioner'
 // import { DeletePrisionerDialog } from './delete-prisioner'
 // import { EditPrisionerDialog } from './edite-prisioner'
 
@@ -66,18 +68,18 @@ export const columns: ColumnDef<PrisionerCela>[] = [
 // Novo componente extraído
 function ActionCell({ row }: { row: { original: PrisionerCela } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
-  const { id, nome } = row.original
+  // const { id, nome } = row.original
 
   return (
     <div className="flex gap-2">
-      {/* <EditPrisionerDialog
-        data={row.original}
+      <TransferPrisionerDialog
+        {...row.original}
         open={openEditDialog}
         setOpen={setOpenEditDialog}
       >
-        <Button variant={'secondary'}>Editar</Button>
-      </EditPrisionerDialog>
-      <DeletePrisionerDialog data={{ id, nome }}>
+        <Button variant={'secondary'}>Transferir</Button>
+      </TransferPrisionerDialog>
+      {/* <DeletePrisionerDialog data={{ id, nome }}>
         <Button variant={'destructive'}>Excluir</Button>
       </DeletePrisionerDialog> */}
     </div>

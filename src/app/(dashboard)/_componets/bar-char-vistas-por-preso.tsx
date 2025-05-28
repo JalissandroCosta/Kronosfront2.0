@@ -55,7 +55,6 @@ export function BarCharVisitarPresoComponent({ chartData }: ChartBarProps) {
     <Card>
       <CardHeader>
         <CardTitle>Relatorio de Presos mais Visitados</CardTitle>
-        <CardDescription>Ranking Top 6</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer
@@ -114,14 +113,6 @@ export function BarCharVisitarPresoComponent({ chartData }: ChartBarProps) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   )
 }
