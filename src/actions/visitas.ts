@@ -81,13 +81,15 @@ export async function POSTVisita(props: POSTVisitaProps) {
   }
 }
 
-export async function PUTVisita(id:string,dataVisit:any) {
+export async function PUTVisita(id:string) {
   const { token } = await getUser()
 
   try {
     const { data } = await api.put(
-      `visits/10df980e-6bc3-4650-9d1a-d69ee7b197eb`,
-     
+      `visits/${id}`,
+      {
+        dataVisita: Date.now()
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
