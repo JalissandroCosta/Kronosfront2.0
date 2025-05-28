@@ -57,116 +57,116 @@ export const AddUserDialog = (props: BaseDialogProps) => {
     // )
   }
 
-  return (
-    <Dialog
-      title="Novo Usúario"
-      description="Adicione os dados do novo usúario"
-      {...props}
-      content={
-        <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="grid gap-6"
-          >
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <div className="grid grid-cols-4 gap-3">
-                  <InputField
-                    name="cpf"
-                    label="CPF"
-                    placeholder="Insira o CPF"
-                    className="col-span-3"
-                    maxLength={14}
-                    required
-                    onChange={(e) => {
-                      let value = e.target.value.replace(/\D/g, '') // Remove non-numeric characters
-                      if (value.length > 3)
-                        value = value.replace(/^(\d{3})(\d)/, '$1.$2')
-                      if (value.length > 7)
-                        value = value.replace(
-                          /^(\d{3})\.(\d{3})(\d)/,
-                          '$1.$2.$3'
-                        )
-                      if (value.length > 11)
-                        value = value.replace(
-                          /^(\d{3})\.(\d{3})\.(\d{3})(\d)/,
-                          '$1.$2.$3-$4'
-                        )
-                      e.target.value = value.slice(0, 14) // Limit to 14 characters
-                      methods.setValue('cpf', e.target.value)
-                    }}
-                  />
+  // return (
+  //   <Dialog
+  //     title="Novo Usúario"
+  //     description="Adicione os dados do novo usúario"
+  //     {...props}
+  //     content={
+  //       <FormProvider {...methods}>
+  //         <form
+  //           onSubmit={methods.handleSubmit(onSubmit)}
+  //           className="grid gap-6"
+  //         >
+  //           <div className="flex items-center gap-4">
+  //             <div className="flex-1">
+  //               <div className="grid grid-cols-4 gap-3">
+  //                 <InputField
+  //                   name="cpf"
+  //                   label="CPF"
+  //                   placeholder="Insira o CPF"
+  //                   className="col-span-3"
+  //                   maxLength={14}
+  //                   required
+  //                   onChange={(e) => {
+  //                     let value = e.target.value.replace(/\D/g, '') // Remove non-numeric characters
+  //                     if (value.length > 3)
+  //                       value = value.replace(/^(\d{3})(\d)/, '$1.$2')
+  //                     if (value.length > 7)
+  //                       value = value.replace(
+  //                         /^(\d{3})\.(\d{3})(\d)/,
+  //                         '$1.$2.$3'
+  //                       )
+  //                     if (value.length > 11)
+  //                       value = value.replace(
+  //                         /^(\d{3})\.(\d{3})\.(\d{3})(\d)/,
+  //                         '$1.$2.$3-$4'
+  //                       )
+  //                     e.target.value = value.slice(0, 14) // Limit to 14 characters
+  //                     methods.setValue('cpf', e.target.value)
+  //                   }}
+  //                 />
 
-                  <SelectionField
-                    placeholder="Selecione o cargo"
-                    label="Cargo"
-                    name="cargo"
-                    list={['ADM', 'INSP', 'DIR']}
-                  />
-                </div>
-                <div className="grid grid-cols-4 gap-3 pt-3">
-                  <InputField
-                    name="nome"
-                    label="Nome"
-                    placeholder="Insira o Nome"
-                    className="col-span-4"
-                  />
-                </div>
-                <div className="grid grid-cols-4 gap-3 pt-3">
-                  <InputField
-                    name="senha"
-                    label="Senha"
-                    placeholder="Insira o senha"
-                    className="col-span-3"
-                    type="password"
-                  />
-                  <SelectionField
-                    placeholder="Selecione o Nivel"
-                    label="Nivel"
-                    name="nivelPermissao"
-                    list={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
-                  />
-                </div>
-                {/* <div className="p-2">
-                    <InputField
-                      name="e-mail"
-                      label="E-mail"
-                      placeholder="@kronos.com.br"
-                      className=""
-                    />
-                    </div> */}
-              </div>
-            </div>
+  //                 <SelectionField
+  //                   placeholder="Selecione o cargo"
+  //                   label="Cargo"
+  //                   name="cargo"
+  //                   list={['ADM', 'INSP', 'DIR']}
+  //                 />
+  //               </div>
+  //               <div className="grid grid-cols-4 gap-3 pt-3">
+  //                 <InputField
+  //                   name="nome"
+  //                   label="Nome"
+  //                   placeholder="Insira o Nome"
+  //                   className="col-span-4"
+  //                 />
+  //               </div>
+  //               <div className="grid grid-cols-4 gap-3 pt-3">
+  //                 <InputField
+  //                   name="senha"
+  //                   label="Senha"
+  //                   placeholder="Insira o senha"
+  //                   className="col-span-3"
+  //                   type="password"
+  //                 />
+  //                 <SelectionField
+  //                   placeholder="Selecione o Nivel"
+  //                   label="Nivel"
+  //                   name="nivelPermissao"
+  //                   list={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+  //                 />
+  //               </div>
+  //               {/* <div className="p-2">
+  //                   <InputField
+  //                     name="e-mail"
+  //                     label="E-mail"
+  //                     placeholder="@kronos.com.br"
+  //                     className=""
+  //                   />
+  //                   </div> */}
+  //             </div>
+  //           </div>
 
-            {/* <div>
-              <label className="block text-sm font-medium">
-              Foto
-              </label>
-              <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                const reader = new FileReader()
-                reader.onload = () => {
-                  methods.setValue('foto', reader.result as string)
-                }
-                reader.readAsDataURL(file)
-                }
-              }}
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-            </div> */}
+  //           {/* <div>
+  //             <label className="block text-sm font-medium">
+  //             Foto
+  //             </label>
+  //             <input
+  //             type="file"
+  //             accept="image/*"
+  //             onChange={(e) => {
+  //               const file = e.target.files?.[0]
+  //               if (file) {
+  //               const reader = new FileReader()
+  //               reader.onload = () => {
+  //                 methods.setValue('foto', reader.result as string)
+  //               }
+  //               reader.readAsDataURL(file)
+  //               }
+  //             }}
+  //             className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+  //             />
+  //           </div> */}
 
-            <div className="mt-4 flex justify-end gap-2">
-              <Button type="submit" className="cursor-pointer">
-                Salvar
-              </Button>
-            </div>
-          </form>
-        </FormProvider>
-      }
-    />
-  )
+  //           <div className="mt-4 flex justify-end gap-2">
+  //             <Button type="submit" className="cursor-pointer">
+  //               Salvar
+  //             </Button>
+  //           </div>
+  //         </form>
+  //       </FormProvider>
+  //     }
+  //   />
+  // )
 }
