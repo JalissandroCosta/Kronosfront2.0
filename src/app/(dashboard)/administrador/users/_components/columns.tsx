@@ -2,6 +2,8 @@
 
 import { User } from '@/@types'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { useUserMutate } from '@/hooks/user/useUserMutate'
 import { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
 
@@ -40,7 +42,34 @@ export const columns: ColumnDef<User>[] = [
 // Novo componente extraído
 function ActionCell({ row }: { row: { original: User } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
-  const { id, nome } = row.original
+    const { success, warning } = useToast()
+  const { id, nome,cpf } = row.original
+
+  const { DelUserMutate } = useUserMutate()
+
+    const handleEdit = () => {
+   
+      DelUserMutate.mutate(
+      cpf,
+      {
+        onSuccess: () => {
+         
+          success({
+            title: 'Usuario deletado com sucesso',
+            description: `Usuario deletado com sucesso.`
+          })
+        
+        },
+        onError: () => {
+          warning({
+            title: 'Erro ao deletar usuario ',
+            description: 'Ocorreu um erro ao atualizar o deletar o usuario.'
+          })
+        }
+      }
+    )
+
+  }
 
   return (
     <div className="flex gap-2">
@@ -51,7 +80,10 @@ function ActionCell({ row }: { row: { original: User } }) {
       >
         <Button variant={'secondary'}>Editar</Button>
       </EditPrisionerDialog>*/}
-      <Button variant={'destructive'}>Excluir</Button>
+      <Button 
+      variant={'destructive'}
+      onClick={()=>handleEdit()}
+      >Excluir</Button>
     </div>
   )
 }
