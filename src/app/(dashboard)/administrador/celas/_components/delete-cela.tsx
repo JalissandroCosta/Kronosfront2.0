@@ -14,10 +14,10 @@ type DeleteCelaProps = BaseDialogProps & {
 
 export const DeleteCelaDialog = (props: DeleteCelaProps) => {
   const { success, warning } = useToast()
-  const { DelCelasMutate } = DelCelaMutate()
+  const { useCelasMutate } = useCelaMutate()
 
   const DeleteCela = async () => {
-    DelCelasMutate.mutate(props.data?.id, {
+    useCelasMutate.mutate(props.data?.id, {
       onSuccess: () => {
         props.setOpen?.(false)
         success({
