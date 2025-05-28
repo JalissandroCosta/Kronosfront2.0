@@ -14,11 +14,10 @@ const addVisita = async (props: AddVisitaProps) => {
 
 type PutVisitaProps = {
   id: string
-  data: string
 }
 
-const putVisita = async ({ id, data }: PutVisitaProps) => {
-  const visita = await PUTVisita(id, data)
+const putVisita = async ({ id }: PutVisitaProps) => {
+  const visita = await PUTVisita(id)
   return visita
 }
 

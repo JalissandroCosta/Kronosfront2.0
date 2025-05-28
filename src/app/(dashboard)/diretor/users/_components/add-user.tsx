@@ -1,6 +1,5 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
@@ -9,6 +8,7 @@ import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { SelectionField } from '@/components/ui/select/field-selection'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -16,25 +16,10 @@ import * as z from 'zod'
 // type FormData = Prisioner & {}
 
 const formDataSchema = z.object({
-  id: z.string(),
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
-  idade: z
-    .string()
-    .min(1, { message: 'Idade deve ser maior que 0' })
-    .max(2, { message: 'Idade deve ser menor que 100' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
-  filiacao: z.string().min(3, { message: 'Adicione nome do Pai ou Mãe' }),
-  estadoCivil: z.union([
-    z.literal('Solteiro'),
-    z.literal('Casado'),
-    z.literal('Divorciado'),
-    z.literal('Viúvo'),
-    z.string() // permite outros valores que não estão explicitamente listados
-  ]),
-  foto: z.string().url().min(3, { message: 'Adicione uma URL de foto valida' }), // assume que é uma URL
-  reincidencia: z.boolean(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime()
+  cargo: z.string(),
+  senha: z.string()
 })
 
 export const AddUserDialog = (props: BaseDialogProps) => {
@@ -44,16 +29,10 @@ export const AddUserDialog = (props: BaseDialogProps) => {
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
-      id: '',
       nome: '',
-      idade: '0',
       cpf: '',
-      filiacao: '',
-      estadoCivil: 'Solteiro',
-      foto: '',
-      reincidencia: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      cargo: '',
+      senha: ''
     }
   })
 
@@ -90,17 +69,13 @@ export const AddUserDialog = (props: BaseDialogProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={'/default.png'} alt={'Foto do ADM'} />
-                <AvatarFallback>{'PS'}</AvatarFallback>
-              </Avatar>
               <div className="flex-1">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-4 gap-3">
                   <InputField
                     name="cpf"
                     label="CPF"
                     placeholder="Insira o CPF"
-                    className=""
+                    className="col-span-3"
                     maxLength={14}
                     required
                     onChange={(e) => {
@@ -121,44 +96,68 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                       methods.setValue('cpf', e.target.value)
                     }}
                   />
+
+                  <SelectionField
+                    placeholder="Selecione o cargo"
+                    label="Cargo"
+                    name="cargo"
+                    list={['ADM', 'INSP', 'DIR']}
+                  />
                 </div>
-                <div className="p-2">
+                <div className="grid grid-cols-4 gap-3 pt-3">
                   <InputField
                     name="nome"
                     label="Nome"
                     placeholder="Insira o Nome"
-                    className=""
+                    className="col-span-4"
                   />
                 </div>
-                <div className="p-2">
+                <div className="grid grid-cols-4 gap-3 pt-3">
                   <InputField
-                    name="e-mail"
-                    label="E-mail"
-                    placeholder="@kronos.com.br"
-                    className=""
+                    name="senha"
+                    label="Senha"
+                    placeholder="Insira o senha"
+                    className="col-span-3"
+                    type="password"
+                  />
+                  <SelectionField
+                    placeholder="Selecione o Nivel"
+                    label="Nivel"
+                    name="nivelPermissao"
+                    list={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
                   />
                 </div>
+                {/* <div className="p-2">
+                    <InputField
+                      name="e-mail"
+                      label="E-mail"
+                      placeholder="@kronos.com.br"
+                      className=""
+                    />
+                    </div> */}
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium">Foto</label>
+            {/* <div>
+              <label className="block text-sm font-medium">
+              Foto
+              </label>
               <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                      methods.setValue('foto', reader.result as string)
-                    }
-                    reader.readAsDataURL(file)
-                  }
-                }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                const reader = new FileReader()
+                reader.onload = () => {
+                  methods.setValue('foto', reader.result as string)
+                }
+                reader.readAsDataURL(file)
+                }
+              }}
+              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
-            </div>
+            </div> */}
 
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">

@@ -91,7 +91,8 @@ export const columns: ColumnDef<Visita>[] = [
     header: 'Fim',
     cell: ({ row }) => {
       const date = new Date(row.getValue('dataVisitaFim'))
-      if(date.toString() === 'Wed Dec 31 1969 20:00:00 GMT-0400 (Hora padrão do Amazonas)'){
+
+      if(date.toString() == 'Wed Dec 31 1969 20:00:00 GMT-0400 (Hora padrão do Amazonas)'  || date.toString() === 'Wed Dec 31 1969 20:00:00 GMT-0400 (Amazon Standard Time)'){
         return(
           <div className=''>
             <Timer/>
@@ -137,11 +138,8 @@ function ActionCell({ row }: { row: { original: Visita } }) {
 
   const handleEdit = () => {
    
-    
-
       PutVisitaMutate.mutate(
       {
-        data: new Date(Date.now()).toISOString(),
         id: visita.id
       },
       {
@@ -164,10 +162,14 @@ function ActionCell({ row }: { row: { original: Visita } }) {
 
   }
 
+  const date = new Date(row.original.dataVisitaFim)
+
+  const isSaida = date.toString() == 'Wed Dec 31 1969 20:00:00 GMT-0400 (Hora padrão do Amazonas)'  || date.toString() === 'Wed Dec 31 1969 20:00:00 GMT-0400 (Amazon Standard Time)'
+
   return (
     <div className="flex gap-2 ml-3">
-      <Button variant={'secondary'} onClick={()=>handleEdit()}>Editar</Button>
-      <Button variant={'destructive'}>Excluir</Button>
+      <Button variant={'secondary'} onClick={()=>handleEdit()} disabled={!isSaida}>Saida</Button>
+      {/*<Button variant={'destructive'}>Excluir</Button>*/}
     </div>
   )
 }

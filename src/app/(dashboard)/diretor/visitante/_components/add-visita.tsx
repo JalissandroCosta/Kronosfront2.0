@@ -10,8 +10,10 @@ import { Cela } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
 import { ComboBox } from '@/app/(dashboard)/administrador/visitante/_components/combo-box'
 import { useVisitanteMutate } from '@/hooks/visitante/useVisitanteMutate'
+import { uploadImageToCloudinary } from '@/services/cloudinary'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { Pencil } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -20,17 +22,17 @@ const formDataSchema = z.object({
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }),
   grauParentesco: z.string(),
-  idDetento: z.string()
-  // foto: z
-  //   .string()
-  //   .min(1, { message: 'É obrigatório enviar uma foto do prisioneiro' })
-  //   .url({ message: 'URL de imagem inválida' }),
+  idDetento: z.string(),
+  foto: z.string()
 })
 
 export const AddVisitaDialog = (props: BaseDialogProps) => {
   const [celas, setCelas] = useState<Cela[]>([])
+  const [file, setFile] = useState<File>()
   const { success, warning } = useToast()
   const { AddVisitanteMutate } = useVisitanteMutate()
+
+  const inputFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const fetchCelas = async () => {
@@ -51,14 +53,15 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
       nome: '',
       cpf: '',
       grauParentesco: '',
-      idDetento: ''
-      // foto: '',
+      idDetento: '',
+      foto: ''
     }
   })
 
-  function onSubmit(data: z.infer<typeof formDataSchema>) {
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+    const image = await uploadImageToCloudinary(file as File)
     AddVisitanteMutate.mutate(
-      { ...data },
+      { ...data,foto:image },
       {
         onSuccess: () => {
           props.setOpen?.(false)
@@ -70,8 +73,10 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             nome: '',
             cpf: '',
             grauParentesco: '',
-            idDetento: ''
+            idDetento: '',
+            foto: ''
           })
+          setFile(undefined)
         },
         onError: () => {
           warning({
@@ -81,6 +86,18 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
         }
       }
     )
+  }
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    setFile(e.target.files?.[0])
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        methods.setValue('foto', reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   return (
@@ -95,10 +112,28 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src={'/default.png'} alt="Foto do Visitante" />
-                <AvatarFallback>{'PS'}</AvatarFallback>
-              </Avatar>
+              <div
+                className="relative cursor-pointer"
+                onClick={() => inputFileRef.current?.click()}
+              >
+                <Avatar className="h-20 w-20">
+                  <AvatarImage
+                    src={methods.watch('foto') || '/default.png'}
+                    alt="Foto do Prisioneiro"
+                  />
+                  <AvatarFallback>{'PS'}</AvatarFallback>
+                </Avatar>
+                <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
+                  <Pencil className="text-muted-foreground h-4 w-4" />
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={inputFileRef}
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </div>
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
                   <InputField
@@ -127,7 +162,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
                   />
                   <InputField
                     name="grauParentesco"
-                    label="Grau Parentesco"
+                    label="Grau de Parentesco"
                     placeholder="Insira o nivel Parentesco"
                   />
                 </div>

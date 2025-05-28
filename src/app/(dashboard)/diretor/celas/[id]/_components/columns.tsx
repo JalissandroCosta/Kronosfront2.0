@@ -4,10 +4,9 @@ import { PrisionerCela } from '@/@types'
 import { ColumnDef } from '@tanstack/react-table'
 import Image from 'next/image'
 
-import { TransferPrisionerDialog } from '@/app/(dashboard)/administrador/celas/_components/transfer-prisioner'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-
+import { TransferPrisionerDialog } from '../../_components/transfer-prisioner'
 // import { DeletePrisionerDialog } from './delete-prisioner'
 // import { EditPrisionerDialog } from './edite-prisioner'
 

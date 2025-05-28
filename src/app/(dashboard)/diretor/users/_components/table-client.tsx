@@ -1,7 +1,9 @@
 import { User } from '@/@types'
 import { DataTable } from '@/components/table/data-table'
+import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
 
+import { AddUserDialog } from './add-user'
 import { columns } from './columns'
 
 type TableClientProps = {
@@ -16,13 +18,13 @@ export const TableClient = ({ data, open, setOpen }: TableClientProps) => {
       columns={columns as ColumnDef<User, unknown>[]}
       data={data || []}
       search
-      // button={
-      //   <AddUserDialog open={open} setOpen={setOpen}>
-      //     <Button variant="outline" className="ml-auto">
-      //       Adicionar Usuario
-      //     </Button>
-      //   </AddUserDialog>
-      // }
+      button={
+        <AddUserDialog open={open} setOpen={setOpen}>
+          <Button variant="outline" className="ml-auto">
+            Adicionar Usuario
+          </Button>
+        </AddUserDialog>
+      }
     />
   )
 }
