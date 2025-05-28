@@ -6,7 +6,6 @@ import { Visita } from '@/@types'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { useVisitaMutate } from '@/hooks/visitas/useVisitasMutate'
-import { Timer } from 'lucide-react'
 import Image from 'next/image'
 
 export const columns: ColumnDef<Visita>[] = [
@@ -64,7 +63,7 @@ export const columns: ColumnDef<Visita>[] = [
   },
   {
     accessorKey: 'dataVisita',
-    header: 'Inicio',
+    header: 'D/H Entrada',
     cell: ({ row }) => {
       const date = new Date(row.getValue('dataVisita'))
       const dataFormatada = date.toLocaleDateString('pt-BR', {
@@ -88,7 +87,7 @@ export const columns: ColumnDef<Visita>[] = [
   },
   {
     accessorKey: 'dataVisitaFim',
-    header: 'Fim',
+    header: 'D/H Saída',
     cell: ({ row }) => {
       const date = new Date(row.getValue('dataVisitaFim'))
       const isSaida = 
@@ -98,8 +97,10 @@ export const columns: ColumnDef<Visita>[] = [
 
       if(isSaida){
         return(
-          <div className=''>
-            <Timer/>
+          <div className='flex flex-col items-center justify-center'>
+            <span className='text-red-500'>Aguardando </span>
+            <span className='text-red-500'>Saída</span>
+            {/* <Timer/> */}
           </div>
         )
       }
@@ -171,7 +172,7 @@ function ActionCell({ row }: { row: { original: Visita } }) {
   const isSaida =
   !row.original.dataVisitaFim || 
   isNaN(date.getTime()) || 
-  date.getTime() === 0;
+  date.getTime() === 0
 
   return (
     <div className="flex gap-2 ml-3">

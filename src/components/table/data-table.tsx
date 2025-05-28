@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { ReactNode, useState } from 'react'
 import { Button } from '../ui/button'
@@ -39,7 +40,10 @@ export function DataTable<TData, TValue>({
   button,
   placeholderSearch
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  // ✅ Estado de ordenação, inicializando com a coluna 'dataVisitaFim' decrescente
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: 'dataVisitaFim', desc: false }
+  ])
   const [globalFilter, setGlobalFilter] = useState('')
 
   const table = useReactTable({
@@ -53,7 +57,7 @@ export function DataTable<TData, TValue>({
     onGlobalFilterChange: setGlobalFilter,
     globalFilterFn: 'includesString',
     state: {
-      sorting,
+      sorting, // 🔥 Estado controlado corretamente
       globalFilter
     },
     initialState: {
@@ -65,12 +69,12 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
-      {/* Ações (adicionar, excluir, filtro, voltar...) */}
+      {/* Ações (busca, botão adicional, etc) */}
       <div className="flex w-full items-center justify-between py-4">
         {search && (
           <div className="flex w-full items-start py-4">
             <Input
-              placeholder="Procurar"
+              placeholder={placeholderSearch || 'Procurar...'}
               value={globalFilter}
               onChange={(event) => setGlobalFilter(event.target.value)}
               className="max-w-sm"
@@ -122,7 +126,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Nenhum resultado encontrado.
                 </TableCell>
               </TableRow>
             )}
@@ -130,7 +134,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Botões de Paginação */}
+      {/* Paginação */}
       <div className="flex w-full items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
