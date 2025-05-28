@@ -1,7 +1,9 @@
 'use client'
 
 import { User } from '@/@types'
+import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
+import { useState } from 'react'
 
 // export type Prisioner = {
 //   id: string
@@ -28,31 +30,28 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'cargo',
     header: 'CARGO'
+  },
+  {
+    accessorKey: 'Ações',
+    cell: ({ row }) => <ActionCell row={row} />
   }
-
-  // {
-  //   accessorKey: 'Ações',
-  //   cell: ({ row }) => <ActionCell row={row} />
-  // }
 ]
 
 // Novo componente extraído
-// function ActionCell({ row }: { row: { original: Prisioner } }) {
-//   const [openEditDialog, setOpenEditDialog] = useState(false)
-//   const { id, nome } = row.original
+function ActionCell({ row }: { row: { original: User } }) {
+  const [openEditDialog, setOpenEditDialog] = useState(false)
+  const { id, nome } = row.original
 
-//   return (
-//     <div className="flex gap-2">
-//       {/* <EditPrisionerDialog
-//         data={row.original}
-//         open={openEditDialog}
-//         setOpen={setOpenEditDialog}
-//       >
-//         <Button variant={'secondary'}>Editar</Button>
-//       </EditPrisionerDialog>
-//       <DeletePrisionerDialog data={{ id, nome }}>
-//         <Button variant={'destructive'}>Excluir</Button>
-//       </DeletePrisionerDialog> */}
-//     </div>
-//   )
-// }
+  return (
+    <div className="flex gap-2">
+      {/* <EditPrisionerDialog
+        data={row.original}
+        open={openEditDialog}
+        setOpen={setOpenEditDialog}
+      >
+        <Button variant={'secondary'}>Editar</Button>
+      </EditPrisionerDialog>*/}
+      <Button variant={'destructive'}>Excluir</Button>
+    </div>
+  )
+}
