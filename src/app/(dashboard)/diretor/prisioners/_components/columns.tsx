@@ -6,7 +6,6 @@ import { Alocacao, infracoes, Prisioner } from '@/@types'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useMemo, useState } from 'react'
-import { DeletePrisionerDialog } from './delete-prisioner'
 import { EditPrisionerDialog } from './edite-prisioner'
 
 export const columns: ColumnDef<
@@ -104,9 +103,7 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
       >
         <Button variant={'secondary'}>Editar</Button>
       </EditPrisionerDialog>
-      <DeletePrisionerDialog data={{ id, nome }}>
-        <Button variant={'destructive'}>Excluir</Button>
-      </DeletePrisionerDialog>
+
     </div>
   )
 }
