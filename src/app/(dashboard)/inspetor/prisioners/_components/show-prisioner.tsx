@@ -92,7 +92,6 @@ export const ShowPrisionerDialog = (props: EditPrisionerProps) => {
 
   async function onSubmit(data: z.infer<typeof formDataSchema>) {
     // Pegando só as descrições das novas tags que NÃO foram removidas
- 
   }
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -120,10 +119,7 @@ export const ShowPrisionerDialog = (props: EditPrisionerProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-              <div
-                className="relative cursor-pointer"
-                
-              >
+              <div className="relative cursor-pointer">
                 <Avatar className="h-20 w-20">
                   <AvatarImage
                     src={methods.watch('foto')}
@@ -133,15 +129,14 @@ export const ShowPrisionerDialog = (props: EditPrisionerProps) => {
                     {methods.watch('nome')?.substring(0, 2)}
                   </AvatarFallback>
                 </Avatar>
-                
               </div>
               <div className="flex gap-3">
-                <InputField name="cpf" label="CPF"  disabled/>
-                <InputField name="idade" label="Idade" disabled/>
+                <InputField name="cpf" label="CPF" disabled />
+                <InputField name="idade" label="Idade" disabled />
               </div>
             </div>
 
-            <InputField name="nome" label="Nome" disabled/>
+            <InputField name="nome" label="Nome" disabled />
             <div className="grid grid-cols-4 gap-3">
               <SelectionField
                 label="Estado Civil"
@@ -187,8 +182,6 @@ export const ShowPrisionerDialog = (props: EditPrisionerProps) => {
               inputClassName="bg-gray-900 border-gray-700"
               tagsContainerClassName="bg-gray-900 border-gray-700"
             />
-
-            
           </form>
         </FormProvider>
       }

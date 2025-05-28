@@ -19,11 +19,11 @@ export default function GerenciamentoCelasScreen() {
           <h1 className="text-2xl font-bold">Gerenciamento de Celas</h1>
 
           <div className="flex space-x-2">
-        <AddCelaDialog>
-            <Button className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-              Adicionar Cela
-            </Button>
-        </AddCelaDialog>
+            <AddCelaDialog>
+              <Button className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
+                Adicionar Cela
+              </Button>
+            </AddCelaDialog>
           </div>
         </div>
 

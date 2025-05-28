@@ -1,10 +1,17 @@
-import { DELETUser } from '@/actions/user'
+import { DELETUser, POSTUser } from '@/actions/user'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-// const addPrisioner = async (data: Prisioner) => {
-//   const prisioners = await POSTPrisioner(data)
-//   return prisioners
-// }
+type User = {
+  nome: string
+  cpf: string
+  cargo: string
+  senha: string
+  nivelPermissao: number
+}
+const addUser = async (data: User) => {
+  const user = await POSTUser(data)
+  return user
+}
 
 // const putPrisioner = async (data: Prisioner) => {
 //   const prisioners = await PUTPrisioner(data)
@@ -19,12 +26,12 @@ const delUser = async (cpf: string) => {
 export function useUserMutate() {
   const queryClient = useQueryClient()
 
-  // const AddPrisionerMutate = useMutation({
-  //   mutationFn: addPrisioner,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['prisioners'] })
-  //   }
-  // })
+  const AddUserMutate = useMutation({
+    mutationFn: addUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+    }
+  })
   // const PutPrisionerMutate = useMutation({
   //   mutationFn: putPrisioner,
   //   onSuccess: () => {
@@ -37,5 +44,5 @@ export function useUserMutate() {
       queryClient.invalidateQueries({ queryKey: ['users'] })
     }
   })
-  return { DelUserMutate }
+  return { DelUserMutate, AddUserMutate }
 }

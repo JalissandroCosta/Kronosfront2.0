@@ -1,10 +1,11 @@
 'use client'
+import { User } from '@/@types'
 import { useUserData } from '@/hooks/user/useUserData'
 import { useState } from 'react'
 import { TableClient } from './_components/table-client'
 
 export default function PageUsuarios() {
-  const { data } = useUserData()
+  const { data } = useUserData() as { data: User[] | undefined }
   const [open, setOpen] = useState(false)
 
   return (

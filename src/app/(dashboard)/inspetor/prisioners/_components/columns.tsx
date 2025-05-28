@@ -82,24 +82,23 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const { id, nome } = row.original
 
-
   const dataMemo = useMemo(
-      () => ({
-        ...row.original,
-        alocacoes: (row.original as any).alocacoes || [],
-        infractions: (row.original as any).infracoes || []
-      }),
-      [row.original]
-    )
+    () => ({
+      ...row.original,
+      alocacoes: (row.original as any).alocacoes || [],
+      infractions: (row.original as any).infracoes || []
+    }),
+    [row.original]
+  )
   return (
     <div className="flex gap-2">
-     <ShowPrisionerDialog
-             data={dataMemo}
-             open={openEditDialog}
-             setOpen={setOpenEditDialog}
-           >
-             <Button variant={'secondary'}>Editar</Button>
-           </ShowPrisionerDialog>
+      <ShowPrisionerDialog
+        data={dataMemo}
+        open={openEditDialog}
+        setOpen={setOpenEditDialog}
+      >
+        <Button variant={'secondary'}>Editar</Button>
+      </ShowPrisionerDialog>
     </div>
   )
 }

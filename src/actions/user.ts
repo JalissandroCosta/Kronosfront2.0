@@ -1,6 +1,5 @@
 'use server'
 
-import { User } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -42,15 +41,13 @@ export async function getAllUser(): Promise<User[]> {
   return await handleRequest('user/list', token, 'GET USERS')
 }
 
-
 export async function DELETUser(cpf: string) {
   const { token } = await getUser()
-
 
   try {
     const { data } = await api.delete(`user/${cpf}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       }
     })
 
@@ -58,9 +55,10 @@ export async function DELETUser(cpf: string) {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       throw new Error(
-        `Failed to fetch DELETE USUARIO from API: ${typeof error.response?.data === 'object'
-          ? JSON.stringify(error.response.data)
-          : error.response?.data || error.message
+        `Failed to fetch DELETE USUARIO from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
         }`
       )
     }
@@ -70,5 +68,50 @@ export async function DELETUser(cpf: string) {
       )
     }
     throw new Error('DELETE USUARIO.')
+  }
+}
+
+type User = {
+  nome: string
+  cpf: string
+  cargo: string
+  senha: string
+  nivelPermissao: number
+}
+export async function POSTUser(props: User) {
+  const { token } = await getUser()
+
+  try {
+    const { data } = await api.post(
+      'user/register',
+      {
+        ...props
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO USER from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO USER from API: ${error.message}`
+      )
+    }
+    throw new Error('POST CADASTRO USER.')
   }
 }

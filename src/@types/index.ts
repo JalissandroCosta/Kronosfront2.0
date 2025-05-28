@@ -50,7 +50,7 @@ export type Visita = {
   detentoId: string
   visitanteId: string
   dataVisita: string // formato ISO string (ex: "2025-02-14T16:18:18.089Z")
-  dataVisitaFim:string
+  dataVisitaFim: string
   detento: Detento
   visitante: Visitante
 }

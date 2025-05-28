@@ -16,9 +16,7 @@ export default function GerenciamentoCelasScreen() {
         <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
           <h1 className="text-2xl font-bold">Gerenciamento de Celas</h1>
 
-          <div className="flex space-x-2">
-        
-          </div>
+          <div className="flex space-x-2"></div>
         </div>
 
         {/* Grid de Celas */}
