@@ -4,12 +4,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { BaseDialogProps, Dialog } from '@/components/ui/dialog/index'
 import { InputField } from '@/components/ui/fields/field'
 import { SelectionField } from '@/components/ui/select/field-selection'
+import { useToast } from '@/hooks/use-toast'
 
 import { FormProvider, useForm } from 'react-hook-form'
 
+import { Alocacao, Prisioner as BasePrisioner, Cela, infracoes } from '@/@types'
+import { getAllCelas } from '@/actions/celas'
+import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as z from 'zod'
+import { TagInput } from './tag-input'
+
+type Prisioner = BasePrisioner & {
+  infractions?: string[]
+}
 
 const formDataSchema = z.object({
   id: z.string(),
@@ -28,118 +37,158 @@ const formDataSchema = z.object({
   reincidencia: z.boolean(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  infractions: z.array(z.string()).optional()
+  infractions: z.array(z.string()).optional(),
+  celaId: z.string()
 })
 
-type ShowPrisionerProps = BaseDialogProps & {
-  data: {
-    id: string
-    nome: string
-    idade: number
-    cpf: string
-    filiacao: string
-    estadoCivil: string
-    foto: string
-    reincidencia: boolean
-    createdAt: string
-    updatedAt: string
-    infractions?: string[]
-  }
+type EditPrisionerProps = BaseDialogProps & {
+  data: Prisioner & { alocacoes: Alocacao[]; infractions: infracoes[] }
 }
 
-export const ShowPrisionerDialog = (props: ShowPrisionerProps) => {
+export const ShowPrisionerDialog = (props: EditPrisionerProps) => {
+  const { success, warning } = useToast()
+  const [file, setFile] = useState<File>()
+  const { PutPrisionerMutate, DelInfraPrisionerMutate } = usePrisionerMutate()
+  const [tags, setTags] = useState<infracoes[]>(props.data.infractions || [])
+  const [tagsRemoves, setTagsRemoves] = useState<string[]>([])
+  const [newTags, setNewsTags] = useState<string[]>([])
+  const [celasAll, setCelasAll] = useState<Cela[]>([])
+
+  const inputFileRef = useRef<HTMLInputElement>(null)
+
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       ...props.data,
+      celaId: props.data.alocacoes[0]?.celaId,
       idade: Number(props.data.idade) || 0,
       infractions: props.data.infractions || []
     }
   })
 
   useEffect(() => {
+    if (!props.open) return
     methods.reset({
       ...props.data,
-      idade: Number(props.data.idade),
-      infractions: props.data.infractions || []
+      celaId: props.data.alocacoes[0]?.celaId ?? '',
+      idade: Number(props.data.idade) || 0,
+      infractions: props.data.infractions
+        ? props.data.infractions.map((item: string | infracoes) =>
+            typeof item === 'string' ? item : item.descricao
+          )
+        : []
     })
-  }, [props.data, methods])
+
+    const fetchCelas = async () => {
+      const todasAsCelas = await getAllCelas()
+      const celasFiltradas = todasAsCelas.filter(
+        (cela) => cela.alocacoes.length < cela.capacidade
+      )
+      setCelasAll(celasFiltradas) // Aqui estava errado, você colocava todas em vez de filtradas
+    }
+
+    fetchCelas()
+  }, [props.open, methods, props.data])
+
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+    // Pegando só as descrições das novas tags que NÃO foram removidas
+ 
+  }
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    setFile(e.target.files?.[0])
+
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        methods.setValue('foto', reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   return (
     <Dialog
-      title="Prisioneiro"
-      // description="Edite os dados do prisioneiro"
+      title="Mostrar Prisioneiro"
+      description="Mostrar os dados do prisioneiro"
       {...props}
       content={
         <FormProvider {...methods}>
-          <form className="grid gap-6">
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="grid gap-6"
+          >
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={methods.watch('foto')}
-                  alt={methods.watch('nome')}
-                />
-                <AvatarFallback>
-                  {methods.watch('nome')?.substring(0, 2)}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1">
-                <InputField name="id" label="ID" disabled />
+              <div
+                className="relative cursor-pointer"
+                
+              >
+                <Avatar className="h-20 w-20">
+                  <AvatarImage
+                    src={methods.watch('foto')}
+                    alt={methods.watch('nome')}
+                  />
+                  <AvatarFallback>
+                    {methods.watch('nome')?.substring(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                
+              </div>
+              <div className="flex gap-3">
+                <InputField name="cpf" label="CPF"  disabled/>
+                <InputField name="idade" label="Idade" disabled/>
               </div>
             </div>
 
-            <InputField name="nome" label="Nome" disabled />
-            <div className="grid grid-cols-3 gap-3">
+            <InputField name="nome" label="Nome" disabled/>
+            <div className="grid grid-cols-4 gap-3">
               <SelectionField
                 label="Estado Civil"
                 name="estadoCivil"
                 list={['Solteiro', 'Casado', 'Divorciado', 'Viúvo']}
                 disabled
               />
-              <InputField name="cpf" label="CPF" disabled />
-              <InputField name="idade" label="Idade" type="number" disabled />
-            </div>
-
-            <InputField name="filiacao" label="Filiação" disabled />
-
-            {/* FOTO COM VALIDAÇÃO */}
-            {/* <div>
-              <label className="block text-sm font-medium">Foto</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files?.[0]
-                  if (file) {
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                      methods.setValue('foto', reader.result as string)
-                    }
-                    reader.readAsDataURL(file)
-                  }
-                }}
-                className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              <InputField
+                name="filiacao"
+                label="Filiação"
+                className="col-span-2"
+                disabled
               />
-              {methods.formState.errors.foto && (
-                <p className="text-sm text-red-500 mt-1">
-                  {methods.formState.errors.foto.message}
-                </p>
-              )}
-            </div> */}
-
-            {/* INFRAÇÕES - APENAS VISUALIZAÇÃO */}
-            <div>
-              <label className="mb-1 block text-sm font-medium">
-                Crimes Cometidos
-              </label>
-              <input
-                type="text"
-                readOnly
-                value={methods.watch('infractions')?.join(', ') || ''}
-                className="bg-background text-foreground w-full rounded-md border px-3 py-2 text-sm shadow-sm"
+              <SelectionField
+                placeholder="Cela"
+                label="Cela"
+                name="celaId"
+                list={celasAll}
                 disabled
               />
             </div>
+
+            <input
+              type="file"
+              accept="image/*"
+              ref={inputFileRef}
+              onChange={handleImageChange}
+              className="hidden"
+            />
+            {methods.formState.errors.foto && (
+              <p className="mt-1 text-sm text-red-500">
+                {methods.formState.errors.foto.message}
+              </p>
+            )}
+            <TagInput
+              idDetento={props.data.id}
+              tags={tags}
+              setTags={setTags}
+              setNewTags={setNewsTags}
+              setremoves={setTagsRemoves}
+              placeholder="Adiione uma infração"
+              showSearchIcon={false}
+              inputClassName="bg-gray-900 border-gray-700"
+              tagsContainerClassName="bg-gray-900 border-gray-700"
+            />
+
+            
           </form>
         </FormProvider>
       }

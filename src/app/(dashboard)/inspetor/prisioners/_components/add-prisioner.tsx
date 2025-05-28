@@ -10,8 +10,10 @@ import { useToast } from '@/hooks/use-toast'
 import { Cela } from '@/@types'
 import { getAllCelas } from '@/actions/celas'
 import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
+import { uploadImageToCloudinary } from '@/services/cloudinary'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { Loader2, Pencil } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -45,8 +47,11 @@ const formDataSchema = z.object({
 
 export const AddPrisionerDialog = (props: BaseDialogProps) => {
   const [celas, setCelas] = useState<Cela[]>([])
+  const [file, setFile] = useState<File>()
   const { success, warning } = useToast()
   const { AddPrisionerMutate } = usePrisionerMutate()
+
+  const inputFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const fetchCelas = async () => {
@@ -78,9 +83,12 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
     }
   })
 
-  function onSubmit(data: z.infer<typeof formDataSchema>) {
+  async function onSubmit(data: z.infer<typeof formDataSchema>) {
+    const image = await uploadImageToCloudinary(file as File)
+
+
     AddPrisionerMutate.mutate(
-      { ...data, idade: Number(data.idade) },
+      { ...data, idade: Number(data.idade), foto: image },
       {
         onSuccess: () => {
           props.setOpen?.(false)
@@ -102,6 +110,8 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             infractions: [],
             celaId: ''
           })
+
+          setFile(undefined)
         },
         onError: () => {
           warning({
@@ -111,6 +121,18 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
         }
       }
     )
+  }
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    setFile(e.target.files?.[0])
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        methods.setValue('foto', reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   return (
@@ -125,13 +147,22 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             className="grid gap-6"
           >
             <div className="flex items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={methods.watch('foto') || '/default.png'}
-                  alt="Foto do Prisioneiro"
-                />
-                <AvatarFallback>{'PS'}</AvatarFallback>
-              </Avatar>
+              <div
+                className="relative cursor-pointer"
+                onClick={() => inputFileRef.current?.click()}
+              >
+                <Avatar className="h-20 w-20">
+                  <AvatarImage
+                    src={methods.watch('foto') || '/default.png'}
+                    alt="Foto do Prisioneiro"
+                  />
+                  <AvatarFallback>{'PS'}</AvatarFallback>
+                </Avatar>
+                <div className="bg-background absolute right-0 bottom-0 rounded-full p-1 shadow-md">
+                  <Pencil className="text-muted-foreground h-4 w-4" />
+                </div>
+              </div>
+
               <div className="flex-1">
                 <div className="grid grid-cols-2 gap-3">
                   <InputField
@@ -230,12 +261,13 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
             <div className="flex w-full flex-row justify-between gap-4">
               {/* FOTO COM VALIDAÇÃO */}
               <div>
-                <label className="block text-sm font-medium">Foto</label>
+                {/* <label className="block text-sm font-medium">Foto</label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
                     const file = e.target.files?.[0]
+                    setFile(e.target.files?.[0])
                     if (file) {
                       const reader = new FileReader()
                       reader.onload = () => {
@@ -245,6 +277,13 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
                     }
                   }}
                   className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+                /> */}
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={inputFileRef}
+                  onChange={handleImageChange}
+                  className="hidden"
                 />
                 {methods.formState.errors.foto && (
                   <p className="mt-1 text-sm text-red-500">
@@ -254,8 +293,19 @@ export const AddPrisionerDialog = (props: BaseDialogProps) => {
               </div>
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button type="submit" className="cursor-pointer">
-                Salvar
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                disabled={AddPrisionerMutate.isPending}
+              >
+                {AddPrisionerMutate.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Salvando...
+                  </>
+                ) : (
+                  'Salvar'
+                )}
               </Button>
             </div>
           </form>
