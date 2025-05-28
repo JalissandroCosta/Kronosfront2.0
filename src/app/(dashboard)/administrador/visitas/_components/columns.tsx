@@ -91,8 +91,12 @@ export const columns: ColumnDef<Visita>[] = [
     header: 'Fim',
     cell: ({ row }) => {
       const date = new Date(row.getValue('dataVisitaFim'))
+      const isSaida = 
+      !row.getValue('dataVisitaFim') || 
+      isNaN(date.getTime()) || 
+      date.getTime() === 0;
 
-      if(date.toString() == 'Wed Dec 31 1969 20:00:00 GMT-0400 (Hora padrão do Amazonas)'  || date.toString() === 'Wed Dec 31 1969 20:00:00 GMT-0400 (Amazon Standard Time)'){
+      if(isSaida){
         return(
           <div className=''>
             <Timer/>
@@ -164,7 +168,10 @@ function ActionCell({ row }: { row: { original: Visita } }) {
 
   const date = new Date(row.original.dataVisitaFim)
 
-  const isSaida = date.toString() == 'Wed Dec 31 1969 20:00:00 GMT-0400 (Hora padrão do Amazonas)'  || date.toString() === 'Wed Dec 31 1969 20:00:00 GMT-0400 (Amazon Standard Time)'
+  const isSaida =
+  !row.original.dataVisitaFim || 
+  isNaN(date.getTime()) || 
+  date.getTime() === 0;
 
   return (
     <div className="flex gap-2 ml-3">
