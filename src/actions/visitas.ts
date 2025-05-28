@@ -80,3 +80,35 @@ export async function POSTVisita(props: POSTVisitaProps) {
     throw new Error('POST CADASTRO VISITA.')
   }
 }
+
+export async function PUTVisita(id:string,dataVisit:any) {
+  const { token } = await getUser()
+
+  try {
+    const { data } = await api.put(
+      `visits/10df980e-6bc3-4650-9d1a-d69ee7b197eb`,
+     
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch PUT EDITAR VISITA from API: ${error.response?.data || error.message}`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch PUT EDITAR VISITA from API: ${error.message}`
+      )
+    }
+    throw new Error('PUT EDITAR VISITA.')
+  }
+}

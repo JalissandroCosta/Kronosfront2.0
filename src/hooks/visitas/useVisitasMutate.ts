@@ -1,4 +1,4 @@
-import { POSTVisita } from '@/actions/visitas'
+import { POSTVisita, PUTVisita } from '@/actions/visitas'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -12,8 +12,19 @@ const addVisita = async (props: AddVisitaProps) => {
   return visita
 }
 
+type PutVisitaProps = {
+  id: string
+  data: string
+}
+
+const putVisita = async ({ id, data }: PutVisitaProps) => {
+  const visita = await PUTVisita(id, data)
+  return visita
+}
+
 export function useVisitaMutate() {
   const queryClient = useQueryClient()
+
   const AddVisitaMutate = useMutation({
     mutationFn: addVisita,
     onSuccess: () => {
@@ -21,5 +32,12 @@ export function useVisitaMutate() {
     }
   })
 
-  return { AddVisitaMutate }
+    const PutVisitaMutate = useMutation({
+      mutationFn: putVisita,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['visitas'] })
+      }
+    })
+
+  return { AddVisitaMutate,PutVisitaMutate }
 }
