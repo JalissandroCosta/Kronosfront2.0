@@ -61,7 +61,7 @@ export const AddVisitaDialog = (props: BaseDialogProps) => {
   async function onSubmit(data: z.infer<typeof formDataSchema>) {
     const image = await uploadImageToCloudinary(file as File)
     AddVisitanteMutate.mutate(
-      { ...data,foto:image },
+      { ...data, foto: image },
       {
         onSuccess: () => {
           props.setOpen?.(false)

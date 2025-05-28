@@ -81,7 +81,7 @@ export async function POSTVisita(props: POSTVisitaProps) {
   }
 }
 
-export async function PUTVisita(id:string) {
+export async function PUTVisita(id: string) {
   const { token } = await getUser()
 
   try {

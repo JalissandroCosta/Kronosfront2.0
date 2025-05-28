@@ -31,12 +31,12 @@ export function useVisitaMutate() {
     }
   })
 
-    const PutVisitaMutate = useMutation({
-      mutationFn: putVisita,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['visitas'] })
-      }
-    })
+  const PutVisitaMutate = useMutation({
+    mutationFn: putVisita,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['visitas'] })
+    }
+  })
 
-  return { AddVisitaMutate,PutVisitaMutate }
+  return { AddVisitaMutate, PutVisitaMutate }
 }

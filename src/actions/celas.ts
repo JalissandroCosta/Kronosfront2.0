@@ -67,14 +67,13 @@ export async function getInfoCela(
   return await handleRequest(`cell/${idCell}`, token, 'GET INFO DA CELA')
 }
 
-
 type POSTCellProps = {
-   numero: number,
-  capacidade: number,
+  numero: number
+  capacidade: number
   pavilhao: string
 }
 
-export async function POSTCell(dataCell:POSTCellProps) {
+export async function POSTCell(dataCell: POSTCellProps) {
   const { token } = await getUser()
 
   try {

@@ -4,7 +4,6 @@ import { PrisionerCela } from '@/@types'
 import { ColumnDef } from '@tanstack/react-table'
 import Image from 'next/image'
 
-
 export const columns: ColumnDef<PrisionerCela>[] = [
   {
     accessorKey: 'foto',
@@ -43,5 +42,5 @@ export const columns: ColumnDef<PrisionerCela>[] = [
         day: '2-digit'
       })
     }
-  },
+  }
 ]

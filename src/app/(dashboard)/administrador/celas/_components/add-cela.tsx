@@ -10,7 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as z from 'zod'
 
-
 // Esquema de validação
 const formDataSchema = z.object({
   numero: z.string(),
@@ -19,18 +18,15 @@ const formDataSchema = z.object({
 })
 
 export const AddCelaDialog = (props: BaseDialogProps) => {
-
-
   const { AddCelaMutate } = useCelaMutate()
   const { success, warning } = useToast()
- 
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
     defaultValues: {
       numero: '',
       capacidade: '',
-      pavilhao:''
+      pavilhao: ''
     }
   })
 
@@ -50,8 +46,8 @@ export const AddCelaDialog = (props: BaseDialogProps) => {
           })
           methods.reset({
             numero: '',
-      capacidade: '',
-      pavilhao:''
+            capacidade: '',
+            pavilhao: ''
           })
         },
         onError: () => {
@@ -75,9 +71,21 @@ export const AddCelaDialog = (props: BaseDialogProps) => {
             onSubmit={methods.handleSubmit(onSubmit)}
             className="grid gap-6"
           >
-            <InputField name="numero" label="Numero" placeholder="Insira o Nº da Cela" />
-            <InputField name="capacidade" label="Capacidade" placeholder="Insira o Capacidade" />
-            <InputField name="pavilhao" label="Pavilhão" placeholder="Insira o Pavilhao" />
+            <InputField
+              name="numero"
+              label="Numero"
+              placeholder="Insira o Nº da Cela"
+            />
+            <InputField
+              name="capacidade"
+              label="Capacidade"
+              placeholder="Insira o Capacidade"
+            />
+            <InputField
+              name="pavilhao"
+              label="Pavilhão"
+              placeholder="Insira o Pavilhao"
+            />
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">
                 Salvar

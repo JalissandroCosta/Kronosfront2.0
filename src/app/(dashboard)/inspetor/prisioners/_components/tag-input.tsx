@@ -71,10 +71,7 @@ export function TagInput({
 
   return (
     <div className="flex w-full flex-col gap-2">
-      <div className="relative">
-        
-       
-      </div>
+      <div className="relative"></div>
 
       <ScrollArea className="border-input h-32 w-full rounded-md border">
         <div
@@ -92,9 +89,7 @@ export function TagInput({
               <button
                 type="button"
                 className="ring-offset-background focus:ring-ring ml-1 cursor-pointer rounded-full outline-none focus:ring-1"
-                
               >
-               
                 <span className="sr-only">Remover {tag.descricao}</span>
               </button>
             </Badge>

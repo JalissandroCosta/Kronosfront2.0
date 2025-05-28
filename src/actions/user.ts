@@ -1,6 +1,5 @@
 'use server'
 
-import { User } from '@/@types'
 import { api } from '@/services/api'
 import { getUser } from '@/utils/get-users'
 import { AxiosError } from 'axios'
@@ -42,103 +41,77 @@ export async function getAllUser(): Promise<User[]> {
   return await handleRequest('user/list', token, 'GET USERS')
 }
 
-// export async function PUTPrisioner(props: Prisioner) {
-//   const { token } = await getUser()
-//   const { id, idade, createdAt, updatedAt, ...payload } = props
+export async function DELETUser(cpf: string) {
+  const { token } = await getUser()
 
-//   try {
-//     const { data } = await api.put(
-//       `prisoner/${id}`,
-//       {
-//         idade: Number(idade),
-//         ...payload
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Cache-Control': 'no-cache'
-//         }
-//       }
-//     )
+  try {
+    const { data } = await api.delete(`user/${cpf}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
 
-//     return data
-//   } catch (error: unknown) {
-//     if (error instanceof AxiosError) {
-//       throw new Error(
-//         `Failed to fetch PUT CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
-//       )
-//     }
-//     if (error instanceof Error) {
-//       throw new Error(
-//         `Failed to fetch PUT CADASTRO PRISIONEIRO from API: ${error.message}`
-//       )
-//     }
-//     throw new Error('PUT CADASTRO PRISIONEIRO.')
-//   }
-// }
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch DELETE USUARIO from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch DELETE USUARIO from API: ${error.message}`
+      )
+    }
+    throw new Error('DELETE USUARIO.')
+  }
+}
 
-// export async function POSTPrisioner(props: Prisioner) {
-//   const { token } = await getUser()
+type User = {
+  nome: string
+  cpf: string
+  cargo: string
+  senha: string
+  nivelPermissao: number
+}
+export async function POSTUser(props: User) {
+  const { token } = await getUser()
 
-//   const { id, idade, createdAt, updatedAt, ...payload } = props
-//   try {
-//     const { data } = await api.post(
-//       'prisoner/',
-//       {
-//         idade: Number(idade),
-//         ...payload
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           'Cache-Control': 'no-cache',
-//           'Content-Type': 'application/json'
-//         }
-//       }
-//     )
+  try {
+    const { data } = await api.post(
+      'user/register',
+      {
+        ...props
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
 
-//     return data
-//   } catch (error: unknown) {
-//     if (error instanceof AxiosError) {
-//       throw new Error(
-//         `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.response?.data || error.message}`
-//       )
-//     }
-//     if (error instanceof Error) {
-//       throw new Error(
-//         `Failed to fetch POST CADASTRO PRISIONEIRO from API: ${error.message}`
-//       )
-//     }
-//     throw new Error('POST CADASTRO PRISIONEIRO.')
-//   }
-// }
-
-// export async function DELETEPrisioner(id: string) {
-//   const { token } = await getUser()
-
-//
-//   try {
-//     const { data } = await api.delete(`prisoner/${id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       }
-//     })
-//
-//     return data
-//   } catch (error: unknown) {
-//     if (error instanceof AxiosError) {
-//       throw new Error(
-//         `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${typeof error.response?.data === 'object'
-//           ? JSON.stringify(error.response.data)
-//           : error.response?.data || error.message
-//         }`
-//       )
-//     }
-//     if (error instanceof Error) {
-//       throw new Error(
-//         `Failed to fetch DELETE CADASTRO PRISIONEIRO from API: ${error.message}`
-//       )
-//     }
-//     throw new Error('DELETE CADASTRO PRISIONEIRO.')
-//   }
-// }
+    return data
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO USER from API: ${
+          typeof error.response?.data === 'object'
+            ? JSON.stringify(error.response.data)
+            : error.response?.data || error.message
+        }`
+      )
+    }
+    if (error instanceof Error) {
+      throw new Error(
+        `Failed to fetch POST CADASTRO USER from API: ${error.message}`
+      )
+    }
+    throw new Error('POST CADASTRO USER.')
+  }
+}

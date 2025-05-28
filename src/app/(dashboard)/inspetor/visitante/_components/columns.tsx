@@ -15,7 +15,7 @@ export const columns: ColumnDef<Visitante>[] = [
       return (
         <div className="h-10 w-10 overflow-hidden rounded-full">
           <Image
-            src={foto === null  ? '/default.png' : foto}
+            src={foto === null ? '/default.png' : foto}
             width={100}
             height={100}
             alt="Foto do prisioneiro"
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Visitante>[] = [
       const detento = (row.original as any).detento
       return detento?.nome ?? 'N/A'
     }
-  },
+  }
   // {
   //   accessorKey: 'createdAt',
   //   header: 'Data de Criação',

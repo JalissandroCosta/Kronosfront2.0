@@ -103,7 +103,6 @@ function ActionCell({ row }: { row: { original: Prisioner } }) {
       >
         <Button variant={'secondary'}>Editar</Button>
       </EditPrisionerDialog>
-
     </div>
   )
 }

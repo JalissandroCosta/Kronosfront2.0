@@ -9,7 +9,8 @@ import { useToast } from '@/hooks/use-toast'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { SelectionField } from '@/components/ui/select/field-selection'
-import { usePrisionerMutate } from '@/hooks/prisioner/usePrisionerMutate'
+import { useUserData } from '@/hooks/user/useUserData'
+import { useUserMutate } from '@/hooks/user/useUserMutate'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -19,12 +20,14 @@ const formDataSchema = z.object({
   nome: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   cpf: z.string().min(11, { message: 'CPF deve ter pelo menos 11 caracteres' }), // Você pode adicionar validação específica para CPF se quiser
   cargo: z.string(),
-  senha: z.string()
+  senha: z.string(),
+  nivelPermissao: z.string().min(1, { message: 'Nível de permissão é obrigatório' })
 })
 
 export const AddUserDialog = (props: BaseDialogProps) => {
   const { success, warning } = useToast()
-  const { AddPrisionerMutate } = usePrisionerMutate()
+  const { AddUserMutate } = useUserMutate()
+  const { data: users } = useUserData()
 
   const methods = useForm<z.infer<typeof formDataSchema>>({
     resolver: zodResolver(formDataSchema),
@@ -32,29 +35,57 @@ export const AddUserDialog = (props: BaseDialogProps) => {
       nome: '',
       cpf: '',
       cargo: '',
-      senha: ''
+      senha: '',
+      nivelPermissao: ''
     }
   })
 
+ const cpfExists = (cpf: string) => {
+    const cleanedCpf = cpf.replace(/\D/g, '')
+    return users?.some((user) => user.cpf === cleanedCpf)
+  }
+
+
   function onSubmit(data: z.infer<typeof formDataSchema>) {
-    // AddPrisionerMutate.mutate(
-    //   { ...data, idade: Number(data.idade) },
-    //   {
-    //     onSuccess: () => {
-    //       props.setOpen?.(false)
-    //       success({
-    //         title: 'Usuário adicionado com sucesso',
-    //         description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
-    //       })
-    //     },
-    //     onError: () => {
-    //       warning({
-    //         title: 'Erro ao adicionar prisioneiro',
-    //         description: 'Ocorreu um erro ao adicionar o prisioneiro.'
-    //       })
-    //     }
-    //   }
-    // )
+       const cpfClean = data.cpf.replace(/\D/g, '')
+
+        if (cpfExists(cpfClean)) {
+          warning({
+            title: 'CPF já cadastrado',
+            description: 'Este CPF já existe no sistema.'
+          })
+          return
+        }
+
+    AddUserMutate.mutate(
+      { ...data,
+        cpf: cpfClean, // Remove non-numeric characters from CPF
+        nivelPermissao:Number(data.nivelPermissao) },
+      {
+        onSuccess: () => {
+          props.setOpen?.(false)
+          success({
+            title: 'Usuário adicionado com sucesso',
+            description: `O prisioneiro ${data?.nome} foi adicionado com sucesso.`
+          })
+            methods.reset({
+            nome: '',
+            cpf: '',
+            cargo: '',
+            senha: '',
+            nivelPermissao: ''
+          })
+
+
+        },
+        onError: () => {
+          warning({
+            title: 'Erro ao adicionar prisioneiro',
+            description: 'Ocorreu um erro ao adicionar o prisioneiro.'
+          })
+        }
+      }
+    )
   }
 
   return (
@@ -98,7 +129,7 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                   />
 
                   <SelectionField
-                    placeholder="Selecione o cargo"
+                    placeholder="cargo"
                     label="Cargo"
                     name="cargo"
                     list={['ADM', 'INSP', 'DIR']}
@@ -110,6 +141,7 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                     label="Nome"
                     placeholder="Insira o Nome"
                     className="col-span-4"
+        
                   />
                 </div>
                 <div className="grid grid-cols-4 gap-3 pt-3">
@@ -121,44 +153,15 @@ export const AddUserDialog = (props: BaseDialogProps) => {
                     type="password"
                   />
                   <SelectionField
-                    placeholder="Selecione o Nivel"
+                    placeholder="Nivel"
                     label="Nivel"
                     name="nivelPermissao"
                     list={['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
                   />
                 </div>
-                {/* <div className="p-2">
-                    <InputField
-                      name="e-mail"
-                      label="E-mail"
-                      placeholder="@kronos.com.br"
-                      className=""
-                    />
-                    </div> */}
+              
               </div>
             </div>
-
-            {/* <div>
-              <label className="block text-sm font-medium">
-              Foto
-              </label>
-              <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0]
-                if (file) {
-                const reader = new FileReader()
-                reader.onload = () => {
-                  methods.setValue('foto', reader.result as string)
-                }
-                reader.readAsDataURL(file)
-                }
-              }}
-              className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-            </div> */}
-
             <div className="mt-4 flex justify-end gap-2">
               <Button type="submit" className="cursor-pointer">
                 Salvar

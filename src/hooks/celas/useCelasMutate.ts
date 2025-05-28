@@ -2,15 +2,14 @@ import { POSTCell } from '@/actions/celas'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 type AddCelaProps = {
-   numero: number,
-  capacidade: number,
+  numero: number
+  capacidade: number
   pavilhao: string
 }
-const addCela = async (data:AddCelaProps) => {
+const addCela = async (data: AddCelaProps) => {
   const cela = await POSTCell(data)
   return cela
 }
-
 
 export function useCelaMutate() {
   const queryClient = useQueryClient()
